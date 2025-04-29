@@ -27,7 +27,7 @@
       "anchors": [
         {
           "anchor": "Introduction",
-          "href": "api-reference/introduction.mdx",
+          "href": "/api-reference/introduction",
           "icon": "book-open-cover"
         },
         {
