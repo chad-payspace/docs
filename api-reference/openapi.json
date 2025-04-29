@@ -1,217 +1,1752 @@
-{
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
-  "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
+openapi: 3.0.3
+info:
+  title: API Handler
+  description: |
+    API for handling various payment and transaction operations
+    
+    ## Authentication
+    All API calls require authentication using a Bearer token:
+    
+    ```bash
+    curl -X POST "https://staging.pp.payper.ca/api/v2/checkout/session/create" \
+      -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2N2Y0M2Y5YTg2ZTQ1NTNkYTg4YmJjYmUiLCJFbnYiOiJzdGFnaW5nIiwiQ3JlYXRlRGF0ZVRpbWUiOiIyMDI1LTA0LTE0IDA1OjQyOjA4Ljc4NTU1NCIsIkhhc1Nlc3Npb25UaW1lT3V0IjpmYWxzZSwiU2Vzc2lvblRpbWVJbkhvdXJzIjo0MzgwMCwiU2l0ZUlkIjoyNTA4LCJpYXQiOjE3NDQ2MDkzMjgsImV4cCI6MTkwMjI4OTMyOCwiaXNzIjoiTWVyY2hhbnRBcGkgSXNzdWVyIiwiYXVkIjoiTWVyY2hhbnRBcGkiLCJhcHBfcHJlZml4IjoiUFAifQ.t1PU1CqidzotPHpT-LDCpKYuW0ejs_T5jkMOryqTnP8" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "data": {
+          "site": {
+            "id": "556",
+            "payment": {
+              "methods": {
+                "required": ["credit_card"],
+                "recommended": ["etransfer"]
               }
             }
           },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
+          "items": {
+            "name": "Premium Headphones",
+            "quantity": 1,
+            "description": "Wireless Noise-Cancelling Headphones",
+            "SKU": "HDPH-001",
+            "unit_price": 149.99
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+          "customer": {
+            "email": "maria.johnson@example.com",
+            "billing_address": {
+              "first_name": "Maria",
+              "last_name": "Johnson"
             }
           }
         },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
-          }
-        ]
-      },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    }
-  }
-}
+        "signature": "abcd1234"
+      }'
+    ```
+    
+  version: 2.0.0
+  
+servers:
+  - url: https://staging.pp.payper.ca/api/v2
+    description: Staging API server
+
+components:
+  securitySchemes:
+    APIKey:
+      type: apiKey
+      in: header
+      name: X-API-Key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Staging Bearer Token - eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2N2Y0M2Y5YTg2ZTQ1NTNkYTg4YmJjYmUiLCJFbnYiOiJzdGFnaW5nIiwiQ3JlYXRlRGF0ZVRpbWUiOiIyMDI1LTA0LTE0IDA1OjQyOjA4Ljc4NTU1NCIsIkhhc1Nlc3Npb25UaW1lT3V0IjpmYWxzZSwiU2Vzc2lvblRpbWVJbkhvdXJzIjo0MzgwMCwiU2l0ZUlkIjoyNTA4LCJpYXQiOjE3NDQ2MDkzMjgsImV4cCI6MTkwMjI4OTMyOCwiaXNzIjoiTWVyY2hhbnRBcGkgSXNzdWVyIiwiYXVkIjoiTWVyY2hhbnRBcGkiLCJhcHBfcHJlZml4IjoiUFAifQ.t1PU1CqidzotPHpT-LDCpKYuW0ejs_T5jkMOryqTnP8
+  
+  parameters:
+    AuthHeader:
+      name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+      example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySWQiOiI2N2Y0M2Y5YTg2ZTQ1NTNkYTg4YmJjYmUiLCJFbnYiOiJzdGFnaW5nIiwiQ3JlYXRlRGF0ZVRpbWUiOiIyMDI1LTA0LTE0IDA1OjQyOjA4Ljc4NTU1NCIsIkhhc1Nlc3Npb25UaW1lT3V0IjpmYWxzZSwiU2Vzc2lvblRpbWVJbkhvdXJzIjo0MzgwMCwiU2l0ZUlkIjoyNTA4LCJpYXQiOjE3NDQ2MDkzMjgsImV4cCI6MTkwMjI4OTMyOCwiaXNzIjoiTWVyY2hhbnRBcGkgSXNzdWVyIiwiYXVkIjoiTWVyY2hhbnRBcGkiLCJhcHBfcHJlZml4IjoiUFAifQ.t1PU1CqidzotPHpT-LDCpKYuW0ejs_T5jkMOryqTnP8
+      description: Bearer token for API authentication
+  
+  schemas:
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: integer
+        request_ref_id:
+          type: string
+    
+    Transaction:
+      type: object
+      properties:
+        txn:
+          type: string
+          description: Transaction ID
+        sid:
+          type: string
+          description: Site ID
+        status:
+          type: string
+          enum: [pending, completed, failed, cancelled]
+        amount:
+          type: number
+          format: float
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+    
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        txn:
+          type: string
+        request_ref_id:
+          type: string
+        message:
+          type: string
+
+    ETransferRequest:
+      type: object
+      required:
+        - email
+        - amount
+      properties:
+        email:
+          type: string
+          format: email
+        amount:
+          type: number
+          format: float
+        first_name:
+          type: string
+        last_name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        zip_code:
+          type: string
+        ip_address:
+          type: string
+        gateway_override:
+          type: object
+        account_info:
+          type: object
+          properties:
+            encrypted_account_number:
+              type: string
+            institute_number:
+              type: string
+            transit_number:
+              type: string
+            rsa_key_id:
+              type: string
+        time_limit:
+          type: integer
+          description: Time limit in minutes
+    
+    Bank:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique identifier for the bank
+        bank_name:
+          type: string
+          description: Name of the bank
+        bank_name_fr:
+          type: string
+          description: French name of the bank
+        institution_number:
+          type: string
+          description: Institution number
+        FiId:
+          type: string
+          description: Financial institution identifier
+        cuId:
+          type: string
+          description: Credit union identifier
+        enabled:
+          type: boolean
+          description: Whether the bank is enabled
+        logo:
+          type: string
+          description: URL to the bank's logo
+        logo_svg:
+          type: string
+          description: URL to the bank's SVG logo
+          
+    DigitalChequeRequest:
+      type: object
+      required:
+        - email
+        - amount
+      properties:
+        email:
+          type: string
+          format: email
+          description: Customer's email address
+        amount:
+          type: number
+          format: float
+          description: Transaction amount
+        first_name:
+          type: string
+          description: Customer's first name
+        last_name:
+          type: string
+          description: Customer's last name
+        address:
+          type: string
+          description: Customer's address
+        city:
+          type: string
+          description: Customer's city
+        state:
+          type: string
+          description: Customer's state/province
+        country:
+          type: string
+          description: Customer's country
+        zip_code:
+          type: string
+          description: Customer's postal/zip code
+        account_id:
+          type: string
+          description: Existing customer account ID (optional if providing account details)
+        account_name:
+          type: string
+          description: Account holder name
+        encrypted_account_number:
+          type: string
+          description: Encrypted bank account number
+        transit_number:
+          type: string
+          description: Branch transit number
+        institute_number:
+          type: string
+          description: Financial institution number
+        rsa_key_id:
+          type: string
+          description: RSA key ID for encryption
+
+    PADGenerateRequest:
+      type: object
+      required:
+        - amount
+        - first_name
+        - last_name
+        - address
+        - city
+        - state
+        - country
+        - zip_code
+        - frequency
+        - signature
+      properties:
+        amount:
+          type: number
+          format: float
+          description: Transaction amount
+        first_name:
+          type: string
+          description: Customer's first name
+        last_name:
+          type: string
+          description: Customer's last name
+        address:
+          type: string
+          description: Customer's address
+        city:
+          type: string
+          description: Customer's city
+        state:
+          type: string
+          description: Customer's state/province
+        country:
+          type: string
+          description: Customer's country
+        zip_code:
+          type: string
+          description: Customer's postal/zip code
+        account_id:
+          type: string
+          description: Existing customer account ID (optional if providing account details)
+        encrypted_account_number:
+          type: string
+          description: Encrypted bank account number (required if account_id not provided)
+        transit_number:
+          type: string
+          description: Branch transit number (required if account_id not provided)
+        institute_number:
+          type: string
+          description: Financial institution number (required if account_id not provided)
+        rsa_key_id:
+          type: string
+          description: RSA key ID for encryption
+        frequency:
+          type: string
+          description: Payment frequency (e.g., one-time, weekly, monthly)
+        title:
+          type: string
+          description: Customer's title
+        signature:
+          type: string
+          description: Base64 encoded signature image
+
+    CreditCardRequest:
+      type: object
+      required:
+        - email
+        - amount
+      properties:
+        email:
+          type: string
+          format: email
+        amount:
+          type: number
+          format: float
+        billing_info:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            address:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            country:
+              type: string
+            zip_code:
+              type: string
+            phone:
+              type: string
+        shipping_info:
+          type: object
+          properties:
+            first_name:
+              type: string
+            last_name:
+              type: string
+            address:
+              type: string
+            city:
+              type: string
+            state:
+              type: string
+            country:
+              type: string
+            zip_code:
+              type: string
+        payment_token:
+          type: string
+        vault_id:
+          type: string
+        card_id:
+          type: string
+        apple_pay_token:
+          type: string
+        encrypted_pan:
+          type: string
+        ntf_url:
+          type: string
+        ip_address:
+          type: string
+    
+    TransactionPatchRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        first_name:
+          type: string
+        last_name:
+          type: string
+        address:
+          type: string
+        city:
+          type: string
+        state:
+          type: string
+        country:
+          type: string
+        zip_code:
+          type: string
+    
+    RefundRequest:
+      type: object
+      required:
+        - txid
+        - amount
+      properties:
+        txid:
+          type: string
+          description: Original transaction ID to refund
+        amount:
+          type: number
+          format: float
+          description: Amount to refund
+        auto_marking:
+          type: boolean
+        refund_to_account:
+          type: boolean
+        account_info:
+          type: object
+          properties:
+            encrypted_account_number:
+              type: string
+            institute_number:
+              type: string
+            transit_number:
+              type: string
+        waiting_for_account_info:
+          type: boolean
+
+    CheckoutSessionRequest:
+      type: object
+      required:
+        - data
+        - signature
+      properties:
+        data:
+          type: object
+          required:
+            - site
+            - items
+            - redirects
+            - customer
+          properties:
+            site:
+              type: object
+              required:
+                - id
+              properties:
+                id:
+                  type: string
+                  description: Site identifier
+                payment:
+                  type: object
+                  properties:
+                    methods:
+                      type: object
+                      properties:
+                        required:
+                          type: array
+                          items:
+                            type: string
+                        recommended:
+                          type: array
+                          items:
+                            type: string
+                    rules:
+                      type: object
+                      properties:
+                        enable_preauthorization:
+                          type: boolean
+                          default: false
+                        enable_3d_secure:
+                          type: boolean
+                          default: false
+                        verify_cvv:
+                          type: boolean
+                          default: false
+                        verify_avs:
+                          type: boolean
+                          default: false
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                quantity:
+                  type: integer
+                description:
+                  type: string
+                SKU:
+                  type: string
+                unit_price:
+                  type: number
+                  format: float
+            shipping:
+              type: object
+              properties:
+                mode:
+                  type: string
+                  enum: [fixed]
+                cost:
+                  type: number
+                  format: float
+                cost_url:
+                  type: string
+                  format: uri
+                blacklist:
+                  type: object
+                  properties:
+                    continents:
+                      type: array
+                      items:
+                        type: string
+                    countries:
+                      type: array
+                      items:
+                        type: string
+                whitelist:
+                  type: object
+                  properties:
+                    continents:
+                      type: array
+                      items:
+                        type: string
+                    countries:
+                      type: array
+                      items:
+                        type: string
+            discount:
+              type: object
+              properties:
+                reduction_url:
+                  type: string
+                  format: uri
+            udfs:
+              type: array
+              items:
+                type: string
+            redirects:
+              type: object
+              required:
+                - return_url
+              properties:
+                return_url:
+                  type: string
+                  format: uri
+                approved_url:
+                  type: string
+                  format: uri
+                declined_url:
+                  type: string
+                  format: uri
+                notification_url:
+                  type: string
+                  format: uri
+            customer:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                payment_method:
+                  type: string
+                payment_details:
+                  type: object
+                  properties:
+                    credit_cards:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          encrypted_pan:
+                            type: string
+                          encrypted_cvv:
+                            type: string
+                          rsa_key_id:
+                            type: integer
+                          expiration_month:
+                            type: string
+                          expiration_year:
+                            type: string
+                          payment_token:
+                            type: string
+                billing_address:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    address:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zip_code:
+                      type: string
+                    country:
+                      type: string
+                    company:
+                      type: string
+                    phone:
+                      type: string
+                shipping_address:
+                  type: object
+                  properties:
+                    first_name:
+                      type: string
+                    last_name:
+                      type: string
+                    address:
+                      type: string
+                    city:
+                      type: string
+                    state:
+                      type: string
+                    zip_code:
+                      type: string
+                    country:
+                      type: string
+                    company:
+                      type: string
+                    phone:
+                      type: string
+        signature:
+          type: string
+          description: Signature for request verification
+
+security:
+  - BearerAuth: []
+  - APIKey: []
+
+paths:
+  /checkout/session/create:
+    post:
+      summary: Create checkout session
+      description: Create a checkout session for One-Click Checkout processing
+      tags:
+        - One-Click Checkout
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CheckoutSessionRequest'
+            examples:
+              checkoutSession:
+                summary: Example checkout session request
+                value:
+                  data:
+                    site:
+                      id: "556"
+                      payment:
+                        methods:
+                          required: ["credit_card"]
+                          recommended: ["etransfer"]
+                        rules:
+                          enable_preauthorization: false
+                          enable_3d_secure: false
+                          verify_cvv: false
+                          verify_avs: false
+                    items:
+                      name: "Premium Wireless Headphones"
+                      quantity: 1
+                      description: "Noise-cancelling wireless headphones with 30-hour battery life"
+                      SKU: "HDPH-001"
+                      unit_price: 149.99
+                    shipping:
+                      mode: "fixed"
+                      cost: 12.99
+                      cost_url: "https://api.mystore.com/shipping/calculate"
+                      blacklist:
+                        continents: ["Antarctica"]
+                        countries: ["CU", "IR", "KP"]
+                      whitelist:
+                        continents: ["North America", "Europe"]
+                        countries: ["CA", "US", "MX", "GB", "FR", "DE"]
+                    discount: 
+                      reduction_url: "https://api.mystore.com/discount/calculate"
+                    udfs: ["promo_spring2023", "source_email_campaign"]
+                    redirects:
+                      return_url: "https://mystore.com/checkout/complete"
+                      approved_url: "https://mystore.com/checkout/success"
+                      declined_url: "https://mystore.com/checkout/declined"
+                      notification_url: "https://api.mystore.com/webhooks/payment"
+                    customer:
+                      email: "maria.johnson@example.com"
+                      payment_method: "credit_card"
+                      payment_details:
+                        credit_cards:
+                          - encrypted_pan: "F7SDu82jsdD82jsDmkla9sJHD7s"
+                            encrypted_cvv: "8Djks7D0s"
+                            rsa_key_id: 1001
+                            expiration_month: "09"
+                            expiration_year: "2025"
+                            payment_token: "tok_vYTY789Hjsd82HJdjs8"
+                      billing_address:
+                        first_name: "Maria"
+                        last_name: "Johnson"
+                        address: "123 Maple Avenue"
+                        city: "Toronto"
+                        state: "Ontario"
+                        zip_code: "M5V 2T6"
+                        country: "CA"
+                        company: "Johnson Design Inc."
+                        phone: "+14165557890"
+                      shipping_address:
+                        first_name: "Maria"
+                        last_name: "Johnson"
+                        address: "123 Maple Avenue"
+                        city: "Toronto"
+                        state: "Ontario"
+                        zip_code: "M5V 2T6"
+                        country: "CA"
+                        company: "Johnson Design Inc."
+                        phone: "+14165557890"
+                  signature: "a7f5sd8f7sd6f5sd87f6sd54f6sd798fds65"
+      responses:
+        '200':
+          description: Checkout session created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                success:
+                  summary: Successful response example
+                  value:
+                    success: true
+                    session_id: "sess_78HGf6D4Fds87S4D5F"
+                    checkout_url: "https://staging.pp.payper.ca/checkout/sess_78HGf6D4Fds87S4D5F"
+                    expires_at: "2023-04-15T10:30:00Z"
+                    message: "Checkout session created successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  status:
+                    type: integer
+                  title:
+                    type: string
+                  code:
+                    type: string
+                  detail:
+                    type: string
+                  error:
+                    type: string
+
+  /payment/eTransfer:
+    post:
+      summary: Process eTransfer payment request
+      description: Process a payment request using Interac e-Transfer
+      tags:
+        - eTransfer
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ETransferRequest'
+            examples:
+              eTransferPayment:
+                summary: Example eTransfer payment request
+                value:
+                  email: "sophia.chen@example.com"
+                  amount: 175.50
+                  first_name: "Sophia"
+                  last_name: "Chen"
+                  phone: "+14375559876"
+                  address: "789 Birch Road"
+                  city: "Montreal"
+                  state: "Quebec"
+                  country: "CA"
+                  zip_code: "H2Y 1K9"
+                  ip_address: "198.51.100.42"
+                  time_limit: 1440
+      responses:
+        '200':
+          description: eTransfer payment request successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                success:
+                  summary: Successful response example
+                  value:
+                    success: true
+                    txn: "tx_9J8H7G6F5E4D3C2B1"
+                    request_ref_id: "ref_1A2B3C4D5E6F7G8H9"
+                    message: "eTransfer payment request initiated successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payout/eTransfer:
+    post:
+      summary: Process eTransfer payout
+      description: Process a payout using Interac e-Transfer
+      tags:
+        - eTransfer
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ETransferRequest'
+            examples:
+              eTransferPayout:
+                summary: Example eTransfer payout request
+                value:
+                  email: "james.wilson@example.com"
+                  amount: 450.75
+                  first_name: "James"
+                  last_name: "Wilson"
+                  phone: "+16138889999"
+                  address: "321 Pine Boulevard"
+                  city: "Ottawa"
+                  state: "Ontario"
+                  country: "CA"
+                  zip_code: "K1P 5G3"
+                  ip_address: "203.0.113.45"
+                  account_info:
+                    encrypted_account_number: "Jd72HfGg45jsDl9KfLm93"
+                    institute_number: "004"
+                    transit_number: "12345"
+                    rsa_key_id: "key_9876"
+      responses:
+        '200':
+          description: eTransfer payout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                success:
+                  summary: Successful response example
+                  value:
+                    success: true
+                    txn: "tx_P72K3D9H4F6S7G8J2"
+                    request_ref_id: "ref_2B7C8D4F5G6H7J8K9"
+                    message: "eTransfer payout processed successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/eTransfer/authorization:
+    post:
+      summary: eTransfer authorization
+      description: Handle authorization for eTransfer transactions
+      tags:
+        - eTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txid
+                - action_code
+              properties:
+                txid:
+                  type: string
+                  description: Transaction ID to authorize
+                action_code:
+                  type: string
+                  description: "Action code for authorization (00 = approved, 99 = declined)"
+                  enum: ["00", "99"]
+      responses:
+        '200':
+          description: Authorization successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payout/eTransfer/eligibility:
+    get:
+      summary: Check eTransfer eligibility
+      description: Check if a recipient is eligible for eTransfer payments
+      tags:
+        - eTransfer
+      parameters:
+        - name: email
+          in: query
+          required: true
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Eligibility check successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+                  auto_deposit_status:
+                    type: string
+                    enum: [enabled, disabled, unknown]
+                  name:
+                    type: object
+                    properties:
+                      display_name:
+                        type: string
+                      individual_name:
+                        type: object
+                        properties:
+                          first_name:
+                            type: string
+                          last_name:
+                            type: string
+                      business_name:
+                        type: object
+                        properties:
+                          legal_name:
+                            type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/eTransferStandard:
+    post:
+      summary: Process standard eTransfer payment
+      description: Process a standard payment using Interac e-Transfer
+      tags:
+        - eTransfer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ETransferRequest'
+      responses:
+        '200':
+          description: Standard eTransfer payment request successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /eTransferBanks:
+    get:
+      summary: Get list of supported eTransfer banks
+      description: Retrieve a list of all supported banks for Interac e-Transfer transactions
+      tags:
+        - eTransfer
+      responses:
+        '200':
+          description: Bank list retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    description: Response message
+                  banks:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Bank'
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        message:
+                          type: string
+                        code:
+                          type: integer
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/DigitalCheque:
+    post:
+      summary: Process Digital Cheque payment
+      description: Process a payment using Digital Cheque
+      tags:
+        - Digital Cheque Transaction
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalChequeRequest'
+            examples:
+              digitalChequePayment:
+                summary: Example Digital Cheque payment request
+                value:
+                  email: "daniel.murphy@example.com"
+                  amount: 825.50
+                  first_name: "Daniel"
+                  last_name: "Murphy"
+                  address: "45 Lakeview Drive"
+                  city: "Calgary"
+                  state: "Alberta"
+                  country: "CA"
+                  zip_code: "T2P 1H8"
+                  account_name: "Daniel J Murphy"
+                  encrypted_account_number: "H7J9K2L3M4N5P6Q7R8"
+                  transit_number: "87654"
+                  institute_number: "003"
+                  rsa_key_id: "key_5432"
+      responses:
+        '200':
+          description: Digital Cheque payment successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                success:
+                  summary: Successful response example
+                  value:
+                    success: true
+                    txn: "tx_D3C4F5G6H7J8K9L2"
+                    request_ref_id: "ref_3C4D5F6G7H8J9K2L3"
+                    message: "Digital Cheque payment processed successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/DigitalCheque/generate-pad:
+    post:
+      summary: Generate PAD agreement
+      description: Generate a Pre-Authorized Debit (PAD) agreement PDF
+      tags:
+        - Digital Cheque Transaction
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PADGenerateRequest'
+            examples:
+              padGeneration:
+                summary: Example PAD agreement generation request
+                value:
+                  amount: 250.00
+                  first_name: "Emma"
+                  last_name: "Thompson"
+                  address: "789 River Road"
+                  city: "Edmonton"
+                  state: "Alberta"
+                  country: "CA"
+                  zip_code: "T5J 2R4"
+                  encrypted_account_number: "G6H7J8K9L2M3N4P5"
+                  transit_number: "10123"
+                  institute_number: "219"
+                  rsa_key_id: "key_7890"
+                  frequency: "monthly"
+                  title: "Ms."
+                  signature: "base64encodedSignatureImageString..."
+      responses:
+        '200':
+          description: PAD agreement generated successfully
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+              example: "[Binary PDF content]"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payout/DirectDeposit:
+    post:
+      summary: Process Direct Deposit payout
+      description: Process a payout using Direct Deposit
+      tags:
+        - Digital Cheque Transaction
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DigitalChequeRequest'
+            examples:
+              directDepositPayout:
+                summary: Example Direct Deposit payout request
+                value:
+                  email: "olivia.brown@example.com"
+                  amount: 1250.75
+                  first_name: "Olivia"
+                  last_name: "Brown"
+                  address: "567 Spruce Avenue"
+                  city: "Halifax"
+                  state: "Nova Scotia"
+                  country: "CA"
+                  zip_code: "B3H 1Z7"
+                  account_name: "Olivia R Brown"
+                  encrypted_account_number: "P5Q6R7S8T9U2V3W4"
+                  transit_number: "32198"
+                  institute_number: "002"
+                  rsa_key_id: "key_3456"
+      responses:
+        '200':
+          description: Direct Deposit payout successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                success:
+                  summary: Successful response example
+                  value:
+                    success: true
+                    txn: "tx_F7G8H9J2K3L4M5N6"
+                    request_ref_id: "ref_4D5F6G7H8J9K2L3M4"
+                    message: "Direct Deposit payout processed successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /transaction/{txn}:
+    get:
+      summary: Get transaction details
+      description: Retrieve details for a specific transaction
+      tags:
+        - Transactions
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+        - name: txn
+          in: path
+          required: true
+          schema:
+            type: string
+          example: "tx_7Dj8F7SD6f5sDF7d6f5"
+          description: Transaction ID to retrieve
+      responses:
+        '200':
+          description: Transaction details
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      transaction:
+                        $ref: '#/components/schemas/Transaction'
+              examples:
+                transactionDetails:
+                  summary: Example transaction details
+                  value:
+                    success: true
+                    txn: "tx_7Dj8F7SD6f5sDF7d6f5"
+                    request_ref_id: "ref_6F5SDf76sd5F67sd5"
+                    message: "Transaction details retrieved successfully"
+                    transaction:
+                      txn: "tx_7Dj8F7SD6f5sDF7d6f5"
+                      sid: "556"
+                      status: "completed"
+                      amount: 299.99
+                      created_at: "2023-04-14T14:22:35Z"
+                      updated_at: "2023-04-14T14:23:10Z"
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    
+    patch:
+      summary: Update transaction fields
+      description: Update fields for an existing transaction that needs validation
+      tags:
+        - Transactions
+      parameters:
+        - name: txn
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionPatchRequest'
+      responses:
+        '200':
+          description: Transaction updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Transaction not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/credit-card/purchase:
+    post:
+      summary: Process credit card purchase
+      description: Process a payment using credit card
+      tags:
+        - Credit Card
+      parameters:
+        - $ref: '#/components/parameters/AuthHeader'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCardRequest'
+            examples:
+              creditCardPurchase:
+                summary: Example credit card purchase request
+                value:
+                  email: "alex.rodriguez@example.com"
+                  amount: 299.99
+                  billing_info:
+                    first_name: "Alex"
+                    last_name: "Rodriguez"
+                    address: "456 Oak Street"
+                    city: "Vancouver"
+                    state: "British Columbia"
+                    country: "CA"
+                    zip_code: "V6B 2M4"
+                    phone: "+16045551234"
+                  shipping_info:
+                    first_name: "Alex"
+                    last_name: "Rodriguez"
+                    address: "456 Oak Street"
+                    city: "Vancouver"
+                    state: "British Columbia"
+                    country: "CA"
+                    zip_code: "V6B 2M4"
+                  payment_token: "tok_8FsDj7SDF7sd6FSD76f5s"
+                  ip_address: "192.168.1.123"
+      responses:
+        '200':
+          description: Payment successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                success:
+                  summary: Successful response example
+                  value:
+                    success: true
+                    txn: "tx_7Dj8F7SD6f5sDF7d6f5"
+                    request_ref_id: "ref_6F5SDf76sd5F67sd5"
+                    message: "Credit card payment processed successfully"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /payment/credit-card/preAuthorization:
+    post:
+      summary: Process credit card pre-authorization
+      description: Pre-authorize a payment using credit card
+      tags:
+        - Credit Card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreditCardRequest'
+      responses:
+        '200':
+          description: Pre-authorization successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /payment/credit-card/capture:
+    post:
+      summary: Capture pre-authorized payment
+      description: Capture funds from a pre-authorized credit card transaction
+      tags:
+        - Credit Card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txn
+              properties:
+                txn:
+                  type: string
+                  description: Transaction ID of pre-authorization
+                amount:
+                  type: number
+                  format: float
+                  description: Amount to capture (can be partial)
+      responses:
+        '200':
+          description: Capture successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /payment/credit-card/void:
+    post:
+      summary: Void transaction
+      description: Void a credit card transaction
+      tags:
+        - Credit Card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - txn
+              properties:
+                txn:
+                  type: string
+                  description: Transaction ID to void
+      responses:
+        '200':
+          description: Void successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /payment/credit-card/generateToken:
+    post:
+      summary: Generate payment token
+      description: Generate a payment token for credit card details
+      tags:
+        - Credit Card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - encrypted_pan
+                - expiration_date
+              properties:
+                encrypted_pan:
+                  type: string
+                  description: Encrypted PAN (card number)
+                expiration_date:
+                  type: string
+                  description: Card expiration date (MM/YY)
+                verification_code:
+                  type: string
+                  description: CVV/CVC code
+                rsa_key_id:
+                  type: string
+      responses:
+        '200':
+          description: Token generated successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/SuccessResponse'
+                  - type: object
+                    properties:
+                      payment_token:
+                        type: string
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payment/credit-card/threeDSAuthentication:
+    post:
+      summary: 3DS Authentication
+      description: Perform 3D Secure authentication for a credit card transaction
+      tags:
+        - Credit Card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cavv:
+                  type: string
+                xid:
+                  type: string
+                three_ds_version:
+                  type: string
+                directory_server_id:
+                  type: string
+                eci:
+                  type: string
+                bin_number:
+                  type: string
+                last_4_digits:
+                  type: string
+                cardholder_auth:
+                  type: string
+                cardholder_info:
+                  type: string
+      responses:
+        '200':
+          description: 3DS Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /refund:
+    post:
+      summary: Process refund
+      description: Process a refund for a previous transaction
+      tags:
+        - Refunds
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefundRequest'
+      responses:
+        '200':
+          description: Refund processing initiated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  tx_action:
+                    type: string
+                  status:
+                    type: string
+                  txid:
+                    type: string
+                  amount:
+                    type: number
+                    format: float
+                  descriptor:
+                    type: string
+                  message:
+                    type: string
+                  udfs:
+                    type: array
+                    items:
+                      type: object
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /customer/preferred_banks/{email}:
+    get:
+      summary: Get customer preferred banks
+      description: Retrieve preferred banks for a customer by email
+      tags:
+        - Customer
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+            format: email
+      responses:
+        '200':
+          description: Preferred banks retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  preferred_banks:
+                    type: object
+                    properties:
+                      FiId:
+                        type: string
+                      bank_name:
+                        type: string
+                      bank_name_fr:
+                        type: string
+                      cuId:
+                        type: string
+                      enabled:
+                        type: boolean
+                      id:
+                        type: integer
+                      institution_number:
+                        type: string
+                      logo:
+                        type: string
+                      logo_svg:
+                        type: string
+                  message:
+                    type: string
+                    example: "Preferred bank found!"
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
