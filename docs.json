@@ -10,14 +10,14 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
-        
-        
+        {
+        "tab": "User Guides",
+        "href": "https://www.google.com"
+        },
         {
         "tab": "API Reference",
         "openapi": "api-reference/openapi.json"
         }
-    
-      
     ],
     "global": {
       "anchors": [
