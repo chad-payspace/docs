@@ -1,3 +1,5 @@
+
+
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
@@ -10,6 +12,29 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
+
+       {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "quickstart",
+              {
+                "group": "Editing",
+                "icon": "pen-paintbrush",
+                "pages": [
+                  "development",
+                  "web-editor"
+                ]
+              },
+              "settings/global",
+              "settings/navigation",
+              "migration"
+            ]
+          },
+
+      
       
         {
         "tab": "API Reference",
