@@ -14,7 +14,7 @@
         "tab": "API Reference",
         "pages": [
           {
-            "page": "/api-reference/introduction",
+            "page": "api-reference/introduction",
             "label": "Introduction"
           },
           {
