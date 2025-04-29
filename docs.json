@@ -10,7 +10,18 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
-      
+
+      {
+        "tab": "Introduction",
+        "groups": [
+          {
+            "group": "Introduction",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          }
+        ]
+      },
         {
         "tab": "API Reference",
         "openapi": "api-reference/openapi.json"
