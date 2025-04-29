@@ -12,11 +12,33 @@
     "tabs": [
       {
         "tab": "API Reference",
-        "openapi": "api-reference/openapi.json"
+        "pages": [
+          {
+            "page": "/api-reference/introduction",
+            "label": "Introduction"
+          },
+          {
+            "page": "/api-reference/authentication",
+            "label": "Authentication"
+          }
+        ]
       },
       {
         "tab": "User Guides",
-        "href": "https://www.google.com"
+        "pages": [
+          {
+            "page": "/user-guides/setup",
+            "label": "Setup"
+          },
+          {
+            "page": "/user-guides/troubleshooting",
+            "label": "Troubleshooting"
+          }
+        ]
+      },
+      {
+        "tab": "OpenAPI Docs",
+        "openapi": "api-reference/openapi.json"
       }
     ]
   },
@@ -26,10 +48,6 @@
   },
   "navbar": {
     "links": [
-      {
-        "label": "Introduction",
-        "href": "essentials/images"
-      },
       {
         "label": "Support",
         "href": "mailto:hi@mintlify.com"
