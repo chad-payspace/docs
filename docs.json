@@ -16,7 +16,7 @@
      
         {
         "tab": "API Reference",
-        "openapi": "api-reference/introduction.mdx"
+        "openapi": "api-reference/openapi.json"
         },
        {
         "tab": "User Guides",
@@ -28,7 +28,7 @@
         
         {
           "anchor": "Introduction",
-          "href": "api-reference/introduction",
+          "href": "api-reference/introduction.mdx",
           "icon": "book-open-cover",
           "newtab":false
         },
