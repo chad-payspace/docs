@@ -16,7 +16,7 @@
      
         {
         "tab": "API Reference",
-        "openapi": "api-reference/openapi.json"
+        "openapi": "api-reference/introduction.mdx"
         },
        {
         "tab": "User Guides",
