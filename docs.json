@@ -22,11 +22,7 @@
     ],
     "global": {
       "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "/introduction",
-          "icon": "book-open-cover"
-        }
+        [link to text](/writing-content/text)
       ]
     }
   },
