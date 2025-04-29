@@ -1,5 +1,3 @@
-
-
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "willow",
@@ -12,34 +10,15 @@
   "favicon": "/favicon.svg",
   "navigation": {
     "tabs": [
-
-     
-        {
+      {
         "tab": "API Reference",
         "openapi": "api-reference/openapi.json"
-        },
-       {
+      },
+      {
         "tab": "User Guides",
         "href": "https://www.google.com"
-        }
-    ],
-    "global": {
-      "anchors": [
-        
-        {
-          "anchor": "Introduction",
-          "href": "api-reference/introduction.mdx",
-          "icon": "book-open-cover",
-          "newtab":false
-        },
-        {
-          "anchor": "Authentication",
-          "href": "https://mintlify.com/community",
-          "icon": "lock"
-        }
-      ]
-    }
-   
+      }
+    ]
   },
   "logo": {
     "light": "/logo/payper-logo.svg",
@@ -47,6 +26,10 @@
   },
   "navbar": {
     "links": [
+      {
+        "label": "Introduction",
+        "href": "/api-reference/introduction"
+      },
       {
         "label": "Support",
         "href": "mailto:hi@mintlify.com"
