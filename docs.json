@@ -22,7 +22,7 @@
     ],
     "global": {
       "anchors": [
-        [link to text](/writing-content/text)
+        {[link to text](/writing-content/text)}
       ]
     }
   },
