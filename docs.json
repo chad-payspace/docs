@@ -22,10 +22,9 @@
     ],
     "global": {
       "anchors": [
-        {
-          "anchor": "Documentation",
-          "page": "/introduction",
-          "icon": "book-open-cover"
+         {
+          "group": "Group Name",
+          "pages": ["your-folder/your-page"]
         }
       ]
     }
