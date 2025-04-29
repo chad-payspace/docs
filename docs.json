@@ -26,6 +26,15 @@
     "global": {
       "anchors": [
         {
+      "anchor": "Documentation",
+      "icon": "book-open",
+      "pages": [
+        "quickstart",
+        "development",
+        "navigation"
+      ]
+    },
+        {
           "anchor": "Introduction",
           "href": "https://paybilt.mintlify.app/api-reference/introduction",
           "icon": "book-open-cover",
