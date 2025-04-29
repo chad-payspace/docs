@@ -1,26 +1,43 @@
 ---
-title: "Introduction"
-description: "Example section for showcasing API endpoints"
+title: "Paybilt API Documentation"
+description: "Comprehensive guide to Paybilt's REST API endpoints and integration"
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+<img
+  className="block dark:hidden"
+  src="/images/api-hero-light.png"
+  alt="Paybilt API Hero Light"
+/>
+<img
+  className="hidden dark:block"
+  src="/images/api-hero-dark.png"
+  alt="Paybilt API Hero Dark"
+/>
 
-## Welcome
+## Getting Started
 
-/
+Welcome to the Paybilt API documentation. This guide will help you integrate with our platform and start building powerful payment solutions.
 
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+<CardGroup cols={2}>
+  <Card
+    title="Quick Start"
+    icon="rocket"
+    href="/api-reference/quickstart"
+  >
+    Get up and running with our API in minutes
+  </Card>
+  <Card
+    title="Authentication"
+    icon="lock"
+    href="/api-reference/authentication"
+  >
+    Learn how to authenticate your API requests
+  </Card>
+</CardGroup>
 
-<Card title="Plant Store Endpoints" icon="leaf" href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json">
-  View the OpenAPI specification file
-</Card>
+## API Overview
 
-## Authentication
-
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+Our REST API provides a comprehensive set of endpoints for managing payments, transactions, and account operations. All endpoints are authenticated using Bearer tokens.
 
 ```json
 "security": [
@@ -29,3 +46,37 @@ All API endpoints are authenticated using Bearer tokens and picked up from the s
   }
 ]
 ```
+
+<Note>
+  All API requests must include your API key in the Authorization header as a Bearer token.
+</Note>
+
+## Available Endpoints
+
+<CardGroup cols={3}>
+  <Card
+    title="Payments"
+    icon="credit-card"
+    href="/api-reference/payments"
+  >
+    Process and manage payments
+  </Card>
+  <Card
+    title="Transactions"
+    icon="receipt"
+    href="/api-reference/transactions"
+  >
+    Track and manage transactions
+  </Card>
+  <Card
+    title="Accounts"
+    icon="user"
+    href="/api-reference/accounts"
+  >
+    Manage user accounts and profiles
+  </Card>
+</CardGroup>
+
+## Need Help?
+
+If you need assistance with our API, please contact our support team or check out our [FAQ section](/api-reference/faq).
