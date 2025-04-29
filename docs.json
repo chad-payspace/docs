@@ -20,19 +20,7 @@
         "href": "https://www.google.com"
         }
     ],
-    "global": {
-      "anchors": [
-         {
-      "anchor": "Documentation",
-      "icon": "book-open",
-      "pages": [
-        "quickstart",
-        "development",
-        "navigation"
-      ]
-    }
-      ]
-    }
+   
   },
   "logo": {
     "light": "/logo/payper-logo.svg",
