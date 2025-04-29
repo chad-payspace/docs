@@ -28,7 +28,8 @@
         {
           "anchor": "Introduction",
           "href": "https://paybilt.mintlify.app/api-reference/introduction",
-          "icon": "book-open-cover"
+          "icon": "book-open-cover",
+          "newtab":false
         },
         {
           "anchor": "Authentication",
