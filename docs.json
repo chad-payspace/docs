@@ -18,7 +18,7 @@
             "label": "Introduction"
           },
           {
-            "page": "/api-reference/introduction",
+            "page": "api-reference/introduction",
             "label": "Authentication"
           }
         ]
