@@ -20,6 +20,10 @@
       {
         "tab": "API Reference",
         "openapi": "api-reference/openapi.json"
+      },
+      {
+        "tab": "User Guides",
+        "href": "https://payspace.gitbook.io/payspace-docs/user-guides/one-click-checkout-guide"
       }
     ]
   },
