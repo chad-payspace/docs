@@ -9,16 +9,36 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Introduction",
+        "tab": "API Reference",
         "pages": [
-          "/development",
           {
-            "label": "API Reference",
-            "openapi": "api-reference/openapi.json"
+            "page": "api-reference/introduction",
+            "label": "Introduction"
+          },
+          {
+            "page": "/api-reference/authentication",
+            "label": "Authentication"
           }
         ]
+      },
+      {
+        "tab": "User Guides",
+        "pages": [
+          {
+            "page": "/user-guides/setup",
+            "label": "Setup"
+          },
+          {
+            "page": "/user-guides/troubleshooting",
+            "label": "Troubleshooting"
+          }
+        ]
+      },
+      {
+        "tab": "OpenAPI Docs",
+        "openapi": "api-reference/openapi.json"
       }
     ]
   },
