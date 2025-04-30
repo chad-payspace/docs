@@ -21,6 +21,8 @@ export const AuthCheck = ({ children }) => {
           const state = btoa(Math.random().toString(36).substring(7));
           localStorage.setItem('okta_state', state);
           
+          console.log('Initiating auth with redirect URI:', redirectUri);
+          
           const authUrl = `${oktaDomain}/oauth2/default/v1/authorize?` +
             `client_id=${clientId}&` +
             `response_type=code&` +
@@ -28,8 +30,10 @@ export const AuthCheck = ({ children }) => {
             `redirect_uri=${encodeURIComponent(redirectUri)}&` +
             `state=${state}&` +
             `nonce=${btoa(Math.random().toString(36).substring(7))}&` +
-            `prompt=login`;
+            `prompt=login&` +
+            `sessionToken=${localStorage.getItem('okta_session_token') || ''}`;
           
+          console.log('Auth URL:', authUrl);
           window.location.href = authUrl;
           return;
         }
@@ -37,6 +41,7 @@ export const AuthCheck = ({ children }) => {
         // Verify token is not expired
         const tokenData = JSON.parse(atob(token.split('.')[1]));
         if (tokenData.exp * 1000 < Date.now()) {
+          console.log('Token expired, removing and reloading');
           localStorage.removeItem('okta_token');
           window.location.reload();
           return;
@@ -60,6 +65,14 @@ export const AuthCheck = ({ children }) => {
       const error = params.get('error');
       const error_description = params.get('error_description');
       
+      console.log('Callback params:', {
+        code,
+        state,
+        error,
+        error_description,
+        expectedState: localStorage.getItem('okta_state')
+      });
+      
       if (error) {
         console.error('Auth Error:', error, error_description);
         setError(`Authentication Error: ${error_description || error}`);
@@ -69,7 +82,7 @@ export const AuthCheck = ({ children }) => {
       }
       
       if (code && state === localStorage.getItem('okta_state')) {
-        // Store the code in localStorage (in a real app, you'd exchange this for a token)
+        console.log('Auth successful, storing code');
         localStorage.setItem('okta_code', code);
         localStorage.removeItem('okta_state');
         window.location.href = window.location.origin;
@@ -97,7 +110,7 @@ export const AuthCheck = ({ children }) => {
         <h3 className="text-xl font-semibold mb-4 text-red-600 dark:text-red-400">Authentication Error</h3>
         <p className="text-red-600 dark:text-red-400">{error}</p>
         <p className="mt-4 text-sm text-red-600 dark:text-red-400">
-          Please contact your administrator for access to this application.
+          Please check the browser console for more details and contact your administrator.
         </p>
       </div>
     );
