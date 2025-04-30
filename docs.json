@@ -11,8 +11,8 @@
   "navigation": {
     "groups": [
       {
-        "group": "Placeholder",
-        "pages": ["/placeholder"]
+        "group": "Introduction",
+        "pages": ["/development"]
       }
     ]
   },
