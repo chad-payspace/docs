@@ -12,7 +12,13 @@
     "groups": [
       {
         "group": "Introduction",
-        "pages": ["/development"]
+        "pages": [
+          "/development",
+          {
+            "label": "API Reference",
+            "openapi": "api-reference/openapi.json"
+          }
+        ]
       }
     ]
   },
