@@ -9,7 +9,12 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "groups": []
+    "groups": [
+      {
+        "group": "Placeholder",
+        "pages": ["/placeholder"]
+      }
+    ]
   },
   "logo": {
     "light": "/logo/payper-logo.svg",
