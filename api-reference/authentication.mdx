@@ -3,107 +3,7 @@ title: "Authentication"
 description: "Learn how to authenticate with our API"
 ---
 
-export const AuthCheck = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        // Check if we're in the callback URL
-        if (window.location.pathname.includes('/api-reference/authentication')) {
-          const params = new URLSearchParams(window.location.search);
-          const code = params.get('code');
-          const state = params.get('state');
-          const error = params.get('error');
-          const error_description = params.get('error_description');
-          
-          if (error) {
-            console.error('Auth Error:', error, error_description);
-            setError(`Authentication Error: ${error_description || error}`);
-            localStorage.removeItem('okta_state');
-            return;
-          }
-          
-          if (code && state === localStorage.getItem('okta_state')) {
-            // Store the code and mark as authenticated
-            localStorage.setItem('okta_code', code);
-            localStorage.setItem('okta_token', 'authenticated'); // Simple token for now
-            localStorage.removeItem('okta_state');
-            setIsAuthenticated(true);
-            return;
-          }
-        }
-
-        // Check if we have a token in localStorage
-        const token = localStorage.getItem('okta_token');
-        if (!token) {
-          // Redirect to Okta login
-          const oktaDomain = 'https://trial-3095457.okta.com';
-          const clientId = '0oaqulmsslXJgndNA697';
-          const redirectUri = 'https://paybilt.mintlify.app/api-reference/authentication';
-          const state = btoa(Math.random().toString(36).substring(7));
-          localStorage.setItem('okta_state', state);
-          
-          const authUrl = `${oktaDomain}/oauth2/v1/authorize?` +
-            `client_id=${clientId}&` +
-            `response_type=code&` +
-            `scope=openid%20profile%20email&` +
-            `redirect_uri=${encodeURIComponent(redirectUri)}&` +
-            `state=${state}&` +
-            `nonce=${btoa(Math.random().toString(36).substring(7))}&` +
-            `prompt=login&` +
-            `login_hint=${encodeURIComponent(localStorage.getItem('okta_username') || '')}&` +
-            `max_age=0`;
-
-          window.location.href = authUrl;
-          return;
-        }
-
-        // If we have a token, we're authenticated
-        setIsAuthenticated(true);
-      } catch (err) {
-        console.error('Auth Error:', err);
-        setError(err.message || 'Authentication failed');
-        localStorage.removeItem('okta_token');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <div className="relative w-16 h-16">
-          <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
-          <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="mt-8 p-6 border rounded-lg bg-red-50 dark:bg-red-900/20">
-        <h3 className="text-xl font-semibold mb-4 text-red-600 dark:text-red-400">Authentication Error</h3>
-        <p className="text-red-600 dark:text-red-400">{error}</p>
-        <p className="mt-4 text-sm text-red-600 dark:text-red-400">
-          Please check the browser console for more details and contact your administrator.
-        </p>
-      </div>
-    );
-  }
-
-  if (!isAuthenticated) {
-    return null;
-  }
-
-  return children;
-};
+import  OktaAuth  from '/snippets/OktaAuth.mdx';
 
 ## API Authentication
 
@@ -128,7 +28,7 @@ curl -X GET https://api.paybilt.com/v1/transactions \
 
 ### Protected Token Management
 
-<AuthCheck>
+<OktaAuth>
   <div className="mt-8 p-6 border rounded-lg bg-gray-50 dark:bg-gray-900">
     <h3 className="text-xl font-semibold mb-4">Generate API Token</h3>
     <p className="mb-4">This section is only visible to authenticated users. Here you can generate and manage your API tokens.</p>
@@ -159,7 +59,7 @@ curl -X GET https://api.paybilt.com/v1/transactions \
       </div>
     </div>
   </div>
-</AuthCheck>
+</OktaAuth>
 
 ### Token Security
 
