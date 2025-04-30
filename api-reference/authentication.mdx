@@ -21,8 +21,6 @@ export const AuthCheck = ({ children }) => {
           const state = btoa(Math.random().toString(36).substring(7));
           localStorage.setItem('okta_state', state);
           
-          console.log('Initiating auth with redirect URI:', redirectUri);
-          
           const authUrl = `${oktaDomain}/oauth2/default/v1/authorize?` +
             `client_id=${clientId}&` +
             `response_type=code&` +
@@ -31,9 +29,9 @@ export const AuthCheck = ({ children }) => {
             `state=${state}&` +
             `nonce=${btoa(Math.random().toString(36).substring(7))}&` +
             `prompt=login&` +
-            `sessionToken=${localStorage.getItem('okta_session_token') || ''}`;
-          
-          console.log('Auth URL:', authUrl);
+            `login_hint=${encodeURIComponent(localStorage.getItem('okta_username') || '')}&` +
+            `max_age=0`;
+
           window.location.href = authUrl;
           return;
         }
