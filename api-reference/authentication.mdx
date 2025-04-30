@@ -17,7 +17,7 @@ export const AuthCheck = ({ children }) => {
           // Redirect to Okta login
           const oktaDomain = 'https://trial-3095457.okta.com';
           const clientId = '0oaqulmsslXJgndNA697';
-          const redirectUri = window.location.href;
+          const redirectUri = 'https://paybilt.mintlify.app/api-reference/authentication';
           const state = btoa(Math.random().toString(36).substring(7));
           localStorage.setItem('okta_state', state);
           
