@@ -11,14 +11,14 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "API Reference",
+        "tab": "Introduction",
         "pages": [
-          "api-reference/development",
-          "api-reference/introduction"
+          "api-reference/introduction",
+          "api-reference/authentication"
         ]
       },
       {
-        "tab": "OpenAPI Docs",
+        "tab": "API Reference",
         "openapi": "api-reference/openapi.json"
       }
     ]
