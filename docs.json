@@ -13,8 +13,8 @@
       {
         "tab": "API Reference",
         "pages": [
-          "api-reference/introduction.mdx",
-          "api-reference/introduction.mdx"
+          "api-reference/development.mdx",
+          "api-reference/development.mdx"
         ]
       },
       {
