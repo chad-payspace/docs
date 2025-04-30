@@ -9,19 +9,17 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "groups": [
+    "tabs": [
       {
-        "group": "Getting Started",
+        "tab": "API Reference",
         "pages": [
-          {
-            "page": "introduction.mdx",
-            "label": "Introduction"
-          },
-          {
-            "page": "api-reference/openapi.json",
-            "label": "OpenAPI Spec"
-          }
+          "api-reference/introduction.mdx",
+          "api-reference/introduction.mdx"
         ]
+      },
+      {
+        "tab": "OpenAPI Docs",
+        "openapi": "api-reference/openapi.json"
       }
     ]
   },
