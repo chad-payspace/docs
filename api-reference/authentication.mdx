@@ -11,12 +11,31 @@ export const AuthCheck = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        // Clear any existing Okta data
-        localStorage.removeItem('okta_token');
-        localStorage.removeItem('okta_state');
-        localStorage.removeItem('okta_code');
-        localStorage.removeItem('okta_session_token');
-        
+        // Check if we're in the callback URL
+        if (window.location.pathname.includes('/api-reference/authentication')) {
+          const params = new URLSearchParams(window.location.search);
+          const code = params.get('code');
+          const state = params.get('state');
+          const error = params.get('error');
+          const error_description = params.get('error_description');
+          
+          if (error) {
+            console.error('Auth Error:', error, error_description);
+            setError(`Authentication Error: ${error_description || error}`);
+            localStorage.removeItem('okta_state');
+            return;
+          }
+          
+          if (code && state === localStorage.getItem('okta_state')) {
+            // Store the code and mark as authenticated
+            localStorage.setItem('okta_code', code);
+            localStorage.setItem('okta_token', 'authenticated'); // Simple token for now
+            localStorage.removeItem('okta_state');
+            setIsAuthenticated(true);
+            return;
+          }
+        }
+
         // Check if we have a token in localStorage
         const token = localStorage.getItem('okta_token');
         if (!token) {
@@ -27,7 +46,7 @@ export const AuthCheck = ({ children }) => {
           const state = btoa(Math.random().toString(36).substring(7));
           localStorage.setItem('okta_state', state);
           
-          const authUrl = `${oktaDomain}/oauth2/default/v1/authorize?` +
+          const authUrl = `${oktaDomain}/oauth2/v1/authorize?` +
             `client_id=${clientId}&` +
             `response_type=code&` +
             `scope=openid%20profile%20email&` +
@@ -42,15 +61,7 @@ export const AuthCheck = ({ children }) => {
           return;
         }
 
-        // Verify token is not expired
-        const tokenData = JSON.parse(atob(token.split('.')[1]));
-        if (tokenData.exp * 1000 < Date.now()) {
-          console.log('Token expired, removing and reloading');
-          localStorage.removeItem('okta_token');
-          window.location.reload();
-          return;
-        }
-
+        // If we have a token, we're authenticated
         setIsAuthenticated(true);
       } catch (err) {
         console.error('Auth Error:', err);
@@ -60,39 +71,6 @@ export const AuthCheck = ({ children }) => {
         setIsLoading(false);
       }
     };
-
-    // Check if we're in the callback URL
-    if (window.location.pathname.includes('/visitor-auth/response')) {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code');
-      const state = params.get('state');
-      const error = params.get('error');
-      const error_description = params.get('error_description');
-      
-      console.log('Callback params:', {
-        code,
-        state,
-        error,
-        error_description,
-        expectedState: localStorage.getItem('okta_state')
-      });
-      
-      if (error) {
-        console.error('Auth Error:', error, error_description);
-        setError(`Authentication Error: ${error_description || error}`);
-        localStorage.removeItem('okta_state');
-        window.location.href = window.location.origin;
-        return;
-      }
-      
-      if (code && state === localStorage.getItem('okta_state')) {
-        console.log('Auth successful, storing code');
-        localStorage.setItem('okta_code', code);
-        localStorage.removeItem('okta_state');
-        window.location.href = window.location.origin;
-        return;
-      }
-    }
 
     checkAuth();
   }, []);
