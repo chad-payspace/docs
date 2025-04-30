@@ -8,9 +8,6 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
-  "navigation": {
-    "sidebar": "sidebar.ts"
-  },
   "logo": {
     "light": "/logo/payper-logo.svg",
     "dark": "/logo/payper-logo.svg"
