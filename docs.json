@@ -18,21 +18,8 @@
             "label": "Introduction"
           },
           {
-            "page": "/api-reference/authentication",
+            "page": "/api-reference/introduction",
             "label": "Authentication"
-          }
-        ]
-      },
-      {
-        "tab": "User Guides",
-        "pages": [
-          {
-            "page": "/user-guides/setup",
-            "label": "Setup"
-          },
-          {
-            "page": "/user-guides/troubleshooting",
-            "label": "Troubleshooting"
           }
         ]
       },
