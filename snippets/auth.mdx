@@ -1,18 +1,16 @@
----
-title: "Okta Authentication"
-description: "Reusable Okta authentication component"
----
-
-
-
 export const OktaAuth = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
   
-  useEffect(() => {
+  React.useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Clear any existing state
+        localStorage.removeItem('okta_state');
+        localStorage.removeItem('okta_token');
+        localStorage.removeItem('okta_code');
+
         if (window.location.pathname.includes('/api-reference/authentication')) {
           const params = new URLSearchParams(window.location.search);
           const code = params.get('code');
@@ -23,14 +21,12 @@ export const OktaAuth = ({ children }) => {
           if (error) {
             console.error('Auth Error:', error, error_description);
             setError(`Authentication Error: ${error_description || error}`);
-            localStorage.removeItem('okta_state');
             return;
           }
           
           if (code && state === localStorage.getItem('okta_state')) {
             localStorage.setItem('okta_code', code);
             localStorage.setItem('okta_token', 'authenticated');
-            localStorage.removeItem('okta_state');
             setIsAuthenticated(true);
             return;
           }
@@ -55,6 +51,7 @@ export const OktaAuth = ({ children }) => {
             `login_hint=${encodeURIComponent(localStorage.getItem('okta_username') || '')}&` +
             `max_age=0`;
 
+          console.log('Redirecting to:', authUrl);
           window.location.href = authUrl;
           return;
         }
@@ -100,4 +97,4 @@ export const OktaAuth = ({ children }) => {
   }
 
   return children;
-}; 
+};
