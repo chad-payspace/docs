@@ -11,6 +11,12 @@ export const AuthCheck = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
+        // Clear any existing Okta data
+        localStorage.removeItem('okta_token');
+        localStorage.removeItem('okta_state');
+        localStorage.removeItem('okta_code');
+        localStorage.removeItem('okta_session_token');
+        
         // Check if we have a token in localStorage
         const token = localStorage.getItem('okta_token');
         if (!token) {
