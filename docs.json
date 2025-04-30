@@ -19,7 +19,7 @@
       },
       {
         "tab": "API Reference",
-        "openapi": "api-reference/openapi.json"
+        "pages": ["api-reference/api-spec"]
       },
       {
         "tab": "User Guides",
