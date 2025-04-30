@@ -1,50 +1,51 @@
+---
+title: Token Generator
+---
+
 export const TokenGenerator = () => {
-  const [token, setToken] = useState('');
-  const [copied, setCopied] = useState(false);
-
-  const generateToken = () => {
-    const newToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkRlbW8gVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.${Math.random().toString(36).substring(2)}`;
-    setToken(newToken);
-    setCopied(false);
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(token);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   return (
     <div className="p-4 border dark:border-zinc-950/80 rounded-xl not-prose">
       <div className="space-y-4">
         <div className="flex space-x-2">
           <button
-            onClick={generateToken}
+            onClick={() => {
+              const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkRlbW8gVXNlciIsImlhdCI6MTUxNjIzOTAyMn0.${Math.random().toString(36).substring(2)}`;
+              document.getElementById('token-input').value = token;
+              document.getElementById('token-display').style.display = 'block';
+              document.getElementById('copy-button').style.display = 'inline-block';
+              document.getElementById('token-text').textContent = token;
+            }}
             className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
           >
             Generate Demo Token
           </button>
-          {token && (
-            <button
-              onClick={copyToClipboard}
-              className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            >
-              {copied ? 'Copied!' : 'Copy Token'}
-            </button>
-          )}
+          <button
+            id="copy-button"
+            style={{ display: 'none' }}
+            onClick={() => {
+              const token = document.getElementById('token-input').value;
+              navigator.clipboard.writeText(token);
+              const btn = document.getElementById('copy-button');
+              btn.textContent = 'Copied!';
+              setTimeout(() => {
+                btn.textContent = 'Copy Token';
+              }, 2000);
+            }}
+            className="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+          >
+            Copy Token
+          </button>
         </div>
-        {token && (
-          <div className="space-y-2">
-            <input
-              value={token}
-              readOnly
-              className="w-full px-3 py-2 font-mono text-sm border border-gray-300 rounded-lg bg-white"
-            />
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Use this token in your Authorization header: <code>Authorization: Bearer {token}</code>
-            </p>
-          </div>
-        )}
+        <div id="token-display" style={{ display: 'none' }} className="space-y-2">
+          <input
+            id="token-input"
+            readOnly
+            className="w-full px-3 py-2 font-mono text-sm border border-gray-300 rounded-lg bg-white"
+          />
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Use this token in your Authorization header: <code>Authorization: Bearer <span id="token-text"></span></code>
+          </p>
+        </div>
       </div>
     </div>
   );
