@@ -14,7 +14,7 @@
         "tab": "Introduction",
         "pages": [
           "api-reference/introduction",
-          "api-reference/authentication"
+          "api-reference/authentication",
           "api-reference/oneclick",
           "api-reference/etransfer"
         ]
