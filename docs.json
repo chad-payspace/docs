@@ -26,7 +26,9 @@
       {
         "tab": "User Guides",
         "pages": [
-          "user-guides/redirect"
+          "user-guides/redirect",
+          "user-guides/etransfer",
+          "user-guides/digital-cheque"
         ]
       }
     ]

@@ -1,0 +1,598 @@
+---
+title: 'Digital Cheque User Guide'
+description: 'Complete guide to implementing Digital Cheque (EFT) payment functionality'
+icon: 'file-invoice-dollar'
+---
+
+## Overview
+
+Digital Cheque (EFT) enables customers to pay directly from their bank accounts with lower fees and reduced chargebacks compared to credit cards.
+
+**Key Benefits:** Lower processing fees • Direct bank transfer • Reduced chargebacks • No credit card required
+
+## Quick Start
+
+Digital Cheque processing is simple: customer provides bank details → payment authorization → funds transfer → confirmation.
+
+## API Integration
+
+**Endpoint:** `POST https://api.payper.ca/v1/digital-cheque/transaction`  
+**Authentication:** Bearer token in Authorization header
+
+### Required Parameters
+- `amount` - Transaction amount
+- `first_name`, `last_name` - Customer's name
+- `email` - Customer's email  
+- `phone` - Customer's phone number
+
+### Optional Parameters
+- `address`, `city`, `state`, `country`, `postal_code` - Customer address
+
+## Live API Tester Wizard
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsencrypt/3.3.2/jsencrypt.min.js"></script>
+
+<div className="border rounded-lg p-4 my-6">
+
+<div className="mb-4">
+  <div className="flex items-center space-x-2">
+    <div id="step1-indicator" className="flex items-center space-x-2">
+      <div className="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium">1</div>
+      <span className="text-sm font-medium">Generate RSA Key</span>
+    </div>
+    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+    <div id="step2-indicator" className="flex items-center space-x-2">
+      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400 flex items-center justify-center text-sm font-medium">2</div>
+      <span className="text-sm text-gray-600 dark:text-gray-400">Encrypt Account</span>
+    </div>
+    <div className="flex-1 h-px bg-gray-200 dark:bg-gray-700"></div>
+    <div id="step3-indicator" className="flex items-center space-x-2">
+      <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400 flex items-center justify-center text-sm font-medium">3</div>
+      <span className="text-sm text-gray-600 dark:text-gray-400">Test API</span>
+    </div>
+  </div>
+</div>
+
+<div id="step1" className="space-y-4">
+  <h3 className="text-lg font-semibold">Step 1: Generate RSA Key</h3>
+  <p className="text-sm text-gray-600 dark:text-gray-400">First, we need to generate an RSA key pair for encrypting account numbers.</p>
+  
+  <div>
+    <label className="block text-sm font-medium mb-1">API Bearer Token</label>
+    <input 
+      id="bearerToken" 
+      type="password" 
+      placeholder="Enter your API bearer token"
+      className="w-full px-3 py-2 border rounded-md text-sm"
+    />
+  </div>
+
+  <button 
+    onClick={() => {
+      const token = document.getElementById('bearerToken').value;
+      const responseDiv = document.getElementById('step1Response');
+      responseDiv.style.display = 'block';
+      responseDiv.textContent = 'Generating RSA key...';
+      responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm';
+      
+      if (!token) {
+        responseDiv.textContent = '❌ Please enter your bearer token';
+        responseDiv.className += ' bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+        return;
+      }
+      
+      fetch('https://sandbox.pp.paybilt.com/api/v2/GenerateRsaKey', {
+        method: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(response => response.json())
+      .then(result => {
+        if (result.status && result.public_key) {
+          responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm whitespace-pre-wrap bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800';
+          responseDiv.textContent = '✅ RSA Key Generated Successfully\n\nKey ID: ' + result.key_id;
+          
+          // Store data for next step
+          window.rsaData = {
+            token: token,
+            keyId: result.key_id,
+            publicKey: result.public_key
+          };
+          
+          // Show next step button
+          document.getElementById('step1Next').style.display = 'block';
+        } else {
+          responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm whitespace-pre-wrap bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+          responseDiv.textContent = '❌ Failed to generate RSA key\n\n' + JSON.stringify(result, null, 2);
+        }
+      })
+      .catch(error => {
+        responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm whitespace-pre-wrap bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+        responseDiv.textContent = '❌ ERROR\n\n' + error.message;
+      });
+    }}
+    className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+  >
+    Generate RSA Key
+  </button>
+
+  <div id="step1Response" style={{ display: 'none' }}></div>
+  
+  <button 
+    id="step1Next" 
+    style={{ display: 'none' }}
+    onClick={() => {
+      // Hide step 1, show step 2
+      document.getElementById('step1').style.display = 'none';
+      document.getElementById('step2').style.display = 'block';
+      
+      // Update indicators
+      document.getElementById('step1-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-medium">✓</div><span class="text-sm text-green-600 dark:text-green-400">Generate RSA Key</span>';
+      document.getElementById('step2-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium">2</div><span class="text-sm font-medium">Encrypt Account</span>';
+    }}
+    className="w-full bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+  >
+    Next: Encrypt Account Number →
+  </button>
+</div>
+
+<div id="step2" className="space-y-4" style={{ display: 'none' }}>
+  <h3 className="text-lg font-semibold">Step 2: Encrypt Account Number</h3>
+  <p className="text-sm text-gray-600 dark:text-gray-400">Enter your bank account number to encrypt it using the RSA public key.</p>
+  
+  <div>
+    <label className="block text-sm font-medium mb-1">Bank Account Number</label>
+    <input 
+      id="accountNumber" 
+      type="text" 
+      placeholder="Enter bank account number"
+      className="w-full px-3 py-2 border rounded-md text-sm"
+    />
+  </div>
+
+  <button 
+    onClick={() => {
+      const accountNumber = document.getElementById('accountNumber').value;
+      const responseDiv = document.getElementById('step2Response');
+      
+      if (!accountNumber) {
+        responseDiv.style.display = 'block';
+        responseDiv.textContent = '❌ Please enter an account number';
+        responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+        return;
+      }
+      
+      if (!window.rsaData || !window.rsaData.publicKey) {
+        responseDiv.style.display = 'block';
+        responseDiv.textContent = '❌ No RSA key available. Please go back to step 1.';
+        responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+        return;
+      }
+      
+      try {
+        const encrypt = new JSEncrypt();
+        encrypt.setPublicKey(window.rsaData.publicKey);
+        const encrypted = encrypt.encrypt(accountNumber);
+        
+        if (encrypted) {
+          window.rsaData.encryptedAccount = encrypted;
+          
+          responseDiv.style.display = 'block';
+          responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm whitespace-pre-wrap bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800';
+          responseDiv.textContent = '✅ Account Number Encrypted Successfully\n\nEncrypted: ' + encrypted.substring(0, 50) + '...';
+          
+          document.getElementById('step2Next').style.display = 'block';
+        } else {
+          responseDiv.style.display = 'block';
+          responseDiv.textContent = '❌ Failed to encrypt account number';
+          responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+        }
+      } catch (error) {
+        responseDiv.style.display = 'block';
+        responseDiv.textContent = '❌ Encryption error: ' + error.message;
+        responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+      }
+    }}
+    className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+  >
+    Encrypt Account Number
+  </button>
+
+  <div id="step2Response" style={{ display: 'none' }}></div>
+  
+  <div className="flex space-x-2">
+    <button 
+      onClick={() => {
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step1').style.display = 'block';
+        document.getElementById('step1-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium">1</div><span class="text-sm font-medium">Generate RSA Key</span>';
+        document.getElementById('step2-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400 flex items-center justify-center text-sm font-medium">2</div><span class="text-sm text-gray-600 dark:text-gray-400">Encrypt Account</span>';
+      }}
+      className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+    >
+      ← Back
+    </button>
+    
+    <button 
+      id="step2Next" 
+      style={{ display: 'none' }}
+      onClick={() => {
+        document.getElementById('step2').style.display = 'none';
+        document.getElementById('step3').style.display = 'block';
+        
+        // Pre-populate step 3 with encrypted data
+        document.getElementById('apiKey').value = window.rsaData.token;
+        document.getElementById('encryptedAccount').value = window.rsaData.encryptedAccount;
+        document.getElementById('rsaKeyId').value = window.rsaData.keyId;
+        
+        // Update indicators
+        document.getElementById('step2-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-medium">✓</div><span class="text-sm text-green-600 dark:text-green-400">Encrypt Account</span>';
+        document.getElementById('step3-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium">3</div><span class="text-sm font-medium">Test API</span>';
+      }}
+      className="flex-1 bg-gray-900 hover:bg-gray-800 dark:bg-gray-100 dark:hover:bg-gray-200 dark:text-gray-900 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+    >
+      Next: Test Digital Cheque API →
+    </button>
+  </div>
+</div>
+
+<div id="step3" className="space-y-4" style={{ display: 'none' }}>
+  <h3 className="text-lg font-semibold">Step 3: Test Digital Cheque API</h3>
+  <p className="text-sm text-gray-600 dark:text-gray-400">Now test the complete Digital Cheque payment with your encrypted account number.</p>
+
+  <div>
+    <label className="block text-sm font-medium mb-1">API Key (Bearer Token)</label>
+    <input 
+      id="apiKey" 
+      type="password" 
+      placeholder="Auto-filled from step 1"
+      className="w-full px-3 py-2 border rounded-md text-sm bg-gray-50 dark:bg-gray-800"
+      readOnly
+    />
+  </div>
+
+  <div className="grid grid-cols-2 gap-3">
+    <div>
+      <label className="block text-sm font-medium mb-1">First Name</label>
+      <input 
+        id="firstName" 
+        type="text" 
+        defaultValue="Chad"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">Last Name</label>
+      <input 
+        id="lastName" 
+        type="text" 
+        defaultValue=""
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+  </div>
+
+  <div className="grid grid-cols-2 gap-3">
+    <div>
+      <label className="block text-sm font-medium mb-1">Email</label>
+      <input 
+        id="email" 
+        type="email" 
+        defaultValue=""
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">Phone</label>
+      <input 
+        id="phone" 
+        type="tel" 
+        defaultValue=""
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+  </div>
+
+  <div className="grid grid-cols-3 gap-3">
+    <div>
+      <label className="block text-sm font-medium mb-1">City</label>
+      <input 
+        id="city" 
+        type="text" 
+        defaultValue="Hamilton"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">State</label>
+      <input 
+        id="state" 
+        type="text" 
+        defaultValue="ON"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">Zip Code</label>
+      <input 
+        id="zipCode" 
+        type="text" 
+        defaultValue="L2K 8Z1"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium mb-1">Address</label>
+    <input 
+      id="address" 
+      type="text" 
+      defaultValue="king street east"
+      className="w-full px-3 py-2 border rounded-md text-sm"
+    />
+  </div>
+
+  <div className="grid grid-cols-2 gap-3">
+    <div>
+      <label className="block text-sm font-medium mb-1">Item Name</label>
+      <input 
+        id="itemName" 
+        type="text" 
+        defaultValue="LC1355"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">Amount ($)</label>
+      <input 
+        id="amount" 
+        type="number" 
+        defaultValue="150.00"
+        step="0.01"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+  </div>
+
+  <div>
+    <label className="block text-sm font-medium mb-1">Encrypted Account Number</label>
+    <textarea 
+      id="encryptedAccount" 
+      placeholder="Auto-filled from step 2"
+      className="w-full px-3 py-2 border rounded-md text-sm bg-gray-50 dark:bg-gray-800"
+      rows="3"
+      readOnly
+    />
+  </div>
+
+  <div className="grid grid-cols-3 gap-3">
+    <div>
+      <label className="block text-sm font-medium mb-1">Transit Number</label>
+      <input 
+        id="transitNumber" 
+        type="text" 
+        defaultValue="00408"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">Institute Number</label>
+      <input 
+        id="instituteNumber" 
+        type="text" 
+        defaultValue="030"
+        className="w-full px-3 py-2 border rounded-md text-sm"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium mb-1">RSA Key ID</label>
+      <input 
+        id="rsaKeyId" 
+        type="text" 
+        placeholder="Auto-filled from step 1"
+        className="w-full px-3 py-2 border rounded-md text-sm bg-gray-50 dark:bg-gray-800"
+        readOnly
+      />
+    </div>
+  </div>
+
+  <div className="flex space-x-2">
+    <button 
+      onClick={() => {
+        document.getElementById('step3').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+        document.getElementById('step2-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center text-sm font-medium">2</div><span class="text-sm font-medium">Encrypt Account</span>';
+        document.getElementById('step3-indicator').innerHTML = '<div class="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 text-gray-600 dark:text-gray-400 flex items-center justify-center text-sm font-medium">3</div><span class="text-sm text-gray-600 dark:text-gray-400">Test API</span>';
+      }}
+      className="bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+    >
+      ← Back
+    </button>
+
+    <button 
+      onClick={() => {
+        const apiKey = document.getElementById('apiKey').value;
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const email = document.getElementById('email').value;
+        const phone = document.getElementById('phone').value;
+        const city = document.getElementById('city').value;
+        const state = document.getElementById('state').value;
+        const zipCode = document.getElementById('zipCode').value;
+        const address = document.getElementById('address').value;
+        const itemName = document.getElementById('itemName').value;
+        const amount = parseFloat(document.getElementById('amount').value);
+        const encryptedAccount = document.getElementById('encryptedAccount').value;
+        const transitNumber = document.getElementById('transitNumber').value;
+        const instituteNumber = document.getElementById('instituteNumber').value;
+        const rsaKeyId = parseInt(document.getElementById('rsaKeyId').value);
+        
+        const responseDiv = document.getElementById('apiResponse');
+        responseDiv.style.display = 'block';
+        responseDiv.textContent = 'Making API call...';
+        responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm';
+        
+        if (!apiKey || !encryptedAccount || !rsaKeyId) {
+          responseDiv.textContent = '❌ Missing required data. Please complete previous steps.';
+          responseDiv.className += ' bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+          return;
+        }
+        
+        const payload = {
+          first_name: firstName,
+          last_name: lastName,
+          email: email,
+          phone: phone,
+          country: "CA",
+          city: city,
+          zip_code: zipCode,
+          state: state,
+          address: address,
+          ntf_url: "http://15.222.44.139/ntf_url/postbacks/",
+          ip_address: "192.168.45.32",
+          udfs: [
+            "1234",
+            "udf2"
+          ],
+          items: [
+            {
+              quantity: 1,
+              name: itemName,
+              description: "item1",
+              unit_price: amount
+            }
+          ],
+          shipping_cost: 0,
+          encrypted_account_number: encryptedAccount,
+          transit_number: transitNumber,
+          institute_number: instituteNumber,
+          account_name: "saving account",
+          rsa_key_id: rsaKeyId
+        };
+        
+        fetch('https://sandbox.pp.paybilt.com/api/v2/payment/DigitalCheque/', {
+          method: 'POST',
+          headers: {
+            'Authorization': 'Bearer ' + apiKey,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(payload)
+        })
+        .then(response => response.json())
+        .then(result => {
+          responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm whitespace-pre-wrap bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400 border-green-200 dark:border-green-800';
+          responseDiv.textContent = '✅ SUCCESS\n\n' + JSON.stringify(result, null, 2);
+        })
+        .catch(error => {
+          responseDiv.className = 'mt-3 p-3 rounded-md border font-mono text-sm whitespace-pre-wrap bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800';
+          responseDiv.textContent = '❌ ERROR\n\n' + error.message;
+        });
+      }}
+      className="flex-1 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+    >
+      🚀 Test Digital Cheque Payment
+    </button>
+  </div>
+
+  <div id="apiResponse" style={{ display: 'none' }}></div>
+</div>
+
+</div>
+
+## Response Format
+
+**Success Response:**
+```json
+{
+  "txid": "dc_1234567890",
+  "status": "APPROVED",
+  "message": "Transaction approved", 
+  "amount": 150.00
+}
+```
+
+**Response Status:**
+- `APPROVED` - Transaction successful
+- `DECLINED` - Transaction declined  
+- `PENDING` - Processing in progress
+
+## Error Handling
+
+**Common Errors:**
+- `400` - Invalid parameters
+- `401` - Invalid API key
+- `422` - Validation failed
+
+```json
+{
+  "error": {
+    "code": "validation_failed",
+    "message": "Invalid email format"
+  }
+}
+```
+
+## Security Best Practices
+
+<Warning>
+  Never store sensitive banking information. Always use HTTPS and secure API key storage.
+</Warning>
+
+**Key Requirements:**
+- Store API keys securely (server-side only)
+- Use HTTPS for all requests
+- Validate input data
+- Follow PCI compliance guidelines
+- Obtain customer consent for EFT processing
+
+## Testing
+
+**Sandbox Endpoint:** `https://sandbox-api.payper.ca/v1/digital-cheque/transaction`
+
+**Test Amounts for Predictable Results:**
+
+| Amount | Expected Result |
+|--------|----------------|
+| `$1.00` | APPROVED |
+| `$2.00` | DECLINED |
+| `$3.00` | PENDING |
+
+## Code Example
+
+```javascript
+const response = await fetch('https://api.payper.ca/v1/digital-cheque/transaction', {
+  method: 'POST',
+  headers: {
+    'Authorization': 'Bearer YOUR_API_TOKEN',
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify({
+    amount: 150.00,
+    first_name: 'John',
+    last_name: 'Doe',
+    email: 'john@example.com',
+    phone: '+14155551234'
+  })
+});
+
+const result = await response.json();
+console.log(result.status); // APPROVED, DECLINED, or PENDING
+```
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Get API Keys" icon="key" href="/api-reference/authentication">
+    Get your sandbox and production credentials
+  </Card>
+  <Card title="Dashboard" icon="chart-line" href="https://sandbox.dashboard.payper.ca/login/">
+    Monitor and manage your transactions
+  </Card>
+</CardGroup>
+
+## Support
+
+**Technical Support:** [technical@payper.ca](mailto:technical@payper.ca)  
+**API Reference:** [Complete documentation](/api-reference/introduction) 

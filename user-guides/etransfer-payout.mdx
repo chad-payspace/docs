@@ -1,0 +1,351 @@
+---
+title: 'e-Transfer Payout User Guide'
+description: 'Complete guide to implementing e-Transfer payout functionality'
+icon: 'money-bill-wave'
+---
+
+## Overview
+
+e-Transfer Payout allows you to send payments to recipients via Interac e-Transfer. This guide covers the complete integration process, from setting up payouts to handling responses and managing recipient experiences.
+
+<Note>
+  e-Transfer payouts are processed asynchronously. Recipients will receive an email with instructions to accept the transfer.
+</Note>
+
+## How e-Transfer Payout Works
+
+1. **Initiate payout request** - Your system sends payout details to our API
+2. **Payout processing** - We validate and process the payout request
+3. **Recipient notification** - Recipient receives email with transfer details
+4. **Recipient accepts transfer** - Recipient logs into their bank to accept funds
+5. **Payout confirmation** - You receive webhook notification when funds are accepted
+
+## API Integration
+
+### Base URL
+```
+POST https://api.payper.ca/v1/etransfer/payout
+```
+
+### Authentication
+All requests require a Bearer token in the Authorization header:
+
+```bash
+Authorization: Bearer YOUR_API_TOKEN
+```
+
+### Request Parameters
+
+<CardGroup cols={2}>
+  <Card title="Required Parameters" icon="asterisk">
+    - `amount` - Payout amount in dollars
+    - `recipient_email` - Recipient's email address
+    - `recipient_name` - Recipient's full name
+    - `reference` - Your internal reference ID
+  </Card>
+  <Card title="Optional Parameters" icon="plus">
+    - `message` - Custom message for recipient
+    - `security_question` - Custom security question
+    - `security_answer` - Answer to security question
+    - `callback_url` - Webhook URL for notifications
+  </Card>
+</CardGroup>
+
+### Sample Request
+
+```bash
+curl -X POST https://api.payper.ca/v1/etransfer/payout \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 250.00,
+    "recipient_email": "recipient@example.com",
+    "recipient_name": "Jane Smith",
+    "reference": "PAYOUT-67890",
+    "message": "Payment for services rendered",
+    "security_question": "What is your favorite color?",
+    "security_answer": "Blue",
+    "callback_url": "https://yoursite.com/webhooks/etransfer-payout"
+  }'
+```
+
+### Response Format
+
+#### Successful Response (200 OK)
+```json
+{
+  "status": "pending",
+  "transaction_id": "etp_9876543210",
+  "amount": 250.00,
+  "recipient_email": "recipient@example.com",
+  "reference": "PAYOUT-67890",
+  "message": "Recipient will receive email notification",
+  "expires_at": "2024-01-20T15:30:00Z"
+}
+```
+
+#### Error Response (400/500)
+```json
+{
+  "error": {
+    "code": "insufficient_balance",
+    "message": "Insufficient account balance for this payout"
+  }
+}
+```
+
+## Parameters Reference
+
+### Core Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `transaction_id` | STRING | - | Unique transaction identifier (auto-generated) |
+| `amount` | DECIMAL | ✓ | Payout amount (minimum $0.01) |
+| `recipient_email` | STRING | ✓ | Valid email address for recipient |
+| `recipient_name` | STRING | ✓ | Full name of the recipient |
+| `reference` | STRING | ✓ | Your unique reference identifier |
+| `message` | STRING | - | Custom message for recipient (max 255 chars) |
+| `status` | STRING | - | Current payout status |
+
+### Security Parameters
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `security_question` | STRING | Custom security question (recommended) |
+| `security_answer` | STRING | Answer to security question |
+| `auto_deposit` | BOOLEAN | Enable auto-deposit if recipient bank supports it |
+
+### Body Parameters
+
+The following parameters are included in the response body:
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `amount` | DECIMAL | The payout amount processed |
+| `first_name` | STRING | Recipient's first name |
+| `last_name` | STRING | Recipient's last name |
+| `email` | STRING | Recipient's email address |
+| `phone` | STRING | Recipient's phone number (optional) |
+| `address` | STRING | Recipient's address (optional) |
+| `city` | STRING | Recipient's city |
+| `state` | STRING | Recipient's state/province |
+| `country` | STRING | Recipient's country (default: CA) |
+| `postal_code` | STRING | Recipient's postal code |
+
+## Payout Status Management
+
+### Status Types
+
+<CardGroup cols={2}>
+  <Card title="Active Statuses" icon="clock">
+    - `PENDING` - Payout initiated, waiting for recipient
+    - `PROCESSING` - Payout being processed
+    - `SENT` - Email sent to recipient
+  </Card>
+  <Card title="Final Statuses" icon="check-circle">
+    - `COMPLETED` - Recipient accepted the transfer
+    - `CANCELLED` - Payout was cancelled
+    - `EXPIRED` - Recipient didn't accept within time limit
+    - `FAILED` - Payout failed due to error
+  </Card>
+</CardGroup>
+
+### Monitoring Payouts
+
+Use our API to check payout status:
+
+```bash
+GET https://api.payper.ca/v1/etransfer/payout/{transaction_id}
+```
+
+## Error Handling
+
+### Common Error Codes
+
+| Error Code | Description | Resolution |
+|------------|-------------|------------|
+| `insufficient_balance` | Account balance too low | Add funds to your account |
+| `invalid_recipient_email` | Email format is invalid | Validate email before sending |
+| `duplicate_reference` | Reference already used | Use unique reference IDs |
+| `payout_limit_exceeded` | Daily/monthly limit reached | Contact support to increase limits |
+| `recipient_blocked` | Recipient email is blocked | Contact recipient to resolve |
+
+### Best Practices for Error Handling
+
+<CardGroup cols={2}>
+  <Card title="Validation" icon="check">
+    - Validate all recipient data before sending
+    - Check account balance before initiating payouts
+    - Use unique reference IDs for tracking
+  </Card>
+  <Card title="Retry Logic" icon="rotate">
+    - Implement exponential backoff for retries
+    - Don't retry on permanent failures
+    - Log all error responses for debugging
+  </Card>
+</CardGroup>
+
+## Security & Compliance
+
+### Security Questions
+
+<Tip>
+  While security questions are optional, they add an extra layer of security to your payouts and are recommended for larger amounts.
+</Tip>
+
+Best practices for security questions:
+- Use questions only the recipient would know
+- Avoid easily guessable answers
+- Consider using multiple security questions for high-value payouts
+
+### Auto-Deposit
+
+When `auto_deposit` is enabled:
+- Recipients with compatible banks can receive funds automatically
+- No security question needed for auto-deposit
+- Faster processing times
+- Enhanced recipient experience
+
+## Webhook Integration
+
+### Webhook Events
+
+Configure your webhook endpoint to receive payout status updates:
+
+```json
+{
+  "event": "etransfer.payout.completed",
+  "transaction_id": "etp_9876543210",
+  "status": "completed",
+  "amount": 250.00,
+  "recipient_email": "recipient@example.com",
+  "reference": "PAYOUT-67890",
+  "completed_at": "2024-01-20T16:45:00Z"
+}
+```
+
+### Available Webhook Events
+
+- `etransfer.payout.created` - Payout request created
+- `etransfer.payout.sent` - Email sent to recipient
+- `etransfer.payout.completed` - Recipient accepted the transfer
+- `etransfer.payout.expired` - Transfer expired without acceptance
+- `etransfer.payout.cancelled` - Payout was cancelled
+- `etransfer.payout.failed` - Payout failed
+
+## Testing Your Integration
+
+### Sandbox Environment
+
+Use our sandbox environment for testing:
+```
+POST https://sandbox-api.payper.ca/v1/etransfer/payout
+```
+
+### Test Scenarios
+
+<Accordion title="Successful Payout Flow">
+  1. Create payout with valid recipient details
+  2. Recipient receives email notification
+  3. Recipient accepts transfer in their banking app
+  4. Webhook confirms payout completion
+</Accordion>
+
+<Accordion title="Failed Payout Scenarios">
+  Test various failure scenarios:
+  - Invalid recipient email addresses
+  - Insufficient account balance
+  - Expired transfers
+  - Cancelled payouts
+</Accordion>
+
+### Test Data
+
+Use these test email addresses in sandbox:
+- `success@payper.ca` - Always accepts transfers
+- `expire@payper.ca` - Transfers always expire
+- `fail@payper.ca` - Transfers always fail
+
+## Account Management
+
+### Balance Requirements
+
+<Warning>
+  Ensure your account has sufficient balance before initiating payouts. Failed payouts due to insufficient funds may incur fees.
+</Warning>
+
+- Monitor your account balance regularly
+- Set up balance alerts
+- Consider automatic top-ups for high-volume operations
+
+### Payout Limits
+
+Default limits apply to all accounts:
+- Daily limit: $10,000
+- Monthly limit: $50,000
+- Single transaction limit: $3,000
+
+Contact support to request higher limits for your business needs.
+
+## Advanced Features
+
+### Bulk Payouts
+
+For multiple payouts, consider using our bulk payout API:
+
+```bash
+POST https://api.payper.ca/v1/etransfer/payout/bulk
+```
+
+### Scheduled Payouts
+
+Schedule payouts for future processing:
+- Set specific processing dates
+- Recurring payout schedules
+- Automatic retry logic
+
+## Troubleshooting
+
+### Common Issues
+
+<Accordion title="Recipient Not Receiving Emails">
+  - Check email address for typos
+  - Verify recipient's spam/junk folder
+  - Confirm email isn't blocked by recipient's provider
+  - Try resending the notification
+</Accordion>
+
+<Accordion title="Payout Stuck in Pending">
+  - Check if recipient has received the email
+  - Verify recipient's bank supports e-Transfer
+  - Contact recipient to confirm they can access their banking
+  - Consider cancelling and resending if necessary
+</Accordion>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Test Your Integration" icon="flask" href="/user-guides/etransfer-payout#testing-your-integration">
+    Set up sandbox testing and validate your payout flow
+  </Card>
+  <Card title="Setup Webhooks" icon="webhook" href="/user-guides/etransfer-payout#webhook-integration">
+    Configure webhook endpoints for real-time status updates
+  </Card>
+  <Card title="Go Live" icon="rocket" href="/api-reference/authentication">
+    Get production API credentials and launch your integration
+  </Card>
+  <Card title="Monitor Payouts" icon="chart-line" href="https://sandbox.dashboard.payper.ca/login/">
+    Use the dashboard to track and manage your payouts
+  </Card>
+</CardGroup>
+
+## Support
+
+<Note>
+  Questions about e-Transfer Payouts? Our support team is ready to help you succeed.
+</Note>
+
+- **Technical Support**: [technical@payper.ca](mailto:technical@payper.ca)
+- **Dashboard**: [https://sandbox.dashboard.payper.ca/login/](https://sandbox.dashboard.payper.ca/login/)
+- **API Reference**: [Complete API documentation](/api-reference/introduction) 

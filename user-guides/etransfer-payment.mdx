@@ -1,0 +1,237 @@
+---
+title: 'e-Transfer Payment User Guide'
+description: 'Complete guide to implementing e-Transfer payment functionality'
+icon: 'money-bill-transfer'
+---
+
+## Overview
+
+e-Transfer Payment allows your customers to make payments using Interac e-Transfer. This guide will walk you through the integration process, from initial setup to handling responses and managing the customer experience.
+
+<Note>
+  e-Transfer payments are processed asynchronously. The customer will receive an email with instructions to complete the transfer.
+</Note>
+
+## How e-Transfer Payment Works
+
+1. **Customer initiates payment** - Customer chooses e-Transfer as payment method
+2. **Your system creates payment request** - Send payment details to our API
+3. **Customer receives email** - Interac sends email with transfer instructions
+4. **Customer completes transfer** - Customer logs into their bank to send funds
+5. **Payment confirmation** - You receive webhook notification when funds are received
+
+## API Integration
+
+### Base URL
+```
+POST https://api.payper.ca/v1/etransfer/payment
+```
+
+### Authentication
+All requests require a Bearer token in the Authorization header:
+
+```bash
+Authorization: Bearer YOUR_API_TOKEN
+```
+
+### Request Parameters
+
+<CardGroup cols={2}>
+  <Card title="Required Parameters" icon="asterisk">
+    - `amount` - Payment amount in dollars
+    - `customer_email` - Customer's email address
+    - `customer_name` - Customer's full name
+    - `reference` - Your internal reference ID
+  </Card>
+  <Card title="Optional Parameters" icon="plus">
+    - `description` - Payment description
+    - `callback_url` - Webhook URL for notifications
+    - `return_url` - Redirect URL after payment
+  </Card>
+</CardGroup>
+
+### Sample Request
+
+```bash
+curl -X POST https://api.payper.ca/v1/etransfer/payment \
+  -H "Authorization: Bearer YOUR_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 100.00,
+    "customer_email": "customer@example.com",
+    "customer_name": "John Doe",
+    "reference": "ORDER-12345",
+    "description": "Payment for Order #12345",
+    "callback_url": "https://yoursite.com/webhooks/etransfer",
+    "return_url": "https://yoursite.com/payment/success"
+  }'
+```
+
+### Response Format
+
+#### Successful Response (200 OK)
+```json
+{
+  "status": "pending",
+  "transaction_id": "et_1234567890",
+  "amount": 100.00,
+  "customer_email": "customer@example.com",
+  "reference": "ORDER-12345",
+  "instructions": "Customer will receive email instructions",
+  "expires_at": "2024-01-15T10:30:00Z"
+}
+```
+
+#### Error Response (400/500)
+```json
+{
+  "error": {
+    "code": "invalid_amount",
+    "message": "Amount must be greater than $1.00"
+  }
+}
+```
+
+## Out of Band Transactions
+
+<Warning>
+  Some e-Transfer payments may be processed "out of band" if there are issues with the standard flow. Monitor these transactions carefully.
+</Warning>
+
+Out of band transactions occur when:
+- Customer transfers funds outside the expected workflow
+- Manual intervention is required
+- There are discrepancies in transfer details
+
+### Handling Out of Band Transactions
+
+| Parameter | Type | Description |
+|-----------|------|-------------|
+| `transaction_id` | STRING | Unique transaction identifier |
+| `status` | STRING | Current status (PENDING, COMPLETED, FAILED) |
+| `amount` | DECIMAL | Transaction amount |
+| `customer_email` | STRING | Customer's email address |
+| `reference` | STRING | Your reference ID |
+| `notes` | STRING | Additional processing notes |
+
+## Error Handling
+
+### Common Error Codes
+
+| Error Code | Description | Resolution |
+|------------|-------------|------------|
+| `invalid_email` | Customer email format is invalid | Validate email format before sending |
+| `insufficient_funds` | Customer has insufficient funds | Customer needs to add funds to their account |
+| `expired_transfer` | Transfer has expired | Create a new payment request |
+| `duplicate_reference` | Reference ID already used | Use a unique reference for each transaction |
+
+### Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Email Validation" icon="envelope-circle-check">
+    Always validate customer email addresses before creating payment requests to ensure they can receive transfer instructions.
+  </Card>
+  <Card title="Reference Management" icon="hashtag">
+    Use unique, meaningful reference IDs for each transaction to avoid conflicts and enable easy tracking.
+  </Card>
+  <Card title="Webhook Handling" icon="webhook">
+    Implement robust webhook handling to process payment confirmations and status updates reliably.
+  </Card>
+  <Card title="Timeout Management" icon="clock">
+    Set appropriate timeouts and handle expired transfers gracefully in your user interface.
+  </Card>
+</CardGroup>
+
+## Webhook Integration
+
+### Setting Up Webhooks
+
+Configure your webhook endpoint to receive payment status updates:
+
+```json
+{
+  "event": "etransfer.payment.completed",
+  "transaction_id": "et_1234567890",
+  "status": "completed",
+  "amount": 100.00,
+  "reference": "ORDER-12345",
+  "completed_at": "2024-01-15T10:45:00Z"
+}
+```
+
+### Webhook Events
+
+- `etransfer.payment.created` - Payment request created
+- `etransfer.payment.completed` - Payment successfully received
+- `etransfer.payment.failed` - Payment failed or expired
+- `etransfer.payment.out_of_band` - Manual processing required
+
+## Testing
+
+### Sandbox Environment
+
+Use our sandbox environment for testing:
+```
+POST https://sandbox-api.payper.ca/v1/etransfer/payment
+```
+
+### Test Scenarios
+
+<Accordion title="Successful Payment Flow">
+  1. Create payment with valid customer details
+  2. Customer receives email instructions
+  3. Customer completes transfer in their banking app
+  4. Webhook confirms payment completion
+</Accordion>
+
+<Accordion title="Failed Payment Scenarios">
+  Test various failure scenarios:
+  - Invalid email addresses
+  - Expired transfers
+  - Insufficient funds
+  - Network timeouts
+</Accordion>
+
+## Security Considerations
+
+<CardGroup cols={2}>
+  <Card title="API Security" icon="shield">
+    - Store API keys securely
+    - Use HTTPS for all requests
+    - Validate webhook signatures
+    - Implement rate limiting
+  </Card>
+  <Card title="Data Protection" icon="lock">
+    - Encrypt sensitive customer data
+    - Follow PCI compliance guidelines
+    - Log transactions securely
+    - Regular security audits
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<CardGroup cols={2}>
+  <Card title="Test Integration" icon="flask" href="/user-guides/etransfer-payment#testing">
+    Set up your test environment and run through the payment flow
+  </Card>
+  <Card title="Webhook Setup" icon="webhook" href="/user-guides/etransfer-payment#webhook-integration">
+    Configure webhooks to handle payment confirmations
+  </Card>
+  <Card title="Go Live" icon="rocket" href="/api-reference/authentication">
+    Get your production API keys and launch your integration
+  </Card>
+  <Card title="Monitor Transactions" icon="chart-line" href="https://sandbox.dashboard.payper.ca/login/">
+    Use the dashboard to monitor and manage your transactions
+  </Card>
+</CardGroup>
+
+## Support
+
+<Note>
+  Need help with your e-Transfer Payment integration? Our technical team is here to assist you.
+</Note>
+
+- **Technical Support**: [technical@payper.ca](mailto:technical@payper.ca)
+- **Dashboard**: [https://sandbox.dashboard.payper.ca/login/](https://sandbox.dashboard.payper.ca/login/)
+- **API Reference**: [View complete API documentation](/api-reference/introduction) 

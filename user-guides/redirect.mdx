@@ -1,38 +1,81 @@
 ---
 title: 'User Guides'
-description: 'Redirecting to PaySpace documentation'
+description: 'Step-by-step guides to help you integrate our payment solutions'
+icon: 'book-open'
 ---
 
+<img
+  className="block dark:hidden"
+  src="/images/header.png"
+  alt="User Guides Hero"
+/>
 
-export default function Redirect() {
-  useEffect(() => {
-    window.location.href = 'https://payspace.gitbook.io/payspace-docs';
-  }, []);
+<img
+  className="hidden dark:block" 
+  src="/images/header.png"
+  alt="User Guides Hero"
+/>
 
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[80vh] px-4">
-      <div className="max-w-md w-full text-center space-y-8">
-        <div className="relative w-16 h-16 mx-auto">
-          <div className="absolute inset-0 border-4 border-primary/20 rounded-full"></div>
-          <div className="absolute inset-0 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
-        </div>
-        
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold text-gray-900 dark:text-white">
-            Redirecting to PaySpace Documentation
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400">
-            Please wait while we redirect you...
-          </p>
-        </div>
+## Welcome to User Guides
 
-        <a 
-          href="https://payspace.gitbook.io/payspace-docs/user-guides/one-click-checkout-guide"
-          className="inline-block text-primary hover:text-primary-dark transition-colors"
-        >
-          Click here if not redirected
-        </a>
-      </div>
-    </div>
-  );
-} 
+Choose from our comprehensive guides to integrate the payment solution that best fits your needs. Each guide provides step-by-step instructions to get you up and running quickly.
+
+<CardGroup cols={2}>
+  <Card
+    title="E-transfer User Guide"
+    icon="money-bill-transfer"
+    href="/user-guides/etransfer"
+  >
+    Complete guide to implementing Interac e-Transfer functionality
+  </Card>
+  <Card
+    title="Digital Cheque User Guide"
+    icon="file-invoice-dollar"
+    href="/user-guides/digital-cheque"
+  >
+    Learn how to process digital cheque payments seamlessly
+  </Card>
+  <Card
+    title="One Click Checkout User Guide"
+    icon="credit-card"
+    href="https://payspace.gitbook.io/payspace-docs/user-guides/one-click-checkout-guide"
+  >
+    Implement fast and secure one-click checkout experience
+  </Card>
+  <Card
+    title="Realtime Transaction User Guide"
+    icon="clock"
+    href="https://payspace.gitbook.io/payspace-docs/user-guides/realtime-transaction-guide"
+  >
+    Set up real-time transaction processing and monitoring
+  </Card>
+</CardGroup>
+
+## Need Help?
+
+<Note>
+  Having trouble with integration? Our support team is ready to assist you.
+</Note>
+
+<CardGroup cols={2}>
+  <Card
+    title="Contact Support"
+    icon="headset"
+    href="mailto:technical@payper.ca"
+  >
+    Get direct help from our technical support team
+  </Card>
+  <Card
+    title="API Reference"
+    icon="code"
+    href="/api-reference/introduction"
+  >
+    Explore our complete API documentation
+  </Card>
+</CardGroup>
+
+---
+
+<Tip>
+  **Pro Tip**: Bookmark this page for quick access to all our user guides. We regularly update our guides with new features and improvements.
+</Tip> 
