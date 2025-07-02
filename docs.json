@@ -18,52 +18,9 @@
           "api-reference/use-cases",
           "api-reference/faq"
         ]
-      },
-      {
-        "tab": "User Guides",
-        "pages": [
-          {
-            "group": "Overview",
-            "pages": [
-              "user-guides/getting-started",
-              "user-guides/authentication"
-            ]
-          },
-          {
-            "group": "Payment Types",
-            "pages": [
-              "user-guides/payments",
-              "user-guides/payouts",
-              "user-guides/refunds"
-            ]
-          },
-                  {
-          "group": "Payment Methods",
-          "pages": [
-            "user-guides/etransfer",
-            "user-guides/digital-cheque",
-            "user-guides/push-to-card"
-          ]
-        },
-        {
-          "group": "RSA Encryption",
-          "pages": [
-            "user-guides/generating-an-rsa-key",
-            "user-guides/encrypting-sensitive-data"
-          ]
-        },
-        {
-          "group": "Integration Examples",
-          "pages": [
-            "user-guides/realtime-transactions"
-          ]
-        }
-        ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "api-reference/openapi-postman.json"
       }
+     
+      
     ]
   },
   "logo": {
