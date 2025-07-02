@@ -1,63 +1,206 @@
 ---
-title: "Paybilt API Documentation"
-description: "Comprehensive guide to Paybilt's REST API endpoints and integration"
+title: "Documentation Guide"
+description: "How to navigate and use PayPer's documentation effectively"
 ---
 
-<img
-  className="block dark:hidden"
-  src="/images/header.png"
-  alt="Paybilt API Hero Light"
-/>
+## Welcome to PayPer API Documentation
 
-<img
-  className="hidden dark:block"
-  src="/images/header.png"
-  alt="Paybilt API Hero Dark"
-/>
+This documentation is designed to get you from zero to production as quickly as possible. Whether you're just exploring PayPer's capabilities or implementing complex payment workflows, this guide will help you navigate our documentation structure effectively.
 
-## Getting Started
+## Documentation Structure
 
-Welcome to the Paybilt API documentation. This guide will help you integrate with our platform and start building powerful payment solutions.
+Our documentation is organized into two main sections, each serving different purposes in your integration journey:
 
-<CardGroup cols="2">
-  <Card title="Quick Start" icon="rocket" href="/api-reference/quickstart">
-    Get up and running with our API in minutes
+<CardGroup cols={2}>
+  <Card title="User Guides" icon="book-open" href="/user-guides/getting-started">
+    **Learn concepts, see examples, and follow tutorials**
+    
+    - Step-by-step integration guides
+    - Interactive API testers
+    - Real-world implementation examples
+    - Best practices and troubleshooting
   </Card>
-  <Card title="Authentication" icon="lock" href="/api-reference/authentication">
-    Learn how to authenticate your API requests
+  <Card title="API Reference" icon="code" href="/api-reference">
+    **Detailed endpoint documentation and specifications**
+    
+    - Complete endpoint specifications
+    - Request/response schemas
+    - Parameter definitions
+    - Error code reference
   </Card>
 </CardGroup>
 
-## API Overview
+## How to Use This Documentation
 
-Our REST API provides a comprehensive set of endpoints for managing payments, transactions, and account operations. All endpoints are authenticated using Bearer tokens.
+### 🚀 **If you're just getting started:**
+1. Start with [Getting Started](/user-guides/getting-started) to understand PayPer's capabilities
+2. Set up [Authentication](/user-guides/authentication) to secure your API calls
+3. Choose your integration approach from [Payment Types](/user-guides/payments)
 
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
+### 🛠 **If you're implementing:**
+1. Follow the relevant User Guide for your payment method
+2. Use the interactive API testers to validate your integration
+3. Reference the API documentation for complete parameter details
+4. Test in sandbox before going live
+
+### 🔧 **If you're troubleshooting:**
+1. Check error handling sections in the User Guides
+2. Review webhook integration patterns
+3. Consult the API Reference for specific error codes
+4. Use sandbox testing scenarios
+
+## Interactive Features
+
+Our documentation includes several interactive features to accelerate your development:
+
+<Accordion title="Live API Testing">
+Many User Guides include **interactive API testers** that let you:
+- Test real API endpoints directly in the documentation
+- Generate RSA keys for encryption
+- Encrypt sensitive data client-side
+- See real request/response examples
+
+*Perfect for prototyping and validation before coding.*
+</Accordion>
+
+<Accordion title="Multi-Language Examples">
+Code examples are provided in multiple languages:
+- **cURL** for quick testing
+- **Node.js** for JavaScript developers  
+- **Python** for Python developers
+- **PHP** for PHP developers
+
+*Copy and paste examples to jumpstart your integration.*
+</Accordion>
+
+<Accordion title="Comprehensive Error Handling">
+Every guide includes:
+- Common error scenarios and solutions
+- Validation rules and requirements
+- Debugging tips and best practices
+- Sandbox testing approaches
+
+*Reduce development time by avoiding common pitfalls.*
+</Accordion>
+
+## Content Organization
+
+### **User Guides Structure**
+
+<CardGroup cols={3}>
+  <Card title="Overview" icon="compass">
+    **Foundational Knowledge**
+    - Getting Started
+    - Authentication Setup
+  </Card>
+  <Card title="Payment Types" icon="credit-card">
+    **Core Operations**
+    - Payment Processing
+    - Payout Processing
+    - Refund Processing
+  </Card>
+  <Card title="Payment Methods" icon="list-check">
+    **Specific Implementations**
+    - e-Transfer Integration
+    - Digital Cheque Processing
+  </Card>
+</CardGroup>
+
+### **API Reference Structure**
+
+The API Reference provides technical specifications organized by:
+
+- **Endpoint Categories**: Grouped by functionality (payments, payouts, etc.)
+- **HTTP Methods**: GET, POST, PUT, DELETE operations
+- **Authentication**: Security requirements and token management
+- **Schemas**: Request/response object definitions
+- **Error Codes**: Comprehensive error reference
+
+## Development Workflow
+
+Here's the recommended approach for using this documentation:
+
+<Steps>
+  <Step title="Explore & Plan">
+    Read the Getting Started guide and review Payment Types to understand what's possible
+  </Step>
+  <Step title="Test & Validate">
+    Use interactive API testers in User Guides to prototype your integration
+  </Step>
+  <Step title="Implement & Integrate">
+    Follow specific User Guides while referencing API documentation for technical details
+  </Step>
+  <Step title="Test & Deploy">
+    Use sandbox testing scenarios before switching to production endpoints
+  </Step>
+</Steps>
+
+## Tips for Success
+
+<CardGroup cols={2}>
+  <Card title="Start Simple" icon="seedling">
+    Begin with basic payment processing before adding advanced features like webhooks or complex workflows
+  </Card>
+  <Card title="Use Sandbox First" icon="flask">
+    Always test thoroughly in sandbox environment before processing real transactions
+  </Card>
+  <Card title="Leverage Examples" icon="copy">
+    Copy and modify our code examples rather than starting from scratch
+  </Card>
+  <Card title="Follow Webhooks" icon="webhook">
+    Implement webhook handling early - it's crucial for production reliability
+  </Card>
+</CardGroup>
+
+## API Fundamentals
+
+### Base URLs
+- **Sandbox**: `https://sandbox.pp.paybilt.com/api/v2/`
+- **Production**: `https://pp.paybilt.com/api/v2/`
+
+### Authentication
+All API requests require Bearer token authentication:
+```bash
+Authorization: Bearer YOUR_API_TOKEN
 ```
 
+### Content Type
+All requests should include:
+```bash
+Content-Type: application/json
+```
+
+### Rate Limits
+- **Sandbox**: 1000 requests per minute
+- **Production**: 500 requests per minute
+
 <Note>
-  All API requests must include your API key in the Authorization header as a Bearer token.
+For higher limits in production, contact our support team with your use case details.
 </Note>
 
-## Available Endpoints
+## Getting Help
 
-<CardGroup cols="3">
-  <Card title="Payments" icon="credit-card" href="/api-reference/payments">
-    Process and manage payments
+<CardGroup cols={2}>
+  <Card title="Technical Support" icon="headset" href="mailto:technical@payper.ca">
+    For integration questions and technical issues
   </Card>
-  <Card title="Transactions" icon="receipt" href="/api-reference/transactions">
-    Track and manage transactions
-  </Card>
-  <Card title="Accounts" icon="user" href="/api-reference/accounts">
-    Manage user accounts and profiles
+  <Card title="Interactive Testing" icon="play">
+    Use the API testers in User Guides for immediate feedback and validation
   </Card>
 </CardGroup>
 
-## Need Help?
+## What's Next?
 
-If you need assistance with our API, please contact our support team or check out our [FAQ section](/api-reference/faq).
+Ready to start building? Here are the most common starting points:
+
+<CardGroup cols={3}>
+  <Card title="Accept Payments" icon="arrow-right" href="/user-guides/payments">
+    Learn how to process customer payments
+  </Card>
+  <Card title="Send Payouts" icon="arrow-right" href="/user-guides/payouts">
+    Disburse funds to bank accounts
+  </Card>
+  <Card title="Handle Refunds" icon="arrow-right" href="/user-guides/refunds">
+    Process refunds and returns
+  </Card>
+</CardGroup>

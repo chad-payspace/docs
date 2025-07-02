@@ -1,0 +1,898 @@
+---
+title: "Realtime Transaction Flows"
+description: "Create interactive payment experiences using PayPer's realtime socket server for request money transfers"
+icon: "bolt"
+---
+
+## Overview
+
+This guide demonstrates how to create **realtime transaction flows** where users can complete eTransfer payments in real-time through PayPer's socket server. Unlike traditional payment flows, this approach provides an **interactive, real-time experience** where users see live updates as they complete their money transfer.
+
+<Note>
+This realtime approach works with **any frontend technology** - web applications, iOS apps, Android apps, React Native, Flutter, or any platform that can render web content in a webview or iframe.
+</Note>
+
+## What You'll Build
+
+<CardGroup cols={2}>
+  <Card title="Request Money Transfer Flow" icon="arrow-right-arrow-left">
+    **Interactive payment experience for any use case**
+    
+    - Initiate eTransfer request via API
+    - Realtime socket-server integration
+    - Cross-platform compatibility (iOS/Android/Web)
+    - Live transaction status updates
+  </Card>
+  <Card title="Deposit & Payment Flows" icon="money-bill-wave">
+    **Flexible funding experiences**
+    
+    - Account deposit workflows
+    - Product purchase payments
+    - Service payments and subscriptions
+    - Marketplace and P2P transfers
+  </Card>
+</CardGroup>
+
+## How Realtime Transactions Work
+
+<Steps>
+  <Step title="Create Transaction Request">
+    Your backend calls PayPer's eTransfer API to initiate a request money transfer, receiving a transaction ID and amount
+  </Step>
+  <Step title="Launch Realtime Experience">
+    Render PayPer's socket server URL with the transaction details in an iframe/webview for cross-platform compatibility
+  </Step>
+  <Step title="User Completes Transfer">
+    User interacts with the realtime interface to complete their eTransfer, seeing live updates and status changes
+  </Step>
+  <Step title="Transaction Complete">
+    Receive webhooks and completion notifications as the user finishes their payment in real-time
+  </Step>
+</Steps>
+
+## Prerequisites
+
+Before implementing realtime transaction flows, ensure you have:
+
+- **PayPer merchant account** with API access
+- **Sandbox credentials** for testing
+- **Backend capability** to make HTTP requests to PayPer API
+- **Frontend platform** that can render iframes or webviews (web, mobile, desktop)
+- Basic understanding of HTTP APIs and webhooks
+
+## Core Concepts
+
+### **1. Request Money Transfer Flow**
+
+The realtime transaction process involves two key components:
+
+1. **Transaction Initiation**: Backend API call to create an eTransfer request
+2. **Realtime Payment Interface**: Socket server renders interactive payment experience
+
+### **2. Environment Configuration**
+
+Set up your environment variables for PayPer integration:
+
+```bash
+# PayPer Sandbox Configuration
+API_BEARER_TOKEN=your_payper_sandbox_token
+API_URL=https://sandbox.pp.payper.ca/api/v2
+SOCKET_URL=https://sandbox-socket-server.payper.ca
+
+# For production
+# API_URL=https://api.payper.ca/api/v2
+# SOCKET_URL=https://socket-server.payper.ca
+```
+
+<Warning>
+**Security Note**: Never expose API tokens in frontend code. Always keep tokens server-side and use environment variables.
+</Warning>
+
+### **3. Cross-Platform Compatibility**
+
+The socket server supports different environments for optimal user experience:
+
+<CardGroup cols={3}>
+  <Card title="Web" icon="globe">
+    **Standard web experience**
+    
+    Default iframe rendering for web browsers with full responsive design
+  </Card>
+  <Card title="iOS" icon="mobile">
+    **iOS-optimized interface**
+    
+    Optimized for iOS webview rendering with native app compatibility
+  </Card>
+  <Card title="Android" icon="android">
+    **Android-optimized interface**
+    
+    Tailored for Android webview with proper touch and input handling
+  </Card>
+</CardGroup>
+
+## Backend Implementation
+
+### **Creating Request Money Transfers**
+
+The core of realtime transactions is initiating a request money transfer via PayPer's eTransfer API. This works for any use case - deposits, purchases, payments, etc.
+
+<Tabs>
+  <Tab title="Node.js/Express">
+    ```javascript
+    import { v4 as uuidv4 } from 'uuid';
+
+    // Example: Creating a request money transfer
+    async function createRequestMoneyTransfer(customerData, amount, description) {
+        const uniqueUdf = uuidv4();
+
+        const payload = {
+            email: customerData.email,
+            phone: customerData.phone,
+            first_name: customerData.firstName,
+            last_name: customerData.lastName,
+            address: customerData.address,
+            city: customerData.city,
+            state: customerData.state,
+            country: "CA",
+            zip_code: customerData.zipCode,
+            ip_address: customerData.ipAddress,
+            udfs: [uniqueUdf],
+            shipping_cost: 0,
+            return_url: "https://your-domain.com/payment/success",
+            convenience_fee: 0,
+            items: [{
+                name: description,
+                quantity: 1,
+                description: description,
+                SKU: uniqueUdf,
+                unit_price: parseFloat(amount)
+            }]
+        };
+
+        const response = await fetch(`${process.env.API_URL}/payment/eTransfer/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${process.env.API_BEARER_TOKEN}`
+            },
+            body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        // Return transaction details for frontend
+        return {
+            txid: data.txid,
+            amount: data.amount,
+            socketUrl: process.env.SOCKET_URL
+        };
+    }
+    ```
+  </Tab>
+  <Tab title="Python/Flask">
+    ```python
+    import uuid
+    import requests
+    import os
+
+    def create_request_money_transfer(customer_data, amount, description):
+        unique_udf = str(uuid.uuid4())
+        
+        payload = {
+            "email": customer_data["email"],
+            "phone": customer_data["phone"],
+            "first_name": customer_data["first_name"],
+            "last_name": customer_data["last_name"],
+            "address": customer_data["address"],
+            "city": customer_data["city"],
+            "state": customer_data["state"],
+            "country": "CA",
+            "zip_code": customer_data["zip_code"],
+            "ip_address": customer_data["ip_address"],
+            "udfs": [unique_udf],
+            "shipping_cost": 0,
+            "return_url": "https://your-domain.com/payment/success",
+            "convenience_fee": 0,
+            "items": [{
+                "name": description,
+                "quantity": 1,
+                "description": description,
+                "SKU": unique_udf,
+                "unit_price": float(amount)
+            }]
+        }
+        
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {os.getenv('API_BEARER_TOKEN')}"
+        }
+        
+        response = requests.post(
+            f"{os.getenv('API_URL')}/payment/eTransfer/",
+            json=payload,
+            headers=headers
+        )
+        
+        if response.status_code != 200:
+            raise Exception(f"API error: {response.status_code}")
+            
+        data = response.json()
+        
+        return {
+            "txid": data["txid"],
+            "amount": data["amount"],
+            "socket_url": os.getenv("SOCKET_URL")
+        }
+    ```
+  </Tab>
+  <Tab title="PHP">
+    ```php
+    <?php
+    function createRequestMoneyTransfer($customerData, $amount, $description) {
+        $uniqueUdf = uniqid();
+        
+        $payload = [
+            'email' => $customerData['email'],
+            'phone' => $customerData['phone'],
+            'first_name' => $customerData['firstName'],
+            'last_name' => $customerData['lastName'],
+            'address' => $customerData['address'],
+            'city' => $customerData['city'],
+            'state' => $customerData['state'],
+            'country' => 'CA',
+            'zip_code' => $customerData['zipCode'],
+            'ip_address' => $customerData['ipAddress'],
+            'udfs' => [$uniqueUdf],
+            'shipping_cost' => 0,
+            'return_url' => 'https://your-domain.com/payment/success',
+            'convenience_fee' => 0,
+            'items' => [[
+                'name' => $description,
+                'quantity' => 1,
+                'description' => $description,
+                'SKU' => $uniqueUdf,
+                'unit_price' => floatval($amount)
+            ]]
+        ];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $_ENV['API_URL'] . '/payment/eTransfer/');
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/json',
+            'Authorization: Bearer ' . $_ENV['API_BEARER_TOKEN']
+        ]);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        $response = curl_exec($ch);
+        $data = json_decode($response, true);
+        curl_close($ch);
+
+        return [
+            'txid' => $data['txid'],
+            'amount' => $data['amount'],
+            'socket_url' => $_ENV['SOCKET_URL']
+        ];
+    }
+    ?>
+    ```
+  </Tab>
+</Tabs>
+
+### **API Response Format**
+
+When you successfully create a request money transfer, PayPer returns transaction details:
+
+```json
+{
+  "status": "success",
+  "txid": "TXN_12345678901234567890",
+  "amount": 25.00,
+  "currency": "CAD",
+  "email": "customer@example.com",
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+**Key fields for realtime integration:**
+- `txid`: Transaction ID needed for socket server URL
+- `amount`: Transaction amount for socket server URL
+- Use these to construct the realtime payment interface URL
+
+## Frontend Implementation
+
+### **Rendering the Realtime Payment Interface**
+
+Once you have the transaction ID and amount from your backend, render PayPer's socket server for the realtime payment experience:
+
+<Tabs>
+  <Tab title="Web (JavaScript)">
+    ```javascript
+    // Universal function to render PayPer realtime payment interface
+    function renderRealtimePayment(txid, amount, socketUrl, environment = 'web') {
+        // Construct socket server URL with environment parameter
+        const paymentUrl = `${socketUrl}/${txid}/${amount}/html?env=${environment}`;
+        
+        // Create iframe for web implementation
+        const iframe = document.createElement('iframe');
+        iframe.src = paymentUrl;
+        iframe.style.width = '100%';
+        iframe.style.height = '100vh';
+        iframe.style.border = 'none';
+        iframe.setAttribute('allowtransparency', 'true');
+        iframe.title = 'PayPer Payment';
+        
+        // Replace content with payment interface
+        const container = document.getElementById('payment-container');
+        container.innerHTML = '';
+        container.appendChild(iframe);
+        
+        return iframe;
+    }
+
+    // Example usage after getting transaction details
+    async function initiatePayment(customerData, amount, description) {
+        try {
+            // Call your backend to create transaction
+            const response = await fetch('/api/create-transaction', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ customerData, amount, description })
+            });
+            
+            const data = await response.json();
+            
+            if (data.txid) {
+                // Render realtime payment interface
+                renderRealtimePayment(data.txid, data.amount, data.socketUrl, 'web');
+            }
+        } catch (error) {
+            console.error('Payment initiation failed:', error);
+        }
+    }
+    ```
+  </Tab>
+  <Tab title="React/React Native">
+    ```javascript
+    import React, { useState } from 'react';
+    import { WebView } from 'react-native-webview'; // For React Native
+
+    export default function RealtimePayment({ platform = 'web' }) {
+        const [paymentUrl, setPaymentUrl] = useState(null);
+        const [loading, setLoading] = useState(false);
+
+        const initiatePayment = async (customerData, amount, description) => {
+            setLoading(true);
+            try {
+                const response = await fetch('/api/create-transaction', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ customerData, amount, description })
+                });
+
+                const data = await response.json();
+
+                if (data.txid) {
+                    // Determine environment based on platform
+                    const env = platform === 'ios' ? 'ios' : 
+                               platform === 'android' ? 'android' : 'web';
+                    
+                    const url = `${data.socketUrl}/${data.txid}/${data.amount}/html?env=${env}`;
+                    setPaymentUrl(url);
+                }
+            } catch (error) {
+                console.error('Payment failed:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // Web implementation
+        if (platform === 'web') {
+            return (
+                <div>
+                    {!paymentUrl ? (
+                        <button onClick={() => initiatePayment(/* your data */)}>
+                            {loading ? 'Processing...' : 'Pay Now'}
+                        </button>
+                    ) : (
+                        <iframe
+                            src={paymentUrl}
+                            style={{ width: '100%', height: '100vh', border: 'none' }}
+                            title="PayPer Payment"
+                        />
+                    )}
+                </div>
+            );
+        }
+
+        // React Native implementation
+        return paymentUrl ? (
+            <WebView
+                source={{ uri: paymentUrl }}
+                style={{ flex: 1 }}
+                allowsInlineMediaPlayback={true}
+                mediaPlaybackRequiresUserAction={false}
+            />
+        ) : (
+            <button onPress={() => initiatePayment(/* your data */)}>
+                {loading ? 'Processing...' : 'Pay Now'}
+            </button>
+        );
+    }
+    ```
+  </Tab>
+  <Tab title="iOS (Swift)">
+    ```swift
+    import UIKit
+    import WebKit
+
+    class RealtimePaymentViewController: UIViewController {
+        private var webView: WKWebView!
+        
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            setupWebView()
+        }
+        
+        private func setupWebView() {
+            let configuration = WKWebViewConfiguration()
+            configuration.allowsInlineMediaPlayback = true
+            
+            webView = WKWebView(frame: view.bounds, configuration: configuration)
+            webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+            view.addSubview(webView)
+        }
+        
+        func initiatePayment(txid: String, amount: Double, socketUrl: String) {
+            // Construct URL with iOS environment parameter
+            let urlString = "\(socketUrl)/\(txid)/\(amount)/html?env=ios"
+            
+            guard let url = URL(string: urlString) else {
+                print("Invalid payment URL")
+                return
+            }
+            
+            let request = URLRequest(url: url)
+            webView.load(request)
+        }
+        
+        // Call this after creating transaction via your backend
+        func startPaymentFlow(customerData: [String: Any], amount: Double, description: String) {
+            // Make API call to your backend
+            guard let url = URL(string: "https://your-api.com/create-transaction") else { return }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let payload = [
+                "customerData": customerData,
+                "amount": amount,
+                "description": description
+            ] as [String : Any]
+            
+            do {
+                request.httpBody = try JSONSerialization.data(withJSONObject: payload)
+                
+                URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+                    guard let data = data,
+                          let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                          let txid = json["txid"] as? String,
+                          let amount = json["amount"] as? Double,
+                          let socketUrl = json["socketUrl"] as? String else {
+                        return
+                    }
+                    
+                    DispatchQueue.main.async {
+                        self?.initiatePayment(txid: txid, amount: amount, socketUrl: socketUrl)
+                    }
+                }.resume()
+            } catch {
+                print("Failed to create request: \(error)")
+            }
+        }
+    }
+    ```
+  </Tab>
+  <Tab title="Android (Kotlin)">
+    ```kotlin
+    import android.webkit.WebView
+    import android.webkit.WebViewClient
+    import androidx.activity.ComponentActivity
+    import kotlinx.coroutines.launch
+    import kotlinx.coroutines.Dispatchers
+    import kotlinx.coroutines.withContext
+    import okhttp3.*
+    import org.json.JSONObject
+    import java.io.IOException
+
+    class RealtimePaymentActivity : ComponentActivity() {
+        private lateinit var webView: WebView
+        
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            setupWebView()
+        }
+        
+        private fun setupWebView() {
+            webView = WebView(this)
+            webView.settings.apply {
+                javaScriptEnabled = true
+                domStorageEnabled = true
+                loadWithOverviewMode = true
+                useWideViewPort = true
+            }
+            webView.webViewClient = WebViewClient()
+            setContentView(webView)
+        }
+        
+        fun initiatePayment(txid: String, amount: Double, socketUrl: String) {
+            // Construct URL with Android environment parameter
+            val paymentUrl = "$socketUrl/$txid/$amount/html?env=android"
+            webView.loadUrl(paymentUrl)
+        }
+        
+        fun startPaymentFlow(customerData: JSONObject, amount: Double, description: String) {
+            lifecycleScope.launch {
+                try {
+                    val result = createTransaction(customerData, amount, description)
+                    
+                    val txid = result.getString("txid")
+                    val responseAmount = result.getDouble("amount")
+                    val socketUrl = result.getString("socketUrl")
+                    
+                    withContext(Dispatchers.Main) {
+                        initiatePayment(txid, responseAmount, socketUrl)
+                    }
+                } catch (e: Exception) {
+                    // Handle error
+                    e.printStackTrace()
+                }
+            }
+        }
+        
+        private suspend fun createTransaction(
+            customerData: JSONObject, 
+            amount: Double, 
+            description: String
+        ): JSONObject = withContext(Dispatchers.IO) {
+            val client = OkHttpClient()
+            val payload = JSONObject().apply {
+                put("customerData", customerData)
+                put("amount", amount)
+                put("description", description)
+            }
+            
+            val requestBody = RequestBody.create(
+                MediaType.parse("application/json"),
+                payload.toString()
+            )
+            
+            val request = Request.Builder()
+                .url("https://your-api.com/create-transaction")
+                .post(requestBody)
+                .build()
+                
+            val response = client.newCall(request).execute()
+            JSONObject(response.body()?.string() ?: "{}")
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Socket Server URL Structure
+
+The PayPer socket server URL follows a specific format for realtime payment interfaces:
+
+```
+https://socket-server.payper.ca/{txid}/{amount}/html?env={environment}
+```
+
+**URL Components:**
+- `{txid}`: Transaction ID from PayPer API response
+- `{amount}`: Transaction amount from API response  
+- `{environment}`: Platform optimization (`web`, `ios`, `android`)
+
+**Environment Parameters:**
+
+<Accordion title="web (Default)">
+**When to use**: Web browsers, desktop applications, PWAs
+
+**Optimizations**:
+- Standard responsive design
+- Mouse and keyboard interactions
+- Full browser feature support
+- Desktop-optimized layout
+</Accordion>
+
+<Accordion title="ios">
+**When to use**: iOS apps using WKWebView, React Native iOS
+
+**Optimizations**:
+- iOS-specific touch interactions
+- Safari-compatible features
+- Optimized for iOS webview rendering
+- iOS keyboard and input handling
+</Accordion>
+
+<Accordion title="android">
+**When to use**: Android apps using WebView, React Native Android
+
+**Optimizations**:
+- Android webview compatibility
+- Android-specific input methods
+- Optimized touch and gesture support
+- Android keyboard handling
+</Accordion>
+
+## Socket Server Integration
+
+Once you have a transaction ID and amount from PayPer's eTransfer API, you can render the realtime payment interface:
+
+```
+https://socket-server.payper.ca/{txid}/{amount}/html?env={environment}
+```
+
+**Environment Parameters:**
+- `web` - Standard web browsers
+- `ios` - iOS WKWebView optimization
+- `android` - Android WebView optimization
+
+## Use Cases & Examples
+
+### **Common Realtime Transaction Scenarios**
+
+Realtime transaction flows work across various business models and use cases:
+
+<CardGroup cols={2}>
+  <Card title="Account Deposits" icon="money-bill-wave">
+    **Funding user accounts in real-time**
+    
+    - Wallet top-ups and balance additions
+    - Gaming platform credit purchases
+    - Investment account funding
+    - Prepaid service payments
+  </Card>
+  <Card title="Marketplace Payments" icon="store">
+    **Facilitating seller payments**
+    
+    - Freelancer project payments
+    - Marketplace purchase completions
+    - Service provider payments
+    - Subscription renewals
+  </Card>
+  <Card title="P2P Transfers" icon="people-arrows">
+    **Person-to-person money transfers**
+    
+    - Split bill payments
+    - Friend-to-friend transfers
+    - Family money sharing
+    - Event expense sharing
+  </Card>
+  <Card title="E-commerce Checkout" icon="shopping-cart">
+    **Product and service purchases**
+    
+    - Online store checkout
+    - Digital product purchases
+    - Service booking payments
+    - Subscription sign-ups
+  </Card>
+</CardGroup>
+
+### **Implementation Examples**
+
+<Tabs>
+  <Tab title="Account Deposit Flow">
+    ```javascript
+    // Example: Account deposit implementation
+    async function handleAccountDeposit(userId, amount) {
+        const customerData = await getUserData(userId);
+        
+        try {
+            // Create transaction request
+            const transaction = await createRequestMoneyTransfer(
+                customerData,
+                amount,
+                `Account deposit for user ${userId}`
+            );
+            
+            // Render realtime payment interface
+            renderRealtimePayment(
+                transaction.txid,
+                transaction.amount,
+                transaction.socketUrl,
+                'web'
+            );
+            
+            // Set up completion handler
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'PAYMENT_COMPLETE') {
+                    updateUserBalance(userId, amount);
+                    showSuccessMessage(`$${amount} added to your account!`);
+                }
+            });
+            
+        } catch (error) {
+            console.error('Deposit failed:', error);
+            showErrorMessage('Unable to process deposit. Please try again.');
+        }
+    }
+    ```
+  </Tab>
+  <Tab title="Marketplace Payment">
+    ```javascript
+    // Example: Marketplace seller payment
+    async function paySellerForOrder(orderId, sellerId, amount) {
+        const order = await getOrderDetails(orderId);
+        const seller = await getSellerData(sellerId);
+        
+        try {
+            // Create payment to seller
+            const transaction = await createRequestMoneyTransfer(
+                order.buyerData,
+                amount,
+                `Payment for order #${orderId}`
+            );
+            
+            // Render payment interface for buyer
+            renderRealtimePayment(
+                transaction.txid,
+                transaction.amount,
+                transaction.socketUrl,
+                detectPlatform()
+            );
+            
+            // Handle completion
+            window.addEventListener('message', (event) => {
+                if (event.data.type === 'PAYMENT_COMPLETE') {
+                    // Mark order as paid
+                    updateOrderStatus(orderId, 'paid');
+                    
+                    // Notify seller
+                    notifySeller(sellerId, `Payment received for order #${orderId}`);
+                    
+                    // Release funds to seller
+                    scheduleSellerPayout(sellerId, amount);
+                }
+            });
+            
+        } catch (error) {
+            console.error('Payment failed:', error);
+            handlePaymentFailure(orderId, error);
+        }
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Webhook Integration
+
+Handle real-time payment status updates to synchronize your application state:
+
+```javascript
+// Webhook handler for payment notifications
+app.post('/webhooks/payment', (req, res) => {
+    const { txid, status, amount, email } = req.body;
+    
+    console.log(`Payment update: ${txid} - ${status}`);
+    
+    switch (status) {
+        case 'initiated':
+            // Payment started - user is in realtime interface
+            logPaymentStart(txid, amount);
+            break;
+            
+        case 'completed':
+            // Payment successful - update your system
+            processSuccessfulPayment(txid, amount, email);
+            notifyPaymentSuccess(txid);
+            break;
+            
+        case 'failed':
+            // Payment failed - handle accordingly
+            processFailedPayment(txid, amount, email);
+            notifyPaymentFailure(txid);
+            break;
+            
+        case 'cancelled':
+            // User cancelled payment
+            processPaymentCancellation(txid);
+            break;
+    }
+    
+    // Always acknowledge webhook
+    res.status(200).json({ received: true });
+});
+```
+
+## Testing Your Integration
+
+### **Sandbox Testing**
+
+<Steps>
+  <Step title="Set Up Sandbox Environment">
+    Configure your application to use PayPer sandbox credentials and socket server URLs
+  </Step>
+  <Step title="Test Transaction Creation">
+    Verify your backend can successfully create eTransfer requests and receive transaction IDs
+  </Step>
+  <Step title="Test Realtime Interface">
+    Ensure the socket server renders correctly in your iframe/webview implementation
+  </Step>
+  <Step title="Test Cross-Platform">
+    Verify the experience works correctly on web, iOS, and Android with appropriate environment parameters
+  </Step>
+  <Step title="Test Webhook Handling">
+    Confirm your webhook endpoint receives and processes payment status updates correctly
+  </Step>
+</Steps>
+
+### **Environment-Specific Testing**
+
+<Accordion title="Web Testing">
+**Test scenarios:**
+- Desktop browsers (Chrome, Firefox, Safari, Edge)
+- Mobile browsers (iOS Safari, Android Chrome)
+- Different screen sizes and orientations
+- Network connectivity issues and recovery
+</Accordion>
+
+<Accordion title="iOS Testing">
+**Test scenarios:**
+- WKWebView integration in native apps
+- React Native iOS implementation
+- Different iOS versions and devices
+- App backgrounding and foregrounding during payment
+</Accordion>
+
+<Accordion title="Android Testing">
+**Test scenarios:**
+- WebView integration in native apps
+- React Native Android implementation
+- Different Android versions and devices
+- Hardware back button behavior during payment
+</Accordion>
+
+## Go Live Checklist
+
+<Steps>
+  <Step title="Update Environment Variables">
+    Switch from sandbox to production API URLs and credentials
+  </Step>
+  <Step title="Configure Production Webhooks">
+    Set up production webhook endpoints with proper SSL certificates
+  </Step>
+  <Step title="Test Production Flow">
+    Process a small test transaction in production environment
+  </Step>
+  <Step title="Monitor Transaction Logs">
+    Set up logging and monitoring for transaction processing and errors
+  </Step>
+  <Step title="Customer Support Preparation">
+    Train support team on realtime payment flow and common issues
+  </Step>
+</Steps>
+
+## Support & Resources
+
+Need help implementing realtime transaction flows?
+
+<CardGroup cols={2}>
+  <Card title="PayPer Documentation" icon="book" href="/user-guides/getting-started">
+    Complete API documentation and integration guides
+  </Card>
+  <Card title="Technical Support" icon="headset" href="mailto:technical@payper.ca">
+    Get help from PayPer's technical integration team
+  </Card>
+</CardGroup>
+
+<Card title="Socket Server Status" icon="signal">
+  **Monitor PayPer Services**: Check realtime status and uptime of PayPer's socket server infrastructure at [status.payper.ca](https://status.payper.ca)
+</Card> 

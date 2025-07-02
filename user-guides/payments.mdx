@@ -1,0 +1,270 @@
+---
+title: "Payment Processing"
+description: "Accept payments seamlessly with PayPer's comprehensive payment API"
+icon: "credit-card"
+---
+
+## Overview
+
+PayPer's payment integration makes it effortless to accept payments from your customers. Our robust API handles the complete payment lifecycle, from initial request to final settlement, with comprehensive webhook support for real-time updates.
+
+<Note>
+**Universal API**: The same payment endpoint works across all supported payment methods - e-Transfer, Digital Cheque, Visa Direct, and more.
+</Note>
+
+## Key Features
+
+<CardGroup cols={2}>
+  <Card title="Multiple Payment Methods" icon="payment">
+    Support for e-Transfer, Digital Cheque, Visa Direct, MasterCard Send, and more
+  </Card>
+  <Card title="Real-time Updates" icon="bell">
+    Instant webhook notifications for all payment status changes
+  </Card>
+  <Card title="Secure Processing" icon="shield-check">
+    Bank-grade security with encrypted data transmission
+  </Card>
+  <Card title="Easy Integration" icon="code">
+    Simple REST API with comprehensive documentation and examples
+  </Card>
+</CardGroup>
+
+## Quick Start
+
+<Steps>
+  <Step title="Set Up Authentication">
+    Obtain your API credentials and configure bearer token authentication
+  </Step>
+  <Step title="Create Payment Request">
+    Send a payment request with customer and transaction details
+  </Step>
+  <Step title="Handle Response">
+    Process the API response and redirect customer if needed
+  </Step>
+  <Step title="Monitor Status">
+    Use webhooks to track payment progress in real-time
+  </Step>
+</Steps>
+
+## Payment Request
+
+Here's how to create a payment request. The API accepts customer information and transaction details to initiate the payment process.
+
+### Example Request
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl --location 'https://sandbox.pp.paybilt.com/api/v2/payment/' \
+    --header 'Authorization: Bearer YOUR_TOKEN' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "email": "Brandon@Martin.com",
+        "phone": "+14034881071",
+        "first_name": "Brandon",
+        "last_name": "Martin",
+        "address": "3291 Craven Place",
+        "city": "Medicine Hat",
+        "state": "Alberta",
+        "country": "CA",
+        "zip_code": "T1A 0N1",
+        "ip_address": "127.0.0.1",
+        "ntf_url": "https://postback.url",
+        "shipping_cost": 0,
+        "udfs": ["udf1"],
+        "bank_id": 101
+    }'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const response = await fetch('https://sandbox.pp.paybilt.com/api/v2/payment/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer YOUR_TOKEN',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: "Brandon@Martin.com",
+        phone: "+14034881071",
+        first_name: "Brandon",
+        last_name: "Martin",
+        address: "3291 Craven Place",
+        city: "Medicine Hat",
+        state: "Alberta",
+        country: "CA",
+        zip_code: "T1A 0N1",
+        ip_address: "127.0.0.1",
+        ntf_url: "https://postback.url",
+        shipping_cost: 0,
+        udfs: ["udf1"],
+        bank_id: 101
+      })
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://sandbox.pp.paybilt.com/api/v2/payment/',
+        headers={
+            'Authorization': 'Bearer YOUR_TOKEN',
+            'Content-Type': 'application/json'
+        },
+        json={
+            "email": "Brandon@Martin.com",
+            "phone": "+14034881071",
+            "first_name": "Brandon",
+            "last_name": "Martin",
+            "address": "3291 Craven Place",
+            "city": "Medicine Hat",
+            "state": "Alberta",
+            "country": "CA",
+            "zip_code": "T1A 0N1",
+            "ip_address": "127.0.0.1",
+            "ntf_url": "https://postback.url",
+            "shipping_cost": 0,
+            "udfs": ["udf1"],
+            "bank_id": 101
+        }
+    )
+    ```
+  </Tab>
+</Tabs>
+
+### Required Fields
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `email` | string | Customer's email address |
+| `first_name` | string | Customer's first name |
+| `ntf_url` | string | Webhook URL for status updates |
+| `bank_id` | integer | Bank/payment method identifier |
+
+<Tip>
+Use the sandbox environment (`sandbox.pp.paybilt.com`) for testing. Switch to production URLs when ready to go live.
+</Tip>
+
+## API Response
+
+The API returns a JSON response with transaction details and next steps for the customer.
+
+### Example Response
+
+```json
+{
+    "amount": 1.12,  
+    "descriptor": "MoneyRequest",
+    "message": "<div class='pp_message'><div class='pp_header'>THANK YOU.</div><div class='pp_message_text'>You will receive an email requesting a transfer of $1.00 CAD.</div><div class='pp_message_text'>Please check your email address (including your spam/junk) for instructions to complete your payment.</div></div>",
+    "status": "approved",
+    "tx_action": "request",
+    "txid": "30045691861641159566122674675",
+    "udfs": ["udf1"],
+    "bank_payment_url": "https://interac.payper.ca/30045691861641159566122674675/101"
+}
+```
+
+### Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `txid` | Unique transaction identifier for tracking |
+| `status` | Transaction status (`approved`, `pending`, `declined`) |
+| `bank_payment_url` | URL to redirect customer for payment completion |
+| `message` | HTML message to display to customer |
+
+## Webhook Integration
+
+PayPer sends real-time notifications to your `ntf_url` whenever a payment status changes.
+
+### Webhook Events
+
+<Accordion title="Payment Approved">
+Sent when a payment is successfully completed by the customer.
+
+```json
+{
+  "txid": "30045691861641159566122674675",
+  "status": "approved",
+  "amount": 1.12,
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+</Accordion>
+
+<Accordion title="Payment Declined">
+Sent when a payment is declined or fails.
+
+```json
+{
+  "txid": "30045691861641159566122674675",
+  "status": "declined",
+  "reason": "Insufficient funds",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+</Accordion>
+
+<Accordion title="Payment Pending">
+Sent when a payment requires additional processing time.
+
+```json
+{
+  "txid": "30045691861641159566122674675",
+  "status": "pending",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+</Accordion>
+
+## Error Handling
+
+<Warning>
+Always implement proper error handling to gracefully manage failed payment attempts.
+</Warning>
+
+Common error scenarios:
+
+- **Invalid credentials**: Check your bearer token
+- **Missing required fields**: Validate all required parameters
+- **Network timeouts**: Implement retry logic with exponential backoff
+- **Invalid bank_id**: Verify supported payment methods
+
+## Testing
+
+### Sandbox Environment
+
+- **Base URL**: `https://sandbox.pp.paybilt.com/api/v2/`
+- **Test mode**: All transactions are simulated
+- **No real money**: Safe for development and testing
+
+### Test Scenarios
+
+1. **Successful Payment**: Use valid test data
+2. **Declined Payment**: Use specific test email patterns
+3. **Timeout Scenarios**: Test webhook retry mechanisms
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Security" icon="shield">
+    - Always use HTTPS endpoints
+    - Store API keys securely
+    - Validate webhook signatures
+    - Implement proper error logging
+  </Card>
+  <Card title="Performance" icon="gauge">
+    - Cache payment method lists
+    - Implement async webhook processing
+    - Use connection pooling
+    - Monitor API response times
+  </Card>
+</CardGroup>
+
+## Next Steps
+
+<Card title="Explore Advanced Features" icon="arrow-right" href="/user-guides/authentication">
+  Learn about RSA key encryption, transaction lookups, and advanced webhook configurations
+</Card> 

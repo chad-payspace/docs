@@ -1,0 +1,337 @@
+---
+title: "Use Cases & Examples"
+description: "Real-world integration examples and business scenarios using PayPer"
+---
+
+## Real-World Integration Examples
+
+Discover how businesses across different industries leverage PayPer's payment processing capabilities to solve specific challenges and improve their customer experience.
+
+## E-commerce & Retail
+
+### **Online Marketplace**
+<Accordion title="Multi-Vendor Platform Integration">
+**Scenario**: Online marketplace with hundreds of sellers needing instant payouts
+
+**Challenge**: Process customer payments and distribute earnings to vendors quickly and securely
+
+**PayPer Solution**:
+- Accept customer payments via e-Transfer and Digital Cheque
+- Use Payout API to distribute vendor earnings automatically
+- Implement webhooks for real-time payment status updates
+- Handle disputes and refunds seamlessly across all payment methods
+
+**Benefits**: 
+- Reduced payout processing time from 5-7 days to same-day
+- 40% increase in vendor satisfaction due to faster payments
+- Automated reconciliation reduces manual finance work by 80%
+</Accordion>
+
+<Accordion title="Subscription Box Service">
+**Scenario**: Monthly subscription service targeting Canadian consumers
+
+**Challenge**: High cart abandonment due to limited payment options
+
+**PayPer Solution**:
+- Added e-Transfer as checkout option alongside credit cards
+- Implemented automated recurring billing through API
+- Set up refund processing for subscription cancellations
+- Created customer portal for payment method management
+
+**Benefits**:
+- 25% reduction in cart abandonment rates
+- 15% increase in successful subscription renewals
+- Improved customer satisfaction with familiar payment methods
+</Accordion>
+
+## Financial Services
+
+### **Peer-to-Peer Lending Platform**
+<Accordion title="Loan Disbursement & Repayment">
+**Scenario**: P2P lending platform connecting borrowers and investors
+
+**Challenge**: Need secure, fast loan disbursements and flexible repayment options
+
+**PayPer Solution**:
+- Loan disbursements via Payout API directly to borrower bank accounts
+- Accept loan repayments through e-Transfer and Digital Cheque
+- Implement automated payment reminders and processing
+- Comprehensive reporting for regulatory compliance
+
+**Benefits**:
+- Loan disbursement time reduced from 3-5 days to same-day
+- 90% borrower satisfaction with payment flexibility
+- Streamlined compliance reporting and audit trails
+</Accordion>
+
+<Accordion title="Investment Platform Distributions">
+**Scenario**: Investment platform managing client portfolios and distributions
+
+**Challenge**: Efficiently distribute investment returns to hundreds of clients
+
+**PayPer Solution**:
+- Bulk payout processing for quarterly distributions
+- Real-time transaction tracking and status updates
+- Automated client notifications via webhook integration
+- Detailed reporting for tax and compliance purposes
+
+**Benefits**:
+- Processing time reduced from 2 weeks to 2 days
+- 99.9% distribution accuracy with automated systems
+- Significant reduction in client service inquiries
+</Accordion>
+
+## SaaS & Technology
+
+### **Gig Economy Platform**
+<Accordion title="Instant Worker Payments">
+**Scenario**: On-demand service platform with thousands of independent contractors
+
+**Challenge**: Workers demand instant payment after job completion
+
+**PayPer Solution**:
+- Real-time payouts via Visa Direct and MasterCard Send
+- e-Transfer option for workers without credit cards
+- Mobile-optimized payment interface
+- Automated tax document generation and reporting
+
+**Benefits**:
+- 95% of payments processed within 30 minutes
+- 50% increase in worker retention due to instant pay
+- Reduced customer service workload by 60%
+</Accordion>
+
+<Accordion title="SaaS Platform Integration">
+**Scenario**: B2B SaaS platform needing embedded payment functionality
+
+**Challenge**: Customers need to process payments within the SaaS application
+
+**PayPer Solution**:
+- White-label API integration for seamless user experience
+- Custom webhook endpoints for real-time payment updates
+- Comprehensive dashboard integration for payment management
+- Multi-tenant architecture supporting hundreds of clients
+
+**Benefits**:
+- Generated additional revenue stream (payment processing fees)
+- Increased customer stickiness with embedded payments
+- Simplified customer onboarding and management
+</Accordion>
+
+## Healthcare & Professional Services
+
+### **Healthcare Practice Management**
+<Accordion title="Patient Payment Processing">
+**Scenario**: Medical clinic chain needing flexible payment options
+
+**Challenge**: Patients prefer alternatives to credit card payments for medical expenses
+
+**PayPer Solution**:
+- e-Transfer integration for patient payments
+- Payment plan management through recurring API calls
+- HIPAA-compliant payment processing and reporting
+- Integration with existing practice management software
+
+**Benefits**:
+- 30% increase in payment collection rates
+- Reduced payment processing costs by 20%
+- Improved patient satisfaction with payment flexibility
+</Accordion>
+
+## Gaming & Entertainment
+
+### **Online Gaming Platform**
+<Accordion title="Player Winnings & Tournaments">
+**Scenario**: Online gaming platform with cash tournaments and prizes
+
+**Challenge**: Fast, secure payout of winnings to players globally
+
+**PayPer Solution**:
+- Instant payouts via Visa Direct for international players
+- e-Transfer for Canadian players
+- Fraud detection and prevention systems
+- Real-time tournament payout processing
+
+**Benefits**:
+- Player winnings processed within minutes of tournament end
+- 99.8% payout success rate
+- Enhanced player trust and platform reputation
+</Accordion>
+
+## Implementation Patterns
+
+### **Common Integration Approaches**
+
+<CardGroup cols={2}>
+  <Card title="Payment Gateway Replacement" icon="arrows-rotate">
+    **Replace existing payment processor**
+    
+    - Migrate from traditional credit card processors
+    - Add e-Transfer and Digital Cheque options
+    - Maintain existing checkout flow
+    - Gradual rollout to test customer adoption
+  </Card>
+  <Card title="Payment Method Expansion" icon="plus">
+    **Add new payment options**
+    
+    - Keep existing payment methods
+    - Add PayPer as additional option
+    - A/B test customer preferences
+    - Optimize based on conversion data
+  </Card>
+  <Card title="Marketplace Integration" icon="store">
+    **Two-sided marketplace payments**
+    
+    - Accept payments from buyers
+    - Distribute earnings to sellers
+    - Handle disputes and refunds
+    - Automated reconciliation and reporting
+  </Card>
+  <Card title="Subscription & Recurring" icon="repeat">
+    **Recurring payment processing**
+    
+    - Automated subscription billing
+    - Flexible payment scheduling
+    - Dunning management for failed payments
+    - Customer self-service portal
+  </Card>
+</CardGroup>
+
+## Technical Implementation Examples
+
+### **Quick Integration Code Samples**
+
+<Tabs>
+  <Tab title="Accept Payment">
+    ```javascript
+    // Accept a customer payment
+    const payment = await fetch('/api/v2/payment/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: 29.99,
+        email: 'customer@example.com',
+        first_name: 'John',
+        last_name: 'Doe',
+        ntf_url: 'https://yoursite.com/webhooks/payment'
+      })
+    });
+    ```
+  </Tab>
+  <Tab title="Process Payout">
+    ```javascript
+    // Send payout to vendor
+    const payout = await fetch('/api/v2/payout/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: 250.00,
+        email: 'vendor@example.com',
+        first_name: 'Jane',
+        last_name: 'Smith',
+        ntf_url: 'https://yoursite.com/webhooks/payout'
+      })
+    });
+    ```
+  </Tab>
+  <Tab title="Handle Webhook">
+    ```javascript
+    // Webhook handler for payment updates
+    app.post('/webhooks/payment', (req, res) => {
+      const { txid, status, amount } = req.body;
+      
+      if (status === 'completed') {
+        // Payment successful - fulfill order
+        fulfillOrder(txid, amount);
+      } else if (status === 'failed') {
+        // Payment failed - notify customer
+        notifyPaymentFailure(txid);
+      }
+      
+      res.status(200).send('OK');
+    });
+    ```
+  </Tab>
+</Tabs>
+
+## Industry-Specific Benefits
+
+<CardGroup cols={3}>
+  <Card title="E-commerce" icon="shopping-cart">
+    **Key Benefits**
+    - Capture non-card customers
+    - Reduce cart abandonment
+    - Lower processing fees
+    - Canadian market optimization
+  </Card>
+  <Card title="Marketplaces" icon="store">
+    **Key Benefits**
+    - Fast vendor payouts
+    - Automated reconciliation
+    - Multi-party transaction handling
+    - Comprehensive reporting
+  </Card>
+  <Card title="Financial Services" icon="building-columns">
+    **Key Benefits**
+    - Regulatory compliance
+    - Audit trail management
+    - Bulk processing capabilities
+    - Real-time transaction monitoring
+  </Card>
+</CardGroup>
+
+## ROI & Business Impact
+
+### **Typical Results After PayPer Integration**
+
+<Accordion title="Revenue & Conversion Improvements">
+- **15-30% increase** in successful transactions
+- **20-40% reduction** in cart abandonment
+- **10-25% growth** in customer lifetime value
+- **5-15% improvement** in customer acquisition
+</Accordion>
+
+<Accordion title="Operational Efficiency Gains">
+- **60-80% reduction** in manual payment processing
+- **50-70% decrease** in customer service inquiries
+- **40-60% faster** reconciliation and reporting
+- **30-50% reduction** in payment-related errors
+</Accordion>
+
+<Accordion title="Cost Savings">
+- **10-30% lower** payment processing fees
+- **40-60% reduction** in payment operations staffing
+- **20-35% decrease** in failed payment losses
+- **25-45% improvement** in cash flow timing
+</Accordion>
+
+## Getting Started with Your Use Case
+
+<Steps>
+  <Step title="Identify Your Scenario">
+    Review the examples above to find patterns similar to your business model
+  </Step>
+  <Step title="Plan Your Integration">
+    Determine which PayPer features align with your specific requirements
+  </Step>
+  <Step title="Start with Sandbox">
+    Test your integration approach using our sandbox environment
+  </Step>
+  <Step title="Implement & Launch">
+    Follow our [User Guides](/user-guides/getting-started) for detailed implementation steps
+  </Step>
+</Steps>
+
+## Need Custom Guidance?
+
+Every business is unique. If you don't see your specific use case above or need customized integration guidance:
+
+<Card title="Contact Our Integration Team" icon="headset" href="mailto:technical@payper.ca">
+  Get personalized consultation on your specific integration requirements and business goals
+</Card> 

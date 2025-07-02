@@ -1,0 +1,398 @@
+---
+title: "Refund Processing"
+description: "Process refunds efficiently across all payment methods with PayPer's unified refund API"
+icon: "arrow-rotate-left"
+---
+
+## Overview
+
+PayPer's refund API provides a unified solution for processing refunds across all payment methods. Whether the original transaction was made via e-Transfer, Digital Cheque, Visa Direct, or any other supported method, the refund process remains consistent and straightforward.
+
+<Note>
+**Universal Refunds**: One API endpoint handles refunds for all payment types, making integration simple and consistent.
+</Note>
+
+## Key Advantages
+
+<CardGroup cols={2}>
+  <Card title="Universal API" icon="arrows-rotate">
+    Single endpoint works for all payment methods - no need for method-specific integration
+  </Card>
+  <Card title="Fast Processing" icon="bolt">
+    Quick refund processing with real-time status updates and notifications
+  </Card>
+  <Card title="Full Traceability" icon="route">
+    Complete audit trail linking refunds to original transactions
+  </Card>
+  <Card title="Automated Workflows" icon="gears">
+    Webhook integration for automated refund processing and customer notifications
+  </Card>
+</CardGroup>
+
+## Common Refund Scenarios
+
+- **Customer Returns**: Process product return refunds
+- **Service Cancellations**: Refund canceled services or subscriptions
+- **Overpayments**: Return excess payment amounts
+- **Error Corrections**: Fix incorrect charges or duplicate transactions
+- **Dispute Resolution**: Resolve customer payment disputes
+
+## How It Works
+
+<Steps>
+  <Step title="Identify Transaction">
+    Locate the original transaction using the transaction ID (txid)
+  </Step>
+  <Step title="Submit Refund Request">
+    Send refund request with transaction ID and refund amount
+  </Step>
+  <Step title="Process Refund">
+    PayPer automatically processes the refund using the original payment method
+  </Step>
+  <Step title="Confirmation">
+    Receive confirmation and track status through webhooks
+  </Step>
+</Steps>
+
+## Refund Request
+
+Process a refund by providing the original transaction ID and the refund amount.
+
+### Example Request
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl --location 'https://sandbox.pp.paybilt.com/api/v2/refund/' \
+    --header 'Authorization: Bearer YOUR_TOKEN' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "txid": "3223165546456513321456",
+        "amount": 1
+    }'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const response = await fetch('https://sandbox.pp.paybilt.com/api/v2/refund/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer YOUR_TOKEN',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        txid: "3223165546456513321456",
+        amount: 1
+      })
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://sandbox.pp.paybilt.com/api/v2/refund/',
+        headers={
+            'Authorization': 'Bearer YOUR_TOKEN',
+            'Content-Type': 'application/json'
+        },
+        json={
+            "txid": "3223165546456513321456",
+            "amount": 1
+        }
+    )
+    ```
+  </Tab>
+  <Tab title="PHP">
+    ```php
+    $curl = curl_init();
+
+    curl_setopt_array($curl, array(
+      CURLOPT_URL => 'https://sandbox.pp.paybilt.com/api/v2/refund/',
+      CURLOPT_RETURNTRANSFER => true,
+      CURLOPT_POST => true,
+      CURLOPT_HTTPHEADER => array(
+        'Authorization: Bearer YOUR_TOKEN',
+        'Content-Type: application/json'
+      ),
+      CURLOPT_POSTFIELDS => json_encode(array(
+        'txid' => '3223165546456513321456',
+        'amount' => 1
+      ))
+    ));
+
+    $response = curl_exec($curl);
+    curl_close($curl);
+    ```
+  </Tab>
+</Tabs>
+
+### Required Parameters
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `txid` | string | Original transaction ID to refund |
+| `amount` | number | Refund amount in CAD |
+
+### Optional Parameters
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `reason` | string | Refund reason for internal tracking |
+| `notes` | string | Additional notes about the refund |
+| `ntf_url` | string | Override webhook URL for this refund |
+
+<Warning>
+The refund amount cannot exceed the original transaction amount. For partial refunds, ensure the amount is less than or equal to the remaining refundable balance.
+</Warning>
+
+## API Response
+
+The refund API returns comprehensive details about the refund transaction and next steps.
+
+### Example Response
+
+```json
+{
+    "amount": 10,
+    "descriptor": "eTransferSendMoney",
+    "errors": [],
+    "message": "<div class=\"pp_message\"><div class=\"pp_message_text\">You will receive a refund of $10.00 CAD.</div><div class=\"pp_message_text\">Please check your customer@email.com email address (including your spam/junk) for instructions to complete your transaction.</div></div>",
+    "status": "approved",
+    "tx_action": "request",
+    "txid": "30234026284335354259121815668",
+    "udfs": [
+        "udf11c21908c-e572-44c0-877d-db622428e407",
+        "udf2"
+    ]
+}
+```
+
+### Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `txid` | New transaction ID for the refund (different from original) |
+| `status` | Refund status (`approved`, `pending`, `declined`) |
+| `amount` | Confirmed refund amount |
+| `descriptor` | Payment method used for the refund |
+| `message` | Customer-facing message about the refund |
+| `errors` | Array of any errors encountered |
+
+## Refund Status Flow
+
+Understanding how refunds progress through the system:
+
+<Accordion title="1. Refund Initiated">
+**Status**: `pending`
+
+Refund request has been submitted and is being validated against the original transaction.
+
+```json
+{
+  "txid": "30234026284335354259121815668",
+  "status": "pending",
+  "message": "Refund request is being processed"
+}
+```
+</Accordion>
+
+<Accordion title="2. Refund Approved">
+**Status**: `approved`
+
+Refund has been validated and approved for processing.
+
+```json
+{
+  "txid": "30234026284335354259121815668",
+  "status": "approved",
+  "amount": 10.00,
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+</Accordion>
+
+<Accordion title="3. Refund Completed">
+**Status**: `completed`
+
+Funds have been successfully returned to the customer's original payment method.
+
+```json
+{
+  "txid": "30234026284335354259121815668",
+  "status": "completed",
+  "completion_time": "2024-01-15T10:35:00Z"
+}
+```
+</Accordion>
+
+## Webhook Integration
+
+PayPer sends real-time notifications about refund status changes to help you keep customers informed.
+
+### Webhook Events
+
+<Tabs>
+  <Tab title="Refund Approved">
+    ```json
+    {
+      "event": "refund.approved",
+      "txid": "30234026284335354259121815668",
+      "original_txid": "3223165546456513321456",
+      "status": "approved",
+      "amount": 10.00,
+      "timestamp": "2024-01-15T10:30:00Z"
+    }
+    ```
+  </Tab>
+  <Tab title="Refund Completed">
+    ```json
+    {
+      "event": "refund.completed",
+      "txid": "30234026284335354259121815668",
+      "original_txid": "3223165546456513321456",
+      "status": "completed",
+      "amount": 10.00,
+      "completion_time": "2024-01-15T10:35:00Z",
+      "timestamp": "2024-01-15T10:35:00Z"
+    }
+    ```
+  </Tab>
+  <Tab title="Refund Failed">
+    ```json
+    {
+      "event": "refund.failed",
+      "txid": "30234026284335354259121815668",
+      "original_txid": "3223165546456513321456",
+      "status": "failed",
+      "reason": "Original transaction not eligible for refund",
+      "timestamp": "2024-01-15T10:32:00Z"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Refund Validation Rules
+
+PayPer automatically validates refund requests against several criteria:
+
+### Transaction Eligibility
+- **Transaction Status**: Original transaction must be completed
+- **Age Limit**: Some payment methods have time limits for refunds
+- **Amount Limit**: Refund cannot exceed original transaction amount
+- **Previous Refunds**: System tracks partial refunds to prevent over-refunding
+
+### Business Rules
+- **Duplicate Prevention**: Multiple refund requests for the same transaction are handled intelligently
+- **Fraud Protection**: Suspicious refund patterns are flagged for review
+- **Compliance**: Refunds follow regulatory requirements for each payment method
+
+## Error Handling
+
+<Warning>
+Always implement comprehensive error handling to manage refund failures and provide clear customer communication.
+</Warning>
+
+### Common Error Scenarios
+
+<Accordion title="Transaction Not Found">
+**Error Code**: `TRANSACTION_NOT_FOUND`
+
+The provided transaction ID doesn't exist or isn't accessible.
+
+```json
+{
+  "errors": [
+    {
+      "code": "TRANSACTION_NOT_FOUND",
+      "message": "Transaction with ID 3223165546456513321456 not found"
+    }
+  ]
+}
+```
+</Accordion>
+
+<Accordion title="Refund Amount Exceeds Original">
+**Error Code**: `AMOUNT_EXCEEDS_ORIGINAL`
+
+The refund amount is greater than the original transaction amount or remaining refundable balance.
+
+```json
+{
+  "errors": [
+    {
+      "code": "AMOUNT_EXCEEDS_ORIGINAL",
+      "message": "Refund amount cannot exceed $15.00"
+    }
+  ]
+}
+```
+</Accordion>
+
+<Accordion title="Transaction Not Refundable">
+**Error Code**: `TRANSACTION_NOT_REFUNDABLE`
+
+The transaction is not eligible for refunds due to status, age, or payment method restrictions.
+
+```json
+{
+  "errors": [
+    {
+      "code": "TRANSACTION_NOT_REFUNDABLE",
+      "message": "Transaction is not eligible for refunds"
+    }
+  ]
+}
+```
+</Accordion>
+
+## Testing Refunds
+
+### Sandbox Environment
+
+- **Base URL**: `https://sandbox.pp.paybilt.com/api/v2/`
+- **Test Mode**: All refunds are simulated
+- **Safe Testing**: No real money is processed
+
+### Test Scenarios
+
+1. **Full Refund**: Refund the complete original amount
+2. **Partial Refund**: Refund a portion of the original amount
+3. **Multiple Partial Refunds**: Test sequential partial refunds
+4. **Invalid Transaction**: Test with non-existent transaction IDs
+5. **Webhook Testing**: Verify webhook delivery for all status changes
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Customer Experience" icon="user">
+    - Provide clear refund status updates
+    - Set proper expectations for timing
+    - Include refund tracking information
+    - Offer self-service refund tracking
+  </Card>
+  <Card title="Operational Excellence" icon="cog">
+    - Implement automated refund workflows
+    - Monitor refund success rates
+    - Track refund reasons for insights
+    - Maintain comprehensive audit logs
+  </Card>
+</CardGroup>
+
+## Refund Timing
+
+Processing times vary by payment method:
+
+| Payment Method | Typical Refund Time |
+|---------------|-------------------|
+| e-Transfer | 1-3 business days |
+| Digital Cheque | 3-5 business days |
+| Visa Direct | 30 minutes - 2 hours |
+| MasterCard Send | 30 minutes - 2 hours |
+
+## Next Steps
+
+<Card title="Learn About Payment Methods" icon="arrow-right" href="/user-guides/payments">
+  Explore how to accept payments across different methods and channels
+</Card> 

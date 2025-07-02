@@ -1,0 +1,1273 @@
+<html lang="en" style="" data-color-mode="system" class=" useReactApp  userLoggedIn"><head><meta charset="utf-8"><meta name="readme-deploy" content="5.403.0"><meta name="readme-subdomain" content="payper"><meta name="readme-repo" content="payper-f95707863d54"><meta name="readme-version" content="2.1"><title>Process MasterCard Send Transaction</title><meta name="description" content="This page is password-protected."><meta property="og:title" content="Process MasterCard Send Transaction"><meta property="og:description" content="This page is password-protected."><meta property="og:site_name" content="Payper"><meta name="twitter:title" content="Process MasterCard Send Transaction"><meta name="twitter:description" content="This page is password-protected."><meta name="twitter:card" content="summary_large_image"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta property="og:image" content="https://files.readme.io/c72371f-small-payper_square_p_logo.png"><meta name="twitter:image" content="https://files.readme.io/c72371f-small-payper_square_p_logo.png"><link id="favicon" rel="shortcut icon" href="https://files.readme.io/d6a6510-favicon.ico" type="image/x-icon"><link rel="canonical" href="https://docs.payper.ca/docs/process-mastercard-send-transaction-1"><script src="https://cdn.readme.io/public/js/cash-dom.min.js?1751384323938"></script><link data-chunk="Footer" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/Footer.7ca87f1efe735da787ba.css">
+<link data-chunk="RDMD" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/RDMD.633b742601d03d32e376.css">
+<link data-chunk="routes-Doc" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/routes-Doc.176eb20f4242235c3011.css">
+<link data-chunk="index" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/index.d7337c6a5a2bbbfedc8d.css">
+<link data-chunk="Header" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/Header.6772772a52a8b62393de.css">
+<link data-chunk="main" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/main.73860f00ed1d697d0ed1.css">
+<link data-chunk="main" rel="preload" as="style" href="https://cdn.readme.io/public/hub/web/ui-styles.fa32f85d84e0896569bc.css">
+<link data-chunk="main" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/main.df96c1b5e3c41fc3e1bf.js">
+<link data-chunk="routes-SuperHub" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/routes-SuperHub.50955563d9ae60442de4.js">
+<link data-chunk="Header" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/92264.08907f5b1f86d3f00a00.js">
+<link data-chunk="Header" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/47783.364429c4e7671b46dd7e.js">
+<link data-chunk="Header" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/Header.d1b5886793f14ecb4ece.js">
+<link data-chunk="core-icons-chevron-down-svg" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/core-icons-chevron-down-svg.b37ee8d002dd6fea2dba.js">
+<link data-chunk="core-icons-chevron-up-down-svg" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/core-icons-chevron-up-down-svg.2c9b648549c0893e8de2.js">
+<link data-chunk="index" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/13766.d772ba54efb1db56d529.js">
+<link data-chunk="index" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/11677.79f18607e907b3b022c4.js">
+<link data-chunk="index" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/26083.a54a38036001ccd939f9.js">
+<link data-chunk="index" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/index.a1e620561bb3efc36255.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/90441.7bad24d6a8cd0ef6f53c.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/6146.f99bcbc8d654cc36d7c8.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/88836.466db83f0dbc8536e6f1.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/27449.8f05501196c10ee6f862.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/23826.16d3df1c18c8d9c429fa.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/59954.c377359b7d539c3c7b47.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/93536.f9d0654db59ec5c65cb0.js">
+<link data-chunk="routes-Doc" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/routes-Doc.ddf29cc881d71c343077.js">
+<link data-chunk="core-icons-alert-circle-svg" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/core-icons-alert-circle-svg.7bb6c7f5586095317161.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/48424.bb37c5885520ec98c35d.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/59503.e28678b329fb8600e545.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/46123.46633d26b7849f653406.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/80921.29cd5bbded72b5912edc.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/25420.2a9bf013c9a9f3ab2a2f.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/11236.22427759ab4cca7af52e.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/53024.6f76d28f3fecb20c9f29.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/71391.dffa8295ba49e4ab05c6.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/10560.08360ede3e7fcd2084fa.js">
+<link data-chunk="RDMD" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/RDMD.400af4836157de1ca872.js">
+<link data-chunk="Footer" rel="preload" as="script" href="https://cdn.readme.io/public/hub/web/Footer.7d5e07b701850b1ba794.js">
+<link data-chunk="main" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/ui-styles.fa32f85d84e0896569bc.css">
+<link data-chunk="main" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/main.73860f00ed1d697d0ed1.css">
+<link data-chunk="Header" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/Header.6772772a52a8b62393de.css">
+<link data-chunk="index" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/index.d7337c6a5a2bbbfedc8d.css">
+<link data-chunk="routes-Doc" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/routes-Doc.176eb20f4242235c3011.css">
+<link data-chunk="RDMD" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/RDMD.633b742601d03d32e376.css">
+<link data-chunk="Footer" rel="stylesheet" href="https://cdn.readme.io/public/hub/web/Footer.7ca87f1efe735da787ba.css"><!-- CUSTOM CSS--><style title="rm-custom-css">:root{--project-color-primary:#000000;--project-color-inverse:#fff;--recipe-button-color:#636363;--recipe-button-color-hover:#303030;--recipe-button-color-active:#161616;--recipe-button-color-focus:rgba(99, 99, 99, 0.25);--recipe-button-color-disabled:#c9c9c9}[id=enterprise] .ReadMeUI[is=AlgoliaSearch]{--project-color-primary:#000000;--project-color-inverse:#fff}a{color:var(--color-link-primary,#636363)}a:hover{color:var(--color-link-primary-darken-5,#303030)}a.text-muted:hover{color:var(--color-link-primary,#636363)}.btn.btn-primary{background-color:#636363}.btn.btn-primary:hover{background-color:#303030}.theme-line #hub-landing-top h2{color:#636363}#hub-landing-top .btn:hover{color:#636363}.theme-line #hub-landing-top .btn:hover{color:#fff}.theme-solid header#hub-header #header-top{background-color:#000}.theme-solid.header-gradient header#hub-header #header-top{background:linear-gradient(to bottom,#000,#000)}.theme-solid.header-custom header#hub-header #header-top{background-image:url(undefined)}.theme-line header#hub-header #header-top{border-bottom-color:#000}.theme-line header#hub-header #header-top .btn{background-color:#000}header#hub-header #header-top #header-logo{width:124px;height:40px;margin-top:0;background-image:url(https://files.readme.io/d23eb14-small-image_3.png)}#hub-subheader-parent #hub-subheader .hub-subheader-breadcrumbs .dropdown-menu a:hover{background-color:#000}#subheader-links a.active{color:#000!important;box-shadow:inset 0 -2px 0 #000}#subheader-links a:hover{color:#000!important;box-shadow:inset 0 -2px 0 #000;opacity:.7}.discussion .submit-vote.submit-vote-parent.voted a.submit-vote-button{background-color:#636363}section#hub-discuss .discussion a .discuss-body h4{color:#636363}section#hub-discuss .discussion a:hover .discuss-body h4{color:#303030}#hub-subheader-parent #hub-subheader.sticky-header.sticky{border-bottom-color:#636363}#hub-subheader-parent #hub-subheader.sticky-header.sticky .search-box{border-bottom-color:#636363}#hub-search-results h3 em{color:#636363}.main_background,.tag-item{background:#636363!important}.main_background:hover{background:#303030!important}.main_color{color:#000!important}.border_bottom_main_color{border-bottom:2px solid #000}.main_color_hover:hover{color:#000!important}section#hub-discuss h1{color:#636363}#hub-reference .hub-api .api-definition .api-try-it-out.active{border-color:#636363;background-color:#636363}#hub-reference .hub-api .api-definition .api-try-it-out.active:hover{background-color:#303030;border-color:#303030}#hub-reference .hub-api .api-definition .api-try-it-out:hover{border-color:#636363;color:#636363}#hub-reference .hub-reference .logs .logs-empty .logs-login-button,#hub-reference .hub-reference .logs .logs-login .logs-login-button{background-color:var(--project-color-primary,#636363);border-color:var(--project-color-primary,#636363)}#hub-reference .hub-reference .logs .logs-empty .logs-login-button:hover,#hub-reference .hub-reference .logs .logs-login .logs-login-button:hover{background-color:#303030;border-color:#303030}#hub-reference .hub-reference .logs .logs-empty>svg>path,#hub-reference .hub-reference .logs .logs-login>svg>path{fill:#636363;fill:var(--project-color-primary,#636363)}#hub-reference .hub-reference .logs:last-child .logs-empty,#hub-reference .hub-reference .logs:last-child .logs-login{margin-bottom:35px}#hub-reference .hub-reference .hub-reference-section .hub-reference-left header .hub-reference-edit:hover{color:#636363}.main-color-accent{border-bottom:3px solid #000;padding-bottom:8px}</style><meta name="loadedProject" content="payper"><script>var storedColorMode = `system` === 'system' ? window.localStorage.getItem('color-scheme') : `system`
+document.querySelector('[data-color-mode]').setAttribute('data-color-mode', storedColorMode)</script><script id="config" type="application/json" data-json="{&quot;algoliaIndex&quot;:&quot;readme_search_v2&quot;,&quot;amplitude&quot;:{&quot;apiKey&quot;:&quot;dc8065a65ef83d6ad23e37aaf014fc84&quot;,&quot;enabled&quot;:true},&quot;asset_url&quot;:&quot;https://cdn.readme.io&quot;,&quot;domain&quot;:&quot;readme.io&quot;,&quot;domainFull&quot;:&quot;https://dash.readme.com&quot;,&quot;encryptedLocalStorageKey&quot;:&quot;ekfls-2025-03-27&quot;,&quot;fullstory&quot;:{&quot;enabled&quot;:true,&quot;orgId&quot;:&quot;FSV9A&quot;},&quot;liveblocks&quot;:{&quot;copilotId&quot;:&quot;co_11Q0l0JJlkcBhhAYUFh8s&quot;,&quot;secretKey&quot;:&quot;sk_prod_aA96QyiYZeqUtjaEPtx3nwA-s_4D1AugFYMO87GRt9_GkOLPlYZ4S34f5kDSEe-a&quot;},&quot;metrics&quot;:{&quot;billingCronEnabled&quot;:&quot;true&quot;,&quot;dashUrl&quot;:&quot;https://m.readme.io&quot;,&quot;defaultUrl&quot;:&quot;https://m.readme.io&quot;,&quot;exportMaxRetries&quot;:12,&quot;wsUrl&quot;:&quot;wss://m.readme.io&quot;},&quot;proxyUrl&quot;:&quot;https://try.readme.io&quot;,&quot;readmeRecaptchaSiteKey&quot;:&quot;6LesVBYpAAAAAESOCHOyo2kF9SZXPVb54Nwf3i2x&quot;,&quot;releaseVersion&quot;:&quot;5.403.0&quot;,&quot;sentry&quot;:{&quot;dsn&quot;:&quot;https://3bbe57a973254129bcb93e47dc0cc46f@o343074.ingest.sentry.io/2052166&quot;,&quot;enabled&quot;:true},&quot;shMigration&quot;:{&quot;promoVideo&quot;:&quot;&quot;,&quot;forceWaitlist&quot;:false,&quot;migrationPreview&quot;:false},&quot;sslBaseDomain&quot;:&quot;readmessl.com&quot;,&quot;sslGenerationService&quot;:&quot;ssl.readmessl.com&quot;,&quot;stripePk&quot;:&quot;pk_live_5103PML2qXbDukVh7GDAkQoR4NSuLqy8idd5xtdm9407XdPR6o3bo663C1ruEGhXJjpnb2YCpj8EU1UvQYanuCjtr00t1DRCf2a&quot;,&quot;superHub&quot;:{&quot;newProjectsEnabled&quot;:true},&quot;wootric&quot;:{&quot;accountToken&quot;:&quot;NPS-122b75a4&quot;,&quot;enabled&quot;:true}}"></script><style>/* BASICS */
+
+.CodeMirror {
+  /* Set height, width, borders, and global font properties here */
+  font-family: monospace;
+  height: 300px;
+  color: black;
+  direction: ltr;
+}
+
+/* PADDING */
+
+.CodeMirror-lines {
+  padding: 4px 0; /* Vertical padding around content */
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  padding: 0 4px; /* Horizontal padding of content */
+}
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  background-color: white; /* The little square between H and V scrollbars */
+}
+
+/* GUTTER */
+
+.CodeMirror-gutters {
+  border-right: 1px solid #ddd;
+  background-color: #f7f7f7;
+  white-space: nowrap;
+}
+.CodeMirror-linenumbers {}
+.CodeMirror-linenumber {
+  padding: 0 3px 0 5px;
+  min-width: 20px;
+  text-align: right;
+  color: #999;
+  white-space: nowrap;
+}
+
+.CodeMirror-guttermarker { color: black; }
+.CodeMirror-guttermarker-subtle { color: #999; }
+
+/* CURSOR */
+
+.CodeMirror-cursor {
+  border-left: 1px solid black;
+  border-right: none;
+  width: 0;
+}
+/* Shown when moving in bi-directional text */
+.CodeMirror div.CodeMirror-secondarycursor {
+  border-left: 1px solid silver;
+}
+.cm-fat-cursor .CodeMirror-cursor {
+  width: auto;
+  border: 0 !important;
+  background: #7e7;
+}
+.cm-fat-cursor div.CodeMirror-cursors {
+  z-index: 1;
+}
+.cm-fat-cursor .CodeMirror-line::selection,
+.cm-fat-cursor .CodeMirror-line > span::selection, 
+.cm-fat-cursor .CodeMirror-line > span > span::selection { background: transparent; }
+.cm-fat-cursor .CodeMirror-line::-moz-selection,
+.cm-fat-cursor .CodeMirror-line > span::-moz-selection,
+.cm-fat-cursor .CodeMirror-line > span > span::-moz-selection { background: transparent; }
+.cm-fat-cursor { caret-color: transparent; }
+@-moz-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@-webkit-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+
+/* Can style cursor different in overwrite (non-insert) mode */
+.CodeMirror-overwrite .CodeMirror-cursor {}
+
+.cm-tab { display: inline-block; text-decoration: inherit; }
+
+.CodeMirror-rulers {
+  position: absolute;
+  left: 0; right: 0; top: -50px; bottom: 0;
+  overflow: hidden;
+}
+.CodeMirror-ruler {
+  border-left: 1px solid #ccc;
+  top: 0; bottom: 0;
+  position: absolute;
+}
+
+/* DEFAULT THEME */
+
+.cm-s-default .cm-header {color: blue;}
+.cm-s-default .cm-quote {color: #090;}
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-header, .cm-strong {font-weight: bold;}
+.cm-em {font-style: italic;}
+.cm-link {text-decoration: underline;}
+.cm-strikethrough {text-decoration: line-through;}
+
+.cm-s-default .cm-keyword {color: #708;}
+.cm-s-default .cm-atom {color: #219;}
+.cm-s-default .cm-number {color: #164;}
+.cm-s-default .cm-def {color: #00f;}
+.cm-s-default .cm-variable,
+.cm-s-default .cm-punctuation,
+.cm-s-default .cm-property,
+.cm-s-default .cm-operator {}
+.cm-s-default .cm-variable-2 {color: #05a;}
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}
+.cm-s-default .cm-comment {color: #a50;}
+.cm-s-default .cm-string {color: #a11;}
+.cm-s-default .cm-string-2 {color: #f50;}
+.cm-s-default .cm-meta {color: #555;}
+.cm-s-default .cm-qualifier {color: #555;}
+.cm-s-default .cm-builtin {color: #30a;}
+.cm-s-default .cm-bracket {color: #997;}
+.cm-s-default .cm-tag {color: #170;}
+.cm-s-default .cm-attribute {color: #00c;}
+.cm-s-default .cm-hr {color: #999;}
+.cm-s-default .cm-link {color: #00c;}
+
+.cm-s-default .cm-error {color: #f00;}
+.cm-invalidchar {color: #f00;}
+
+.CodeMirror-composing { border-bottom: 2px solid; }
+
+/* Default styles for common addons */
+
+div.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}
+div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }
+.CodeMirror-activeline-background {background: #e8f2ff;}
+
+/* STOP */
+
+/* The rest of this file contains styles related to the mechanics of
+   the editor. You probably shouldn't touch them. */
+
+.CodeMirror {
+  position: relative;
+  overflow: hidden;
+  background: white;
+}
+
+.CodeMirror-scroll {
+  overflow: scroll !important; /* Things will break if this is overridden */
+  /* 50px is the magic margin used to hide the element's real scrollbars */
+  /* See overflow: hidden in .CodeMirror */
+  margin-bottom: -50px; margin-right: -50px;
+  padding-bottom: 50px;
+  height: 100%;
+  outline: none; /* Prevent dragging from highlighting the element */
+  position: relative;
+  z-index: 0;
+}
+.CodeMirror-sizer {
+  position: relative;
+  border-right: 50px solid transparent;
+}
+
+/* The fake, visible scrollbars. Used to force redraw during scrolling
+   before actual scrolling happens, thus preventing shaking and
+   flickering artifacts. */
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  position: absolute;
+  z-index: 6;
+  display: none;
+  outline: none;
+}
+.CodeMirror-vscrollbar {
+  right: 0; top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.CodeMirror-hscrollbar {
+  bottom: 0; left: 0;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.CodeMirror-scrollbar-filler {
+  right: 0; bottom: 0;
+}
+.CodeMirror-gutter-filler {
+  left: 0; bottom: 0;
+}
+
+.CodeMirror-gutters {
+  position: absolute; left: 0; top: 0;
+  min-height: 100%;
+  z-index: 3;
+}
+.CodeMirror-gutter {
+  white-space: normal;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: -50px;
+}
+.CodeMirror-gutter-wrapper {
+  position: absolute;
+  z-index: 4;
+  background: none !important;
+  border: none !important;
+}
+.CodeMirror-gutter-background {
+  position: absolute;
+  top: 0; bottom: 0;
+  z-index: 4;
+}
+.CodeMirror-gutter-elt {
+  position: absolute;
+  cursor: default;
+  z-index: 4;
+}
+.CodeMirror-gutter-wrapper ::selection { background-color: transparent }
+.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }
+
+.CodeMirror-lines {
+  cursor: text;
+  min-height: 1px; /* prevents collapsing before first draw */
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  /* Reset some styles that the rest of the page might have set */
+  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
+  border-width: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  white-space: pre;
+  word-wrap: normal;
+  line-height: inherit;
+  color: inherit;
+  z-index: 2;
+  position: relative;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-variant-ligatures: contextual;
+  font-variant-ligatures: contextual;
+}
+.CodeMirror-wrap pre.CodeMirror-line,
+.CodeMirror-wrap pre.CodeMirror-line-like {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+.CodeMirror-linebackground {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 0;
+}
+
+.CodeMirror-linewidget {
+  position: relative;
+  z-index: 2;
+  padding: 0.1px; /* Force widget margins to stay inside of the container */
+}
+
+.CodeMirror-widget {}
+
+.CodeMirror-rtl pre { direction: rtl; }
+
+.CodeMirror-code {
+  outline: none;
+}
+
+/* Force content-box sizing for the elements where we expect it */
+.CodeMirror-scroll,
+.CodeMirror-sizer,
+.CodeMirror-gutter,
+.CodeMirror-gutters,
+.CodeMirror-linenumber {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.CodeMirror-measure {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.CodeMirror-cursor {
+  position: absolute;
+  pointer-events: none;
+}
+.CodeMirror-measure pre { position: static; }
+
+div.CodeMirror-cursors {
+  visibility: hidden;
+  position: relative;
+  z-index: 3;
+}
+div.CodeMirror-dragcursors {
+  visibility: visible;
+}
+
+.CodeMirror-focused div.CodeMirror-cursors {
+  visibility: visible;
+}
+
+.CodeMirror-selected { background: #d9d9d9; }
+.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
+.CodeMirror-crosshair { cursor: crosshair; }
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }
+.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }
+
+.cm-searching {
+  background-color: #ffa;
+  background-color: rgba(255, 255, 0, .4);
+}
+
+/* Used to force a border model for a node */
+.cm-force-border { padding-right: .1px; }
+
+@media print {
+  /* Hide the cursor when printing */
+  .CodeMirror div.CodeMirror-cursors {
+    visibility: hidden;
+  }
+}
+
+/* See issue #2901 */
+.cm-tab-wrap-hack:after { content: ''; }
+
+/* Help users use markselection to safely style text background */
+span.CodeMirror-selectedtext { background: none; }
+</style><style>/*
+  Name:       material
+  Author:     Mattia Astorino (http://github.com/equinusocio)
+  Website:    https://material-theme.site/
+*/
+
+.cm-s-material-palenight.CodeMirror {
+  background-color: #292D3E;
+  color: #A6ACCD;
+}
+
+.cm-s-material-palenight .CodeMirror-gutters {
+  background: #292D3E;
+  color: #676E95;
+  border: none;
+}
+
+.cm-s-material-palenight .CodeMirror-guttermarker,
+.cm-s-material-palenight .CodeMirror-guttermarker-subtle,
+.cm-s-material-palenight .CodeMirror-linenumber {
+  color: #676E95;
+}
+
+.cm-s-material-palenight .CodeMirror-cursor {
+  border-left: 1px solid #FFCC00;
+}
+.cm-s-material-palenight.cm-fat-cursor .CodeMirror-cursor {
+  background-color: #607c8b80 !important;
+}
+.cm-s-material-palenight .cm-animate-fat-cursor {
+  background-color: #607c8b80 !important;
+}
+
+.cm-s-material-palenight div.CodeMirror-selected {
+  background: rgba(113, 124, 180, 0.2);
+}
+
+.cm-s-material-palenight.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(113, 124, 180, 0.2);
+}
+
+.cm-s-material-palenight .CodeMirror-line::selection,
+.cm-s-material-palenight .CodeMirror-line>span::selection,
+.cm-s-material-palenight .CodeMirror-line>span>span::selection {
+  background: rgba(128, 203, 196, 0.2);
+}
+
+.cm-s-material-palenight .CodeMirror-line::-moz-selection,
+.cm-s-material-palenight .CodeMirror-line>span::-moz-selection,
+.cm-s-material-palenight .CodeMirror-line>span>span::-moz-selection {
+  background: rgba(128, 203, 196, 0.2);
+}
+
+.cm-s-material-palenight .CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.cm-s-material-palenight .cm-keyword {
+  color: #C792EA;
+}
+
+.cm-s-material-palenight .cm-operator {
+  color: #89DDFF;
+}
+
+.cm-s-material-palenight .cm-variable-2 {
+  color: #EEFFFF;
+}
+
+.cm-s-material-palenight .cm-variable-3,
+.cm-s-material-palenight .cm-type {
+  color: #f07178;
+}
+
+.cm-s-material-palenight .cm-builtin {
+  color: #FFCB6B;
+}
+
+.cm-s-material-palenight .cm-atom {
+  color: #F78C6C;
+}
+
+.cm-s-material-palenight .cm-number {
+  color: #FF5370;
+}
+
+.cm-s-material-palenight .cm-def {
+  color: #82AAFF;
+}
+
+.cm-s-material-palenight .cm-string {
+  color: #C3E88D;
+}
+
+.cm-s-material-palenight .cm-string-2 {
+  color: #f07178;
+}
+
+.cm-s-material-palenight .cm-comment {
+  color: #676E95;
+}
+
+.cm-s-material-palenight .cm-variable {
+  color: #f07178;
+}
+
+.cm-s-material-palenight .cm-tag {
+  color: #FF5370;
+}
+
+.cm-s-material-palenight .cm-meta {
+  color: #FFCB6B;
+}
+
+.cm-s-material-palenight .cm-attribute {
+  color: #C792EA;
+}
+
+.cm-s-material-palenight .cm-property {
+  color: #C792EA;
+}
+
+.cm-s-material-palenight .cm-qualifier {
+  color: #DECB6B;
+}
+
+.cm-s-material-palenight .cm-variable-3,
+.cm-s-material-palenight .cm-type {
+  color: #DECB6B;
+}
+
+
+.cm-s-material-palenight .cm-error {
+  color: rgba(255, 255, 255, 1.0);
+  background-color: #FF5370;
+}
+
+.cm-s-material-palenight .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
+</style><style>/* neo theme for codemirror */
+
+/* Color scheme */
+
+.cm-s-neo.CodeMirror {
+  background-color:#ffffff;
+  color:#2e383c;
+  line-height:1.4375;
+}
+.cm-s-neo .cm-comment { color:#75787b; }
+.cm-s-neo .cm-keyword, .cm-s-neo .cm-property { color:#1d75b3; }
+.cm-s-neo .cm-atom,.cm-s-neo .cm-number { color:#75438a; }
+.cm-s-neo .cm-node,.cm-s-neo .cm-tag { color:#9c3328; }
+.cm-s-neo .cm-string { color:#b35e14; }
+.cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier { color:#047d65; }
+
+
+/* Editor styling */
+
+.cm-s-neo pre {
+  padding:0;
+}
+
+.cm-s-neo .CodeMirror-gutters {
+  border:none;
+  border-right:10px solid transparent;
+  background-color:transparent;
+}
+
+.cm-s-neo .CodeMirror-linenumber {
+  padding:0;
+  color:#e0e2e5;
+}
+
+.cm-s-neo .CodeMirror-guttermarker { color: #1d75b3; }
+.cm-s-neo .CodeMirror-guttermarker-subtle { color: #e0e2e5; }
+
+.cm-s-neo .CodeMirror-cursor {
+  width: auto;
+  border: 0;
+  background: rgba(155,157,162,0.37);
+  z-index: 1;
+}
+</style><style>.CodeMirror-foldmarker {
+  color: blue;
+  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+  font-family: arial;
+  line-height: .3;
+  cursor: pointer;
+}
+.CodeMirror-foldgutter {
+  width: .7em;
+}
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+  cursor: pointer;
+}
+.CodeMirror-foldgutter-open:after {
+  content: "\25BE";
+}
+.CodeMirror-foldgutter-folded:after {
+  content: "\25B8";
+}
+</style><style>.CodeEditor{}
+</style><style>.CodeMirror-simplescroll-horizontal div,.CodeMirror-simplescroll-vertical div{position:absolute;background:#ccc;-moz-box-sizing:border-box;box-sizing:border-box;border:1px solid #bbb;border-radius:2px}.CodeMirror-simplescroll-horizontal,.CodeMirror-simplescroll-vertical{position:absolute;z-index:6;background:#eee}.CodeMirror-simplescroll-horizontal{bottom:0;left:0;height:8px}.CodeMirror-simplescroll-horizontal div{bottom:0;height:100%}.CodeMirror-simplescroll-vertical{right:0;top:0;width:8px}.CodeMirror-simplescroll-vertical div{right:0;width:100%}.CodeMirror-overlayscroll .CodeMirror-scrollbar-filler,.CodeMirror-overlayscroll .CodeMirror-gutter-filler{display:none}.CodeMirror-overlayscroll-horizontal div,.CodeMirror-overlayscroll-vertical div{position:absolute;background:#bcd;border-radius:3px}.CodeMirror-overlayscroll-horizontal,.CodeMirror-overlayscroll-vertical{position:absolute;z-index:6}.CodeMirror-overlayscroll-horizontal{bottom:0;left:0;height:6px}.CodeMirror-overlayscroll-horizontal div{bottom:0;height:100%}.CodeMirror-overlayscroll-vertical{right:0;top:0;width:6px}.CodeMirror-overlayscroll-vertical div{right:0;width:100%}
+</style><style>.CodeEditor.cm-s-material-palenight:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay,.CodeEditor.cm-s-material-palenight:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>span,.CodeEditor.cm-s-material-palenight:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>p{color:rgba(255,255,255,0.5)}.CodeEditor.cm-s-material-palenight .cm-highlight{background:rgba(0,0,0,0.25)}.CodeEditor.cm-s-material-palenight .CodeMirror{background:#242e34;color:#fff}.CodeEditor.cm-s-neo:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay,.CodeEditor.cm-s-neo:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>span,.CodeEditor.cm-s-neo:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>p{color:rgba(0,0,0,0.5)}.CodeEditor.cm-s-neo .cm-highlight{background:rgba(0,0,0,0.1)}.CodeEditor.cm-s-neo .CodeMirror{background:#fff;color:#000}.CodeEditor .cm-linerow.cm-overlay,.CodeEditor .cm-linerow.cm-overlay .cm-lineNumber{opacity:0.75}.CodeMirror-scrollbar-filler{display:none !important}.CodeMirror-overlayscroll-horizontal div,.CodeMirror-overlayscroll-vertical div{background:rgba(202,202,202,0.5) !important}.cm-linerow{position:relative;text-indent:47px;transition:background 0.5s cubic-bezier(0.16, 1, 0.3, 1),color 0.5s cubic-bezier(0.16, 1, 0.3, 1),opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)}.cm-linerow>span,.cm-linerow>p{transition:color 0.5s cubic-bezier(0.16, 1, 0.3, 1)}.cm-lineNumber{color:#676e95;display:inline-block;left:0;margin:0;min-width:43px;padding:0 6px 0 10px;position:absolute;right:auto;text-align:right;text-indent:0;top:0;transition:opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+</style><style id="_goober"> @keyframes go2264125279{from{transform:scale(0) rotate(45deg);opacity:0;}to{transform:scale(1) rotate(45deg);opacity:1;}}@keyframes go3020080000{from{transform:scale(0);opacity:0;}to{transform:scale(1);opacity:1;}}@keyframes go463499852{from{transform:scale(0) rotate(90deg);opacity:0;}to{transform:scale(1) rotate(90deg);opacity:1;}}@keyframes go1268368563{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}@keyframes go1310225428{from{transform:scale(0) rotate(45deg);opacity:0;}to{transform:scale(1) rotate(45deg);opacity:1;}}@keyframes go651618207{0%{height:0;width:0;opacity:0;}40%{height:0;width:6px;opacity:1;}100%{opacity:1;height:10px;}}@keyframes go901347462{from{transform:scale(0.6);opacity:0.4;}to{transform:scale(1);opacity:1;}}.go4109123758{z-index:9999;}.go4109123758 > *{pointer-events:auto;}</style><style>/* BASICS */
+
+.CodeMirror {
+  /* Set height, width, borders, and global font properties here */
+  font-family: monospace;
+  height: 300px;
+  color: black;
+  direction: ltr;
+}
+
+/* PADDING */
+
+.CodeMirror-lines {
+  padding: 4px 0; /* Vertical padding around content */
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  padding: 0 4px; /* Horizontal padding of content */
+}
+
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  background-color: white; /* The little square between H and V scrollbars */
+}
+
+/* GUTTER */
+
+.CodeMirror-gutters {
+  border-right: 1px solid #ddd;
+  background-color: #f7f7f7;
+  white-space: nowrap;
+}
+.CodeMirror-linenumbers {}
+.CodeMirror-linenumber {
+  padding: 0 3px 0 5px;
+  min-width: 20px;
+  text-align: right;
+  color: #999;
+  white-space: nowrap;
+}
+
+.CodeMirror-guttermarker { color: black; }
+.CodeMirror-guttermarker-subtle { color: #999; }
+
+/* CURSOR */
+
+.CodeMirror-cursor {
+  border-left: 1px solid black;
+  border-right: none;
+  width: 0;
+}
+/* Shown when moving in bi-directional text */
+.CodeMirror div.CodeMirror-secondarycursor {
+  border-left: 1px solid silver;
+}
+.cm-fat-cursor .CodeMirror-cursor {
+  width: auto;
+  border: 0 !important;
+  background: #7e7;
+}
+.cm-fat-cursor div.CodeMirror-cursors {
+  z-index: 1;
+}
+.cm-fat-cursor .CodeMirror-line::selection,
+.cm-fat-cursor .CodeMirror-line > span::selection, 
+.cm-fat-cursor .CodeMirror-line > span > span::selection { background: transparent; }
+.cm-fat-cursor .CodeMirror-line::-moz-selection,
+.cm-fat-cursor .CodeMirror-line > span::-moz-selection,
+.cm-fat-cursor .CodeMirror-line > span > span::-moz-selection { background: transparent; }
+.cm-fat-cursor { caret-color: transparent; }
+@-moz-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@-webkit-keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+@keyframes blink {
+  0% {}
+  50% { background-color: transparent; }
+  100% {}
+}
+
+/* Can style cursor different in overwrite (non-insert) mode */
+.CodeMirror-overwrite .CodeMirror-cursor {}
+
+.cm-tab { display: inline-block; text-decoration: inherit; }
+
+.CodeMirror-rulers {
+  position: absolute;
+  left: 0; right: 0; top: -50px; bottom: 0;
+  overflow: hidden;
+}
+.CodeMirror-ruler {
+  border-left: 1px solid #ccc;
+  top: 0; bottom: 0;
+  position: absolute;
+}
+
+/* DEFAULT THEME */
+
+.cm-s-default .cm-header {color: blue;}
+.cm-s-default .cm-quote {color: #090;}
+.cm-negative {color: #d44;}
+.cm-positive {color: #292;}
+.cm-header, .cm-strong {font-weight: bold;}
+.cm-em {font-style: italic;}
+.cm-link {text-decoration: underline;}
+.cm-strikethrough {text-decoration: line-through;}
+
+.cm-s-default .cm-keyword {color: #708;}
+.cm-s-default .cm-atom {color: #219;}
+.cm-s-default .cm-number {color: #164;}
+.cm-s-default .cm-def {color: #00f;}
+.cm-s-default .cm-variable,
+.cm-s-default .cm-punctuation,
+.cm-s-default .cm-property,
+.cm-s-default .cm-operator {}
+.cm-s-default .cm-variable-2 {color: #05a;}
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}
+.cm-s-default .cm-comment {color: #a50;}
+.cm-s-default .cm-string {color: #a11;}
+.cm-s-default .cm-string-2 {color: #f50;}
+.cm-s-default .cm-meta {color: #555;}
+.cm-s-default .cm-qualifier {color: #555;}
+.cm-s-default .cm-builtin {color: #30a;}
+.cm-s-default .cm-bracket {color: #997;}
+.cm-s-default .cm-tag {color: #170;}
+.cm-s-default .cm-attribute {color: #00c;}
+.cm-s-default .cm-hr {color: #999;}
+.cm-s-default .cm-link {color: #00c;}
+
+.cm-s-default .cm-error {color: #f00;}
+.cm-invalidchar {color: #f00;}
+
+.CodeMirror-composing { border-bottom: 2px solid; }
+
+/* Default styles for common addons */
+
+div.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}
+div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
+.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }
+.CodeMirror-activeline-background {background: #e8f2ff;}
+
+/* STOP */
+
+/* The rest of this file contains styles related to the mechanics of
+   the editor. You probably shouldn't touch them. */
+
+.CodeMirror {
+  position: relative;
+  overflow: hidden;
+  background: white;
+}
+
+.CodeMirror-scroll {
+  overflow: scroll !important; /* Things will break if this is overridden */
+  /* 50px is the magic margin used to hide the element's real scrollbars */
+  /* See overflow: hidden in .CodeMirror */
+  margin-bottom: -50px; margin-right: -50px;
+  padding-bottom: 50px;
+  height: 100%;
+  outline: none; /* Prevent dragging from highlighting the element */
+  position: relative;
+  z-index: 0;
+}
+.CodeMirror-sizer {
+  position: relative;
+  border-right: 50px solid transparent;
+}
+
+/* The fake, visible scrollbars. Used to force redraw during scrolling
+   before actual scrolling happens, thus preventing shaking and
+   flickering artifacts. */
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {
+  position: absolute;
+  z-index: 6;
+  display: none;
+  outline: none;
+}
+.CodeMirror-vscrollbar {
+  right: 0; top: 0;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.CodeMirror-hscrollbar {
+  bottom: 0; left: 0;
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.CodeMirror-scrollbar-filler {
+  right: 0; bottom: 0;
+}
+.CodeMirror-gutter-filler {
+  left: 0; bottom: 0;
+}
+
+.CodeMirror-gutters {
+  position: absolute; left: 0; top: 0;
+  min-height: 100%;
+  z-index: 3;
+}
+.CodeMirror-gutter {
+  white-space: normal;
+  height: 100%;
+  display: inline-block;
+  vertical-align: top;
+  margin-bottom: -50px;
+}
+.CodeMirror-gutter-wrapper {
+  position: absolute;
+  z-index: 4;
+  background: none !important;
+  border: none !important;
+}
+.CodeMirror-gutter-background {
+  position: absolute;
+  top: 0; bottom: 0;
+  z-index: 4;
+}
+.CodeMirror-gutter-elt {
+  position: absolute;
+  cursor: default;
+  z-index: 4;
+}
+.CodeMirror-gutter-wrapper ::selection { background-color: transparent }
+.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }
+
+.CodeMirror-lines {
+  cursor: text;
+  min-height: 1px; /* prevents collapsing before first draw */
+}
+.CodeMirror pre.CodeMirror-line,
+.CodeMirror pre.CodeMirror-line-like {
+  /* Reset some styles that the rest of the page might have set */
+  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;
+  border-width: 0;
+  background: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  margin: 0;
+  white-space: pre;
+  word-wrap: normal;
+  line-height: inherit;
+  color: inherit;
+  z-index: 2;
+  position: relative;
+  overflow: visible;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-variant-ligatures: contextual;
+  font-variant-ligatures: contextual;
+}
+.CodeMirror-wrap pre.CodeMirror-line,
+.CodeMirror-wrap pre.CodeMirror-line-like {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+.CodeMirror-linebackground {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  z-index: 0;
+}
+
+.CodeMirror-linewidget {
+  position: relative;
+  z-index: 2;
+  padding: 0.1px; /* Force widget margins to stay inside of the container */
+}
+
+.CodeMirror-widget {}
+
+.CodeMirror-rtl pre { direction: rtl; }
+
+.CodeMirror-code {
+  outline: none;
+}
+
+/* Force content-box sizing for the elements where we expect it */
+.CodeMirror-scroll,
+.CodeMirror-sizer,
+.CodeMirror-gutter,
+.CodeMirror-gutters,
+.CodeMirror-linenumber {
+  -moz-box-sizing: content-box;
+  box-sizing: content-box;
+}
+
+.CodeMirror-measure {
+  position: absolute;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+
+.CodeMirror-cursor {
+  position: absolute;
+  pointer-events: none;
+}
+.CodeMirror-measure pre { position: static; }
+
+div.CodeMirror-cursors {
+  visibility: hidden;
+  position: relative;
+  z-index: 3;
+}
+div.CodeMirror-dragcursors {
+  visibility: visible;
+}
+
+.CodeMirror-focused div.CodeMirror-cursors {
+  visibility: visible;
+}
+
+.CodeMirror-selected { background: #d9d9d9; }
+.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }
+.CodeMirror-crosshair { cursor: crosshair; }
+.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }
+.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }
+
+.cm-searching {
+  background-color: #ffa;
+  background-color: rgba(255, 255, 0, .4);
+}
+
+/* Used to force a border model for a node */
+.cm-force-border { padding-right: .1px; }
+
+@media print {
+  /* Hide the cursor when printing */
+  .CodeMirror div.CodeMirror-cursors {
+    visibility: hidden;
+  }
+}
+
+/* See issue #2901 */
+.cm-tab-wrap-hack:after { content: ''; }
+
+/* Help users use markselection to safely style text background */
+span.CodeMirror-selectedtext { background: none; }
+</style><style>/*
+  Name:       material
+  Author:     Mattia Astorino (http://github.com/equinusocio)
+  Website:    https://material-theme.site/
+*/
+
+.cm-s-material-palenight.CodeMirror {
+  background-color: #292D3E;
+  color: #A6ACCD;
+}
+
+.cm-s-material-palenight .CodeMirror-gutters {
+  background: #292D3E;
+  color: #676E95;
+  border: none;
+}
+
+.cm-s-material-palenight .CodeMirror-guttermarker,
+.cm-s-material-palenight .CodeMirror-guttermarker-subtle,
+.cm-s-material-palenight .CodeMirror-linenumber {
+  color: #676E95;
+}
+
+.cm-s-material-palenight .CodeMirror-cursor {
+  border-left: 1px solid #FFCC00;
+}
+.cm-s-material-palenight.cm-fat-cursor .CodeMirror-cursor {
+  background-color: #607c8b80 !important;
+}
+.cm-s-material-palenight .cm-animate-fat-cursor {
+  background-color: #607c8b80 !important;
+}
+
+.cm-s-material-palenight div.CodeMirror-selected {
+  background: rgba(113, 124, 180, 0.2);
+}
+
+.cm-s-material-palenight.CodeMirror-focused div.CodeMirror-selected {
+  background: rgba(113, 124, 180, 0.2);
+}
+
+.cm-s-material-palenight .CodeMirror-line::selection,
+.cm-s-material-palenight .CodeMirror-line>span::selection,
+.cm-s-material-palenight .CodeMirror-line>span>span::selection {
+  background: rgba(128, 203, 196, 0.2);
+}
+
+.cm-s-material-palenight .CodeMirror-line::-moz-selection,
+.cm-s-material-palenight .CodeMirror-line>span::-moz-selection,
+.cm-s-material-palenight .CodeMirror-line>span>span::-moz-selection {
+  background: rgba(128, 203, 196, 0.2);
+}
+
+.cm-s-material-palenight .CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.cm-s-material-palenight .cm-keyword {
+  color: #C792EA;
+}
+
+.cm-s-material-palenight .cm-operator {
+  color: #89DDFF;
+}
+
+.cm-s-material-palenight .cm-variable-2 {
+  color: #EEFFFF;
+}
+
+.cm-s-material-palenight .cm-variable-3,
+.cm-s-material-palenight .cm-type {
+  color: #f07178;
+}
+
+.cm-s-material-palenight .cm-builtin {
+  color: #FFCB6B;
+}
+
+.cm-s-material-palenight .cm-atom {
+  color: #F78C6C;
+}
+
+.cm-s-material-palenight .cm-number {
+  color: #FF5370;
+}
+
+.cm-s-material-palenight .cm-def {
+  color: #82AAFF;
+}
+
+.cm-s-material-palenight .cm-string {
+  color: #C3E88D;
+}
+
+.cm-s-material-palenight .cm-string-2 {
+  color: #f07178;
+}
+
+.cm-s-material-palenight .cm-comment {
+  color: #676E95;
+}
+
+.cm-s-material-palenight .cm-variable {
+  color: #f07178;
+}
+
+.cm-s-material-palenight .cm-tag {
+  color: #FF5370;
+}
+
+.cm-s-material-palenight .cm-meta {
+  color: #FFCB6B;
+}
+
+.cm-s-material-palenight .cm-attribute {
+  color: #C792EA;
+}
+
+.cm-s-material-palenight .cm-property {
+  color: #C792EA;
+}
+
+.cm-s-material-palenight .cm-qualifier {
+  color: #DECB6B;
+}
+
+.cm-s-material-palenight .cm-variable-3,
+.cm-s-material-palenight .cm-type {
+  color: #DECB6B;
+}
+
+
+.cm-s-material-palenight .cm-error {
+  color: rgba(255, 255, 255, 1.0);
+  background-color: #FF5370;
+}
+
+.cm-s-material-palenight .CodeMirror-matchingbracket {
+  text-decoration: underline;
+  color: white !important;
+}
+</style><style>/* neo theme for codemirror */
+
+/* Color scheme */
+
+.cm-s-neo.CodeMirror {
+  background-color:#ffffff;
+  color:#2e383c;
+  line-height:1.4375;
+}
+.cm-s-neo .cm-comment { color:#75787b; }
+.cm-s-neo .cm-keyword, .cm-s-neo .cm-property { color:#1d75b3; }
+.cm-s-neo .cm-atom,.cm-s-neo .cm-number { color:#75438a; }
+.cm-s-neo .cm-node,.cm-s-neo .cm-tag { color:#9c3328; }
+.cm-s-neo .cm-string { color:#b35e14; }
+.cm-s-neo .cm-variable,.cm-s-neo .cm-qualifier { color:#047d65; }
+
+
+/* Editor styling */
+
+.cm-s-neo pre {
+  padding:0;
+}
+
+.cm-s-neo .CodeMirror-gutters {
+  border:none;
+  border-right:10px solid transparent;
+  background-color:transparent;
+}
+
+.cm-s-neo .CodeMirror-linenumber {
+  padding:0;
+  color:#e0e2e5;
+}
+
+.cm-s-neo .CodeMirror-guttermarker { color: #1d75b3; }
+.cm-s-neo .CodeMirror-guttermarker-subtle { color: #e0e2e5; }
+
+.cm-s-neo .CodeMirror-cursor {
+  width: auto;
+  border: 0;
+  background: rgba(155,157,162,0.37);
+  z-index: 1;
+}
+</style><style>.CodeMirror-foldmarker {
+  color: blue;
+  text-shadow: #b9f 1px 1px 2px, #b9f -1px -1px 2px, #b9f 1px -1px 2px, #b9f -1px 1px 2px;
+  font-family: arial;
+  line-height: .3;
+  cursor: pointer;
+}
+.CodeMirror-foldgutter {
+  width: .7em;
+}
+.CodeMirror-foldgutter-open,
+.CodeMirror-foldgutter-folded {
+  cursor: pointer;
+}
+.CodeMirror-foldgutter-open:after {
+  content: "\25BE";
+}
+.CodeMirror-foldgutter-folded:after {
+  content: "\25B8";
+}
+</style><style>.CodeEditor{}
+</style><style>.CodeMirror-simplescroll-horizontal div,.CodeMirror-simplescroll-vertical div{position:absolute;background:#ccc;-moz-box-sizing:border-box;box-sizing:border-box;border:1px solid #bbb;border-radius:2px}.CodeMirror-simplescroll-horizontal,.CodeMirror-simplescroll-vertical{position:absolute;z-index:6;background:#eee}.CodeMirror-simplescroll-horizontal{bottom:0;left:0;height:8px}.CodeMirror-simplescroll-horizontal div{bottom:0;height:100%}.CodeMirror-simplescroll-vertical{right:0;top:0;width:8px}.CodeMirror-simplescroll-vertical div{right:0;width:100%}.CodeMirror-overlayscroll .CodeMirror-scrollbar-filler,.CodeMirror-overlayscroll .CodeMirror-gutter-filler{display:none}.CodeMirror-overlayscroll-horizontal div,.CodeMirror-overlayscroll-vertical div{position:absolute;background:#bcd;border-radius:3px}.CodeMirror-overlayscroll-horizontal,.CodeMirror-overlayscroll-vertical{position:absolute;z-index:6}.CodeMirror-overlayscroll-horizontal{bottom:0;left:0;height:6px}.CodeMirror-overlayscroll-horizontal div{bottom:0;height:100%}.CodeMirror-overlayscroll-vertical{right:0;top:0;width:6px}.CodeMirror-overlayscroll-vertical div{right:0;width:100%}
+</style><style>.CodeEditor.cm-s-material-palenight:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay,.CodeEditor.cm-s-material-palenight:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>span,.CodeEditor.cm-s-material-palenight:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>p{color:rgba(255,255,255,0.5)}.CodeEditor.cm-s-material-palenight .cm-highlight{background:rgba(0,0,0,0.25)}.CodeEditor.cm-s-material-palenight .CodeMirror{background:#242e34;color:#fff}.CodeEditor.cm-s-neo:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay,.CodeEditor.cm-s-neo:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>span,.CodeEditor.cm-s-neo:not(.CodeEditor-Input_highlight) .cm-linerow.cm-overlay>p{color:rgba(0,0,0,0.5)}.CodeEditor.cm-s-neo .cm-highlight{background:rgba(0,0,0,0.1)}.CodeEditor.cm-s-neo .CodeMirror{background:#fff;color:#000}.CodeEditor .cm-linerow.cm-overlay,.CodeEditor .cm-linerow.cm-overlay .cm-lineNumber{opacity:0.75}.CodeMirror-scrollbar-filler{display:none !important}.CodeMirror-overlayscroll-horizontal div,.CodeMirror-overlayscroll-vertical div{background:rgba(202,202,202,0.5) !important}.cm-linerow{position:relative;text-indent:47px;transition:background 0.5s cubic-bezier(0.16, 1, 0.3, 1),color 0.5s cubic-bezier(0.16, 1, 0.3, 1),opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1)}.cm-linerow>span,.cm-linerow>p{transition:color 0.5s cubic-bezier(0.16, 1, 0.3, 1)}.cm-lineNumber{color:#676e95;display:inline-block;left:0;margin:0;min-width:43px;padding:0 6px 0 10px;position:absolute;right:auto;text-align:right;text-indent:0;top:0;transition:opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+</style><meta content="width=device-width, initial-scale=1" name="viewport" data-rh="true"><meta content="Overview In order to process the transaction, you have to use the https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction endpoint. In order to do so, you will need to generate an RSA key with the instructions below. 📘 Generate RSA Key: Please see https://docs.payper.ca/reference/gener..." name="description" data-rh="true"><meta content="Process MasterCard Send Transaction" property="og:title" data-rh="true"><meta content="Overview In order to process the transaction, you have to use the https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction endpoint. In order to do so, you will need to generate an RSA key with the instructions below. 📘 Generate RSA Key: Please see https://docs.payper.ca/reference/gener..." property="og:description" data-rh="true"><meta content="" property="og:image" data-rh="true"><meta content="Process MasterCard Send Transaction" property="twitter:title" data-rh="true"><meta content="Overview In order to process the transaction, you have to use the https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction endpoint. In order to do so, you will need to generate an RSA key with the instructions below. 📘 Generate RSA Key: Please see https://docs.payper.ca/reference/gener..." property="twitter:description" data-rh="true"><meta content="" property="keywords" data-rh="true"><meta content="" name="robots" data-rh="true"></head><body class="body-none theme-solid header-solid header-bg-size-auto header-bg-pos-tl header-overlay-blueprint reference-layout-row lumosity-dark "><div id="ssr-top"></div><div id="ssr-main"><div class="App ThemeContext ThemeContext_dark ThemeContext_classic" style="--color-primary: #000000; --color-primary-inverse: #fff; --color-primary-alt: #000000; --color-primary-darken-10: #000000; --color-primary-darken-20: #000000; --color-primary-alpha-25: rgba(0, 0, 0, 0.25); --color-link-primary: #636363; --color-link-primary-darken-5: #565656; --color-link-primary-darken-10: #494949; --color-link-primary-darken-20: #303030; --color-link-primary-alpha-50: rgba(99, 99, 99, 0.5); --color-link-primary-alpha-25: rgba(99, 99, 99, 0.25); --color-link-background: rgba(99, 99, 99, 0.09); --color-link-text: #fff; --color-login-link: #018ef5; --color-login-link-text: #fff; --color-login-link-darken-10: #0171c2; --color-login-link-primary-alpha-50: rgba(1, 142, 245, 0.5);"><header class="Header3zzata9F_ZPQ Header_classic rm-Header"><div class="rm-Header-top Header-topuTMpygDG4e1V Header-top_classic3g7Q6zoBy8zh"><div class="rm-Container rm-Container_flex"><div tabindex="-1" style="outline: none;"><a href="#content" target="_self" class="Button Button_md rm-JumpTo Header-jumpTo3IWKQXmhSI5D Button_primary">Jump to Content</a></div><div class="rm-Header-left Header-leftADQdGVqx1wqU"><a class="rm-Logo Header-logo1Xy41PtkzbdG" href="https://docs.payper.ca/reference/api" target="_self"><img alt="Payper" class="rm-Logo-img rm-Logo-img_lg Header-logo-img3YvV4lcGKkeb" src="https://files.readme.io/d23eb14-small-image_3.png"></a></div><div class="rm-Header-left Header-leftADQdGVqx1wqU Header-left_mobile1RG-X93lx6PF"><div><button aria-label="Toggle navigation menu" class="icon-menu menu3d6DYNDa3tk5" type="button"></button><div class=""><div class="Flyout95xhYIIoTKtc undefined rm-Flyout" data-testid="flyout"><div class="MobileFlyout1hHJpUd-nYkd"><a aria-current="page" class="rm-MobileFlyout-item NavItem-item1gDDTqaXGhm1 NavItem-item_mobile1qG3gd-Mkck-  active" href="/docs" target="_self"><i class="icon-guides NavItem-badge1qOxpfTiALoz rm-Header-bottom-link-icon"></i><span class="NavItem-textSlZuuL489uiw">Guides</span></a><a class="rm-MobileFlyout-item NavItem-item1gDDTqaXGhm1 NavItem-item_mobile1qG3gd-Mkck- " href="/reference" target="_self"><i class="icon-references NavItem-badge1qOxpfTiALoz rm-Header-bottom-link-icon"></i><span class="NavItem-textSlZuuL489uiw">API Reference</span></a><select class="Select Select_md NavItem-item1gDDTqaXGhm1 NavItem-item_select3UEfLN-oSjxp NavItem-item_mobile1qG3gd-Mkck-"><option data-url="/v2.0/docs" value="2.0">v2.0</option><option data-url="#" value="2.1">v2.1</option></select><hr class="MobileFlyout-divider10xf7R2X1MeW"><select class="Select Select_md NavItem-item1gDDTqaXGhm1 NavItem-item_select3UEfLN-oSjxp NavItem-item_mobile1qG3gd-Mkck-"><option data-url="" disabled="" value="Account">chad.arthur@payspace.ca</option><option data-url="/logout?redirect_uri=/docs/process-mastercard-send-transaction-1" value="Log Out">Log Out</option></select><a class="MobileFlyout-logo3Lq1eTlk1K76 Header-logo1Xy41PtkzbdG rm-Logo" href="https://docs.payper.ca/reference/api" target="_self"><img alt="Payper" class="Header-logo-img3YvV4lcGKkeb rm-Logo-img" src="https://files.readme.io/d23eb14-small-image_3.png"></a></div></div></div></div><div class="Header-left-nav2xWPWMNHOGf_"><i class="icon-guides Header-left-nav-icon10glJKFwewOv"></i>Guides</div></div><div class="rm-Header-right Header-right21PC2XTT6aMg"><span class="Header-right_desktop14ja01RUQ7HE"><div class="rm-Header-top-link_login Dropdown Dropdown_closed" data-testid="dropdown-container"><button aria-haspopup="dialog" class="Button Button_slate_text Button_md Header-link2tXYTgXq85zW NavItem2xSfFaVqfRjy NavItem_mdrYO3ChA2kYvP rm-Header-top-link Dropdown-toggle Button_primary" type="button" aria-expanded="false"><span>chad.arthur@payspace.ca</span><span class="IconWrapper Icon-wrapper2z2wVIeGsiUy"><svg fill="none" viewBox="0 0 24 24" class="Icon Icon3_D2ysxFZ_ll Icon-svg2Lm7f6G9Ly5a NavItem-chevron3ZtU4bd1q5sy" data-name="chevron-down" role="img" aria-hidden="true" style="--icon-color: inherit; --icon-size: var(--icon-md); --icon-stroke-width: 2px;"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m6 9 6 6 6-6" class="icon-stroke-width"></path></svg></span></button></div></span><div class="Header-searchtb6Foi0-D9Vx"><button aria-label="Search ⌘k" class="rm-SearchToggle" data-symbol="⌘"><div class="rm-SearchToggle-icon icon-search1"></div></button></div><div class="ThemeToggle-wrapper1M_iJESXCpGR Dropdown Dropdown_closed" data-testid="dropdown-container"><button aria-label="Toggle to light mode" id="ThemeToggle-button-23c59080-fc39-4315-94af-e8b401cde342" aria-haspopup="dialog" class="Button Button_slate_text Button_sm rm-ThemeToggle ThemeToggle2tVPbUyQbWDo ThemeToggle_active3jPkR2CMm1JP Dropdown-toggle Button_primary" type="button" aria-expanded="false"><svg aria-labelledby="ThemeToggle-button-23c59080-fc39-4315-94af-e8b401cde342" class="Icon ThemeToggle-Icon3g9ZT7pRMwCv" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Moon (Dark Mode)</title><path d="M19 14.79C18.8427 16.4922 18.2039 18.1144 17.1582 19.4668C16.1126 20.8192 14.7035 21.8458 13.0957 22.4265C11.4879 23.0073 9.74798 23.1181 8.0795 22.7461C6.41102 22.3741 4.88299 21.5345 3.67423 20.3258C2.46546 19.117 1.62594 17.589 1.25391 15.9205C0.881876 14.252 0.992717 12.5121 1.57346 10.9043C2.1542 9.29651 3.18083 7.88737 4.53321 6.84175C5.8856 5.79614 7.5078 5.15731 9.21 5C8.21341 6.34827 7.73385 8.00945 7.85853 9.68141C7.98322 11.3534 8.70386 12.9251 9.8894 14.1106C11.0749 15.2961 12.6466 16.0168 14.3186 16.1415C15.9906 16.2662 17.6517 15.7866 19 14.79Z"></path><path class="ThemeToggle-Icon-star3wweJby1gM4w" d="M18.3707 1C18.3707 3.22825 16.2282 5.37069 14 5.37069C16.2282 5.37069 18.3707 7.51313 18.3707 9.74138C18.3707 7.51313 20.5132 5.37069 22.7414 5.37069C20.5132 5.37069 18.3707 3.22825 18.3707 1Z"></path></svg><svg aria-labelledby="ThemeToggle-button-23c59080-fc39-4315-94af-e8b401cde342" class="Icon ThemeToggle-Icon3g9ZT7pRMwCv ThemeToggle-Icon_active18I2-19CkbgD" role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>Sun (Light Mode)</title><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M12 1V3"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M18.36 5.64L19.78 4.22"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M21 12H23"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M18.36 18.36L19.78 19.78"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M12 21V23"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M4.22 19.78L5.64 18.36"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M1 12H3"></path><path class="ThemeToggle-Icon-ray2ab8_BwBkrTx" d="M4.22 4.22L5.64 5.64"></path><path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z"></path></svg></button></div></div></div></div><div class="Header-bottom2eLKOFXMEmh5 Header-bottom_classic rm-Header-bottom"><div class="rm-Container rm-Container_flex"><nav aria-label="Primary navigation" class="Header-leftADQdGVqx1wqU Header-subnavnVH8URdkgvEl" role="navigation"><div class="rm-VersionDropdown Dropdown Dropdown_closed" data-testid="dropdown-container"><button aria-haspopup="dialog" class="Button Button_slate_text Button_md rm-Header-bottom-link Dropdown-toggle Button_primary" type="button" aria-expanded="false"><span class="Truncate1OzxBYrNNfH3" style="--Truncate-max-width: 150px;">v2.1</span><i class="icon icon-chevron-down"></i></button></div><div class="rm-NavLinksDropdown Dropdown Dropdown_closed" data-testid="dropdown-container"><div class="Dropdown-toggle" aria-haspopup="dialog" aria-expanded="false"><button class="rm-Header-link rm-Header-bottom-link NavItem2xSfFaVqfRjy Button Button_slate_text Button_md" type="button"><span>Guides</span><i class="NavItem-chevron3ZtU4bd1q5sy icon-chevron-down"></i></button></div></div><span class="rm-Header-link rm-Header-bottom-link NavItem2xSfFaVqfRjy NavItem_inactive1YE6SGanIJp5">Process MasterCard Send Transaction</span></nav><button align="center" justify="between" class="Button Button_sm Flex Flex_row MobileSubnav1DsTfasXloM2 Button_contrast Button_contrast_outline" type="button" style="--flex-gap: var(--xs);"><span class="Button-label">Process MasterCard Send Transaction</span><span class="IconWrapper Icon-wrapper2z2wVIeGsiUy"><svg fill="none" viewBox="0 0 24 24" class="Icon Icon3_D2ysxFZ_ll Icon-svg2Lm7f6G9Ly5a" data-name="chevron-up-down" role="img" style="--icon-color: inherit; --icon-size: inherit; --icon-stroke-width: 2px;"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="m6 16 6 6 6-6M18 8l-6-6-6 6" class="icon-stroke-width"></path></svg></span></button><div class="rm-Header-search Header-searchtb6Foi0-D9Vx rm-Header-search_feather Header-search_featherYsmQBn55F3d9"><button aria-label="Search ⌘k" class="rm-SearchToggle" data-symbol="⌘"><div class="rm-SearchToggle-icon icon-search1"></div><div class="Header-search-placeholder3Vx4OmMPcjAi rm-SearchToggle-placeholder">Search</div><kbd class="rm-SearchToggle-shortcut">⌘K</kbd></button></div></div></div><div class="hub-search-results--reactApp " id="hub-search-results"><div class="hub-container"><div class="modal-backdrop show-modal rm-SearchModal" role="button" tabindex="0"><div class="AlgoliaSearch1uFG9utXJ4-6 " id="AppSearch" role="tabpanel" tabindex="0"><div class="AlgoliaSearch-Col2ycAQ9JMrSYg"><div class="SearchBox1zrymSLJX6TP"><input aria-label="Search" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" tabindex="0" aria-required="false" class="Input Input_md SearchBox-InputUQZAW9QXMe-c" type="search" value=""></div><div class="SearchTabs9v4kr3U2lwvI"><div class="Tabs Tabs-list" role="tablist"><div aria-label="All" aria-selected="true" class="SearchTabs-Tab2715KRxrb5JT Tabs-listItem Tabs-listItem_active" role="tab" tabindex="-1"><span class="SearchTabs-Tab2715KRxrb5JT"><i class="icon icon-search1"></i>All</span></div><div aria-label="Guides" aria-selected="false" class="SearchTabs-Tab2715KRxrb5JT Tabs-listItem " role="tab" tabindex="-1"><span class="SearchTabs-Tab2715KRxrb5JT"><i class="icon icon-guides"></i>Guides</span></div><div aria-label="Reference" aria-selected="false" class="SearchTabs-Tab2715KRxrb5JT Tabs-listItem " role="tab" tabindex="-1"><span class="SearchTabs-Tab2715KRxrb5JT"><i class="icon icon-references"></i>Reference</span></div><div aria-label="Pages" aria-selected="false" class="SearchTabs-Tab2715KRxrb5JT Tabs-listItem " role="tab" tabindex="-1"><span class="SearchTabs-Tab2715KRxrb5JT"><i class="icon icon-custom-pages-2"></i>Pages</span></div></div></div><div class="rm-SearchModal-empty SearchResults2G1wv8-Fb__d SearchResults_empty4svl7jAtcKBq"><span class="IconWrapper Icon-wrapper2z2wVIeGsiUy"><svg fill="none" viewBox="0 0 24 24" class="Icon Icon3_D2ysxFZ_ll Icon-svg2Lm7f6G9Ly5a rm-SearchModal-empty-icon icon icon-search" data-name="search" role="img" style="--icon-color: inherit; --icon-size: var(--icon-md); --icon-stroke-width: 2px;"><path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" d="M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16ZM21 21l-4.35-4.35" class="icon-stroke-width"></path></svg></span><h6 class="Title Title6 rm-SearchModal-empty-text">Start typing to search…</h6></div></div></div></div></div></div></header><main class="rm-Guides"><div class="rm-Container rm-Container_flex"><nav aria-label="Secondary navigation" class="rm-Sidebar hub-sidebar reference-redesign Nav3C5f8FcjkaHj rm-Sidebar_guides" id="hub-sidebar" role="navigation"><div class="Sidebar1t2G1ZJq-vU1 rm-Sidebar hub-sidebar-content"><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Getting Started</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/getting-started"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Getting Started</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Authentication</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/overview"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Overview</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Processing Options</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/payments"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payments</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/payouts-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payouts</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/refunds"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Refunds</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Payment Methods</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/logos"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Logos</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">eTransfer Payment</span></span><button aria-expanded="false" aria-label="Show subpages for eTransfer Payment" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/e-transfer-payment"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/1-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payment Process</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/payment-flows"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payment Flows</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/e-transfer-payout-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">e-Transfer Payout</span></span><button aria-expanded="false" aria-label="Show subpages for e-Transfer Payout" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payment Process</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/online-banking"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Online Banking Plus</span></span><button aria-expanded="false" aria-label="Show subpages for Online Banking Plus" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-2"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-2"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payment Process</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent Sidebar-link_deprecated2xLRLrwYS-C8 text-wrap rm-Sidebar-link" target="_self" href="/docs/interac-online-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interac Online</span><button aria-label="Deprecated Doc" class="Sidebar-link-deprecated3sPW_eEHvANR" type="button"><span class="IconWrapper Icon-wrapper2z2wVIeGsiUy Sidebar-link_deprecated-icon1TLWr7KfHfCp"><svg fill="none" viewBox="0 0 24 24" class="Icon Icon3_D2ysxFZ_ll Icon-svg2Lm7f6G9Ly5a" data-name="alert-circle" role="img" aria-hidden="true" style="--icon-color: var(--color-text-minimum); --icon-size: var(--icon-md); --icon-stroke-width: 2px;"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#alert-circle_svg__a)" class="icon-stroke-width"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10ZM12 8v4M12 16h.01"></path></g><defs><clipPath id="alert-circle_svg__a"><path fill="currentColor" d="M0 0h24v24H0z"></path></clipPath></defs></svg></span></button></span><button aria-expanded="false" aria-label="Show subpages for Interac Online" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_deprecated2xLRLrwYS-C8 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span><button aria-label="Deprecated Doc" class="Sidebar-link-deprecated3sPW_eEHvANR" type="button"><span class="IconWrapper Icon-wrapper2z2wVIeGsiUy Sidebar-link_deprecated-icon1TLWr7KfHfCp"><svg fill="none" viewBox="0 0 24 24" class="Icon Icon3_D2ysxFZ_ll Icon-svg2Lm7f6G9Ly5a" data-name="alert-circle" role="img" aria-hidden="true" style="--icon-color: var(--color-text-minimum); --icon-size: var(--icon-md); --icon-stroke-width: 2px;"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#alert-circle_svg__a)" class="icon-stroke-width"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10ZM12 8v4M12 16h.01"></path></g><defs><clipPath id="alert-circle_svg__a"><path fill="currentColor" d="M0 0h24v24H0z"></path></clipPath></defs></svg></span></button></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_deprecated2xLRLrwYS-C8 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction Diagram</span><button aria-label="Deprecated Doc" class="Sidebar-link-deprecated3sPW_eEHvANR" type="button"><span class="IconWrapper Icon-wrapper2z2wVIeGsiUy Sidebar-link_deprecated-icon1TLWr7KfHfCp"><svg fill="none" viewBox="0 0 24 24" class="Icon Icon3_D2ysxFZ_ll Icon-svg2Lm7f6G9Ly5a" data-name="alert-circle" role="img" aria-hidden="true" style="--icon-color: var(--color-text-minimum); --icon-size: var(--icon-md); --icon-stroke-width: 2px;"><g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#alert-circle_svg__a)" class="icon-stroke-width"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10ZM12 8v4M12 16h.01"></path></g><defs><clipPath id="alert-circle_svg__a"><path fill="currentColor" d="M0 0h24v24H0z"></path></clipPath></defs></svg></span></button></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/visa-direct-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Visa Direct</span></span><button aria-expanded="false" aria-label="Show subpages for Visa Direct" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-8"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Creating a Visa Direct Transaction</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/processing-a-visa-direct-transaction"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Processing a Visa Direct Transaction</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-3"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction Diagram</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3 subnav-expanded"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/create-mastercard-send-transaction-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">MasterCard Send</span></span><button aria-expanded="true" aria-label="Hide subpages for MasterCard Send" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list" style=""><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/create-mastercard-send-transaction-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Create MasterCard Send Transaction</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a aria-current="page" class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link active" target="_self" href="/docs/process-mastercard-send-transaction-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Process MasterCard Send Transaction</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-4"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction Diagram</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/digital-cheque"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Digital Cheque</span></span><button aria-expanded="false" aria-label="Show subpages for Digital Cheque" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-9"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-5"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction Diagram</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-10"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Direct Deposit</span></span><button aria-expanded="false" aria-label="Show subpages for Direct Deposit" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-10"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-6"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction Diagram</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/digital-cash-card"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Digital Cash Card</span></span><button aria-expanded="false" aria-label="Show subpages for Digital Cash Card" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/general-information-11"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Information</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interaction-diagram-7"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction Diagram</span></span></a></li></ul></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Transaction Status Lookups</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/transaction-status-lookup"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Transaction Status Lookup</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">RSA Key Encryption</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/generating-an-rsa-key"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Generating an RSA Key</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/encrypting-sensitive-information"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Encrypting Sensitive Information</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Webhooks</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/conditions-for-sending-webhooks"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Conditions for Sending Webhooks</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/webhook-delivery"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Webhook Delivery</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/webhook-parameters"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Webhook Parameters</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Error Codes</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/general-error-codes-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General Error Codes</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Dashboard</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-amount"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Transaction Filters</span></span><button aria-expanded="false" aria-label="Show subpages for Transaction Filters" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-amount"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Amount</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-txid"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">TXID</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-name"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Name</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-email"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Email</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-phone"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Phone</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-ip-address"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">IP Address</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-udf"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">UDF</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-payment-action"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payment Type</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/filter-by-payment-method"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Payment Method</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/started-between"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Started Between</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/ended-between"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Ended Between</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/bank-name"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Bank Name</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/description"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Description</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/tx-lookup-number"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">TX Lookup Number</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/interac-ca-number"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interac CA Number</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/sid"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">SID</span></span></a></li></ul></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">Integration Options</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/general"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">General</span></span></a></li></ul></section><section class="Sidebar-listWrapper6Q9_yUrG906C rm-Sidebar-section"><h2 class="Sidebar-headingTRQyOa2pk0gh rm-Sidebar-heading">One-Click Checkout</h2><ul class="Sidebar-list_sidebarLayout3RaX72iQNOEI Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless text-wrap rm-Sidebar-link" target="_self" href="/docs/overview-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Overview</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/getting-started-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Getting Started</span></span><button aria-expanded="false" aria-label="Show subpages for Getting Started" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/signing"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Signature</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/one-click-checkoutgetting-startedinteraction-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Interaction</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/conclusion"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Conclusion</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/return-url"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Redirects</span></span><button aria-expanded="false" aria-label="Show subpages for Redirects" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/return-url"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Return URL</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/approved-url"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Approved URL</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/declined-url"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Declined URL</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/notification-url-1"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Notification URL</span></span></a></li></ul></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 Sidebar-link_parent text-wrap rm-Sidebar-link" target="_self" href="/docs/discounts"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Miscellaneous</span></span><button aria-expanded="false" aria-label="Show subpages for Miscellaneous" class="Sidebar-link-buttonWrapper3hnFHNku8_BJ" type="button"><i aria-hidden="true" class="Sidebar-link-iconnjiqEiZlPn0W Sidebar-link-expandIcon2yVH6SarI6NW icon-chevron-rightward"></i></button></a><ul class="subpages Sidebar-list3cZWQLaBf9k8 rm-Sidebar-list"><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/discounts"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Discounts</span></span></a></li><li class="Sidebar-item23D-2Kd61_k3"><a class="Sidebar-link2Dsha-r-GKh2 childless subpage text-wrap rm-Sidebar-link" target="_self" href="/docs/shipping"><span class="Sidebar-link-textLuTE1ySm4Kqn"><span class="Sidebar-link-text_label1gCT_uPnx7Gu">Shipping Rates</span></span></a></li></ul></li></ul></section></div><button aria-label="Hide sidebar navigation" class="Nav-toggle-collapse39KxgTH727KL" type="button"></button></nav><article class="rm-Article" id="content"><header id="content-head"><div class="row clearfix"><div class="col-xs-9"><h1>Process MasterCard Send Transaction</h1></div></div></header><div class="grid-container-fluid" id="content-container"><section class="content-body grid-75"><div dehydrated="<h2 class=&quot;heading heading-2 header-scroll&quot; align=&quot;&quot;><div class=&quot;heading-anchor anchor waypoint&quot; id=&quot;overview&quot;></div><div class=&quot;heading-text&quot;><div id=&quot;section-overview&quot; class=&quot;heading-anchor_backwardsCompatibility&quot;></div>Overview</div><a aria-label=&quot;Skip link to Overview&quot; class=&quot;heading-anchor-icon fa fa-anchor&quot; href=&quot;#overview&quot;></a></h2>
+<p>In order to process the transaction, you have to use the <a href=&quot;https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction&quot; target=&quot;&quot; title=&quot;&quot;>https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction</a> endpoint. In order to do so, you will need to generate an RSA key with the instructions below.</p>
+<blockquote class=&quot;callout callout_info&quot; theme=&quot;📘&quot;><h2 class=&quot;callout-heading&quot;><span class=&quot;callout-icon&quot;>📘</span><p>Generate RSA Key</p></h2><p>Please see <a href=&quot;https://docs.payper.ca/reference/generate-rsa-key&quot; target=&quot;&quot; title=&quot;&quot;>https://docs.payper.ca/reference/generate-rsa-key</a> for instructions on how to generate an RSA key pair for encrypting the PAN and CVV values before sending this request.</p><p>Encrypt the values with UTF8 encoding, RSA encryption padding with <button aria-label=&quot;Copy Code&quot; class=&quot;rdmd-code-copy fa&quot;></button><code class=&quot;rdmd-code lang- theme-light&quot; data-lang=&quot;&quot; name=&quot;&quot; tabindex=&quot;0&quot;>RSA/ECB/OAEPWithSHA-1AndMGF1</code> cipher type and converted to a <button aria-label=&quot;Copy Code&quot; class=&quot;rdmd-code-copy fa&quot;></button><code class=&quot;rdmd-code lang- theme-light&quot; data-lang=&quot;&quot; name=&quot;&quot; tabindex=&quot;0&quot;>Base64</code> string.</p><p>Please use this tool to help with testing encryption using this cipher type: <a href=&quot;https://www.devglan.com/online-tools/rsa-encryption-decryption&quot; target=&quot;&quot; title=&quot;&quot;>https://www.devglan.com/online-tools/rsa-encryption-decryption</a></p></blockquote>
+<blockquote class=&quot;callout callout_info&quot; theme=&quot;📘&quot;><h2 class=&quot;callout-heading empty&quot;><span class=&quot;callout-icon&quot;>📘</span></h2><p>Refer to <a href=&quot;https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction&quot; target=&quot;&quot; title=&quot;&quot;>Process MasterCard Send Transaction</a> for more information on this endpoint.</p></blockquote>
+<h2 class=&quot;heading heading-2 header-scroll&quot; align=&quot;&quot;><div class=&quot;heading-anchor anchor waypoint&quot; id=&quot;request&quot;></div><div class=&quot;heading-text&quot;><div id=&quot;section-request&quot; class=&quot;heading-anchor_backwardsCompatibility&quot;></div>Request</div><a aria-label=&quot;Skip link to Request&quot; class=&quot;heading-anchor-icon fa fa-anchor&quot; href=&quot;#request&quot;></a></h2>
+<div class=&quot;CodeTabs CodeTabs_initial theme-light&quot;><div class=&quot;CodeTabs-toolbar&quot; role=&quot;tablist&quot;><button aria-selected=&quot;true&quot; class=&quot;CodeTabs_active&quot; role=&quot;tab&quot; type=&quot;button&quot;>JSON</button></div><div class=&quot;CodeTabs-inner&quot; role=&quot;tabpanel&quot;><pre><button aria-label=&quot;Copy Code&quot; class=&quot;rdmd-code-copy fa&quot;></button><code class=&quot;rdmd-code lang-json theme-light&quot; data-lang=&quot;json&quot; name=&quot;&quot; tabindex=&quot;0&quot;>{
+     &amp;quot;txid&amp;quot;: &amp;quot;30055317283286874987777889094&amp;quot;,
+     &amp;quot;email&amp;quot;: &amp;quot;Brandon@Martin.com&amp;quot;,
+     &amp;quot;ntf_url&amp;quot;: &amp;quot;https://notification.url/&amp;quot;,
+     &amp;quot;card_id&amp;quot;: 1234,
+     &amp;quot;encrypted_pan&amp;quot;: &amp;quot;A7GaMLUVOhbRoJZWJ/RADzylZmIEHlRasdfas&amp;quot;,
+     &amp;quot;encrypted_verification_code&amp;quot;: &amp;quot;SPk2YsWV5wdAJHpR7dp8VXFx8nqP+FNf0hbCad3n20K1xy132I+G+0xToMQvstJWa1uzY&amp;quot;,
+     &amp;quot;rsa_key_id&amp;quot;: 1001,
+     &amp;quot;expiration_month&amp;quot;: &amp;quot;06&amp;quot;,
+     &amp;quot;expiration_year&amp;quot;: &amp;quot;2025&amp;quot;
+}
+</code></pre></div></div>
+<h2 class=&quot;heading heading-2 header-scroll&quot; align=&quot;&quot;><div class=&quot;heading-anchor anchor waypoint&quot; id=&quot;response&quot;></div><div class=&quot;heading-text&quot;><div id=&quot;section-response&quot; class=&quot;heading-anchor_backwardsCompatibility&quot;></div>Response</div><a aria-label=&quot;Skip link to Response&quot; class=&quot;heading-anchor-icon fa fa-anchor&quot; href=&quot;#response&quot;></a></h2>
+<div class=&quot;CodeTabs CodeTabs_initial theme-light&quot;><div class=&quot;CodeTabs-toolbar&quot; role=&quot;tablist&quot;><button aria-selected=&quot;true&quot; class=&quot;CodeTabs_active&quot; role=&quot;tab&quot; type=&quot;button&quot;>JSON</button></div><div class=&quot;CodeTabs-inner&quot; role=&quot;tabpanel&quot;><pre><button aria-label=&quot;Copy Code&quot; class=&quot;rdmd-code-copy fa&quot;></button><code class=&quot;rdmd-code lang-json theme-light&quot; data-lang=&quot;json&quot; name=&quot;&quot; tabindex=&quot;0&quot;>{
+  &amp;quot;amount&amp;quot;: 1,
+  &amp;quot;descriptor&amp;quot;: &amp;quot;MasterCardSentMoneySend&amp;quot;,
+  &amp;quot;message&amp;quot;: &amp;quot;MasterCard payout transaction approved&amp;quot;,
+  &amp;quot;status&amp;quot;: &amp;quot;approved&amp;quot;,
+  &amp;quot;tx_action&amp;quot;: &amp;quot;payout&amp;quot;,
+  &amp;quot;card_id&amp;quot;: 1002,
+  &amp;quot;txid&amp;quot;: &amp;quot;30055317283286874987777889094&amp;quot;,
+  &amp;quot;udfs&amp;quot;: [
+    &amp;quot;udf1&amp;quot;,
+    &amp;quot;udf2&amp;quot;
+  ]
+}
+</code></pre></div></div>
+<h2 class=&quot;heading heading-2 header-scroll&quot; align=&quot;&quot;><div class=&quot;heading-anchor anchor waypoint&quot; id=&quot;postbacks&quot;></div><div class=&quot;heading-text&quot;><div id=&quot;section-postbacks&quot; class=&quot;heading-anchor_backwardsCompatibility&quot;></div>Postbacks</div><a aria-label=&quot;Skip link to Postbacks&quot; class=&quot;heading-anchor-icon fa fa-anchor&quot; href=&quot;#postbacks&quot;></a></h2>
+<p>When Payper receives a request, Payper will send 2 postbacks to the notification endpoint you provide for <button aria-label=&quot;Copy Code&quot; class=&quot;rdmd-code-copy fa&quot;></button><code class=&quot;rdmd-code lang- theme-light&quot; data-lang=&quot;&quot; name=&quot;&quot; tabindex=&quot;0&quot;>ntf_url</code>. A postback indicates that a change has been to the object referenced in the event, such as changes to the transaction action and status. For more information on how to set up postbacks, refer to <a href=&quot;/docs/conditions-for-sending-webhooks&quot; target=&quot;&quot; title=&quot;&quot; class=&quot;doc-link&quot; data-sidebar=&quot;conditions-for-sending-webhooks&quot;>Conditions for sending webhooks</a>.</p>
+<h3 class=&quot;heading heading-3 header-scroll&quot; align=&quot;&quot;><div class=&quot;heading-anchor anchor waypoint&quot; id=&quot;first-postback&quot;></div><div class=&quot;heading-text&quot;><div id=&quot;section-first-postback&quot; class=&quot;heading-anchor_backwardsCompatibility&quot;></div>First Postback</div><a aria-label=&quot;Skip link to First Postback&quot; class=&quot;heading-anchor-icon fa fa-anchor&quot; href=&quot;#first-postback&quot;></a></h3>
+<p>Here&amp;#x27;s an example of the first postback. Refer to <a href=&quot;/reference/notification-postback-details&quot; target=&quot;&quot; title=&quot;&quot;>Postback Notifications</a> for more information.</p>
+<h3 class=&quot;heading heading-3 header-scroll&quot; align=&quot;&quot;><div class=&quot;heading-anchor anchor waypoint&quot; id=&quot;second-postback&quot;></div><div class=&quot;heading-text&quot;><div id=&quot;section-second-postback&quot; class=&quot;heading-anchor_backwardsCompatibility&quot;></div>Second Postback</div><a aria-label=&quot;Skip link to Second Postback&quot; class=&quot;heading-anchor-icon fa fa-anchor&quot; href=&quot;#second-postback&quot;></a></h3>
+<p>Here&amp;#x27;s an example of the second postback. Refer to <a href=&quot;/reference/notification-postback-details&quot; target=&quot;&quot; title=&quot;&quot;>Postback Notifications</a> for more information.</p>" class="rm-Markdown markdown-body rm-Markdown markdown-body ng-non-bindable" data-testid="RDMD" style="margin-left: 31px;"><h2 class="heading heading-2 header-scroll" align=""><div class="heading-anchor anchor waypoint" id="overview"></div><div class="heading-text"><div id="section-overview" class="heading-anchor_backwardsCompatibility"></div>Overview</div><a aria-label="Skip link to Overview" class="heading-anchor-icon fa fa-anchor" href="#overview"></a></h2>
+<p>In order to process the transaction, you have to use the <a target="_self" href="https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction">https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction</a> endpoint. In order to do so, you will need to generate an RSA key with the instructions below.</p>
+<blockquote class="callout callout_info" theme="📘"><h2 class="callout-heading"><span class="callout-icon">📘</span><p>Generate RSA Key</p></h2><p>Please see <a target="_self" href="/reference/generate-rsa-key">https://docs.payper.ca/reference/generate-rsa-key</a> for instructions on how to generate an RSA key pair for encrypting the PAN and CVV values before sending this request.</p><p>Encrypt the values with UTF8 encoding, RSA encryption padding with <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang- theme-light" data-lang="" name="" tabindex="0"><span class="cm-s-neo" data-testid="SyntaxHighlighter">RSA/ECB/OAEPWithSHA-1AndMGF1</span></code> cipher type and converted to a <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang- theme-light" data-lang="" name="" tabindex="0"><span class="cm-s-neo" data-testid="SyntaxHighlighter">Base64</span></code> string.</p><p>Please use this tool to help with testing encryption using this cipher type: <a target="_self" href="https://www.devglan.com/online-tools/rsa-encryption-decryption">https://www.devglan.com/online-tools/rsa-encryption-decryption</a></p></blockquote>
+<blockquote class="callout callout_info" theme="📘"><h2 class="callout-heading empty"><span class="callout-icon">📘</span></h2><p>Refer to <a target="_self" href="https://pp.payper.ca/api/v2/payout/MasterCardSend/ProcessTransaction">Process MasterCard Send Transaction</a> for more information on this endpoint.</p></blockquote>
+<h2 class="heading heading-2 header-scroll" align=""><div class="heading-anchor anchor waypoint" id="request"></div><div class="heading-text"><div id="section-request" class="heading-anchor_backwardsCompatibility"></div>Request</div><a aria-label="Skip link to Request" class="heading-anchor-icon fa fa-anchor" href="#request"></a></h2>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar" role="tablist"><button aria-selected="true" class="CodeTabs_active" role="tab" type="button">JSON</button></div><div class="CodeTabs-inner" role="tabpanel"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-json theme-light" data-lang="json" name="" tabindex="0"><div class="cm-s-neo" data-testid="SyntaxHighlighter">{
+     <span class="cm-property">"txid"</span>: <span class="cm-string">"30055317283286874987777889094"</span>,
+     <span class="cm-property">"email"</span>: <span class="cm-string">"Brandon@Martin.com"</span>,
+     <span class="cm-property">"ntf_url"</span>: <span class="cm-string">"https://notification.url/"</span>,
+     <span class="cm-property">"card_id"</span>: <span class="cm-number">1234</span>,
+     <span class="cm-property">"encrypted_pan"</span>: <span class="cm-string">"A7GaMLUVOhbRoJZWJ/RADzylZmIEHlRasdfas"</span>,
+     <span class="cm-property">"encrypted_verification_code"</span>: <span class="cm-string">"SPk2YsWV5wdAJHpR7dp8VXFx8nqP+FNf0hbCad3n20K1xy132I+G+0xToMQvstJWa1uzY"</span>,
+     <span class="cm-property">"rsa_key_id"</span>: <span class="cm-number">1001</span>,
+     <span class="cm-property">"expiration_month"</span>: <span class="cm-string">"06"</span>,
+     <span class="cm-property">"expiration_year"</span>: <span class="cm-string">"2025"</span>
+}
+</div></code></pre></div></div>
+<h2 class="heading heading-2 header-scroll" align=""><div class="heading-anchor anchor waypoint" id="response"></div><div class="heading-text"><div id="section-response" class="heading-anchor_backwardsCompatibility"></div>Response</div><a aria-label="Skip link to Response" class="heading-anchor-icon fa fa-anchor" href="#response"></a></h2>
+<div class="CodeTabs CodeTabs_initial theme-light"><div class="CodeTabs-toolbar" role="tablist"><button aria-selected="true" class="CodeTabs_active" role="tab" type="button">JSON</button></div><div class="CodeTabs-inner" role="tabpanel"><pre><button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang-json theme-light" data-lang="json" name="" tabindex="0"><div class="cm-s-neo" data-testid="SyntaxHighlighter">{
+  <span class="cm-property">"amount"</span>: <span class="cm-number">1</span>,
+  <span class="cm-property">"descriptor"</span>: <span class="cm-string">"MasterCardSentMoneySend"</span>,
+  <span class="cm-property">"message"</span>: <span class="cm-string">"MasterCard payout transaction approved"</span>,
+  <span class="cm-property">"status"</span>: <span class="cm-string">"approved"</span>,
+  <span class="cm-property">"tx_action"</span>: <span class="cm-string">"payout"</span>,
+  <span class="cm-property">"card_id"</span>: <span class="cm-number">1002</span>,
+  <span class="cm-property">"txid"</span>: <span class="cm-string">"30055317283286874987777889094"</span>,
+  <span class="cm-property">"udfs"</span>: [
+    <span class="cm-string">"udf1"</span>,
+    <span class="cm-string">"udf2"</span>
+  ]
+}
+</div></code></pre></div></div>
+<h2 class="heading heading-2 header-scroll" align=""><div class="heading-anchor anchor waypoint" id="postbacks"></div><div class="heading-text"><div id="section-postbacks" class="heading-anchor_backwardsCompatibility"></div>Postbacks</div><a aria-label="Skip link to Postbacks" class="heading-anchor-icon fa fa-anchor" href="#postbacks"></a></h2>
+<p>When Payper receives a request, Payper will send 2 postbacks to the notification endpoint you provide for <button aria-label="Copy Code" class="rdmd-code-copy fa"></button><code class="rdmd-code lang- theme-light" data-lang="" name="" tabindex="0"><span class="cm-s-neo" data-testid="SyntaxHighlighter">ntf_url</span></code>. A postback indicates that a change has been to the object referenced in the event, such as changes to the transaction action and status. For more information on how to set up postbacks, refer to <a target="_self" href="/docs/conditions-for-sending-webhooks">Conditions for sending webhooks</a>.</p>
+<h3 class="heading heading-3 header-scroll" align=""><div class="heading-anchor anchor waypoint" id="first-postback"></div><div class="heading-text"><div id="section-first-postback" class="heading-anchor_backwardsCompatibility"></div>First Postback</div><a aria-label="Skip link to First Postback" class="heading-anchor-icon fa fa-anchor" href="#first-postback"></a></h3>
+<p>Here's an example of the first postback. Refer to <a target="_self" href="/reference/notification-postback-details">Postback Notifications</a> for more information.</p>
+<h3 class="heading heading-3 header-scroll" align=""><div class="heading-anchor anchor waypoint" id="second-postback"></div><div class="heading-text"><div id="section-second-postback" class="heading-anchor_backwardsCompatibility"></div>Second Postback</div><a aria-label="Skip link to Second Postback" class="heading-anchor-icon fa fa-anchor" href="#second-postback"></a></h3>
+<p>Here's an example of the second postback. Refer to <a target="_self" href="/reference/notification-postback-details">Postback Notifications</a> for more information.</p></div><div class="UpdatedAt"><p class="DateLine "><i class="icon icon-watch"></i>Updated over 3 years ago </p></div><hr class="NextStepsDivider"><nav aria-label="Pagination Controls" class="PaginationControlsjDYuqu8pBMUy rm-Pagination"><a class="PaginationControls-link254uPEbaP92i PaginationControls-link_left1G58BmNHDbVm" aria-label="Previous Page: Create MasterCard Send Transaction" href="/docs/create-mastercard-send-transaction-1"><span class="PaginationControls-iconZbaZ3tgyhNmI icon-arrow-left2"></span><div class="PaginationControls-text3qEXHZU00znD PaginationControls-text_left3wBkn4C9R0W_">Create MasterCard Send Transaction</div></a><a class="PaginationControls-link254uPEbaP92i PaginationControls-link_right5lsfuICZqXYk" aria-label="Next Page: Interaction Diagram" href="/docs/interaction-diagram-4"><div class="PaginationControls-text3qEXHZU00znD PaginationControls-text_right3EIfWubgRVVP">Interaction Diagram</div><span class="PaginationControls-iconZbaZ3tgyhNmI icon-arrow-right2"></span></a></nav></section><section class="content-toc grid-25"><nav><ul class="toc-list"><li><a class="tocHeader" href="#"><i class="icon icon-text-align-left"></i>Table of Contents</a></li><li class="toc-children"><ul>
+<li>
+<a href="#overview">Overview</a>
+</li>
+<li>
+<a href="#request">Request</a>
+</li>
+<li>
+<a href="#response">Response</a>
+</li>
+<li>
+<a href="#postbacks">Postbacks</a>
+<ul>
+<li><a href="#first-postback">First Postback</a></li>
+<li><a href="#second-postback">Second Postback</a></li>
+</ul>
+</li>
+</ul></li></ul></nav></section></div><div class="ModalWrapper" id="tutorialmodal-root"></div></article></div></main><footer aria-label="Status banner" class="Footer2U8XAPoGhlgO AppFooter rm-Banners"></footer><div class="ModalWrapper" id="ChatGPT-modal"></div></div></div><div class="ng-non-bindable"></div><div id="hub-container"><div class="hub-container"><div state-container="" ng-attr-id="{{state.current().root !== 'docs' &amp;&amp; 'react-app-content-container'}}"><div id="replace-view" ng-non-bindable=""></div></div></div></div><script>var is_hub = true;
+var is_hub2 = true;
+var is_hub_edit = true;
+</script><div id="ssr-end"><script id="__LOADABLE_REQUIRED_CHUNKS__" type="application/json">[32852,92264,47783,21456,63859,74935,13766,11677,26083,13057,90441,6146,88836,27449,23826,59954,93536,1936,21202,48424,59503,46123,80921,25420,11236,53024,71391,10560,73678,45798]</script><script id="__LOADABLE_REQUIRED_CHUNKS___ext" type="application/json">{"namedChunks":["routes-SuperHub","Header","core-icons-chevron-down-svg","core-icons-chevron-up-down-svg","index","routes-Doc","core-icons-alert-circle-svg","RDMD","Footer"]}</script>
+<script async="" data-chunk="main" src="https://cdn.readme.io/public/hub/web/main.df96c1b5e3c41fc3e1bf.js"></script>
+<script async="" data-chunk="routes-SuperHub" src="https://cdn.readme.io/public/hub/web/routes-SuperHub.50955563d9ae60442de4.js"></script>
+<script async="" data-chunk="Header" src="https://cdn.readme.io/public/hub/web/92264.08907f5b1f86d3f00a00.js"></script>
+<script async="" data-chunk="Header" src="https://cdn.readme.io/public/hub/web/47783.364429c4e7671b46dd7e.js"></script>
+<script async="" data-chunk="Header" src="https://cdn.readme.io/public/hub/web/Header.d1b5886793f14ecb4ece.js"></script>
+<script async="" data-chunk="core-icons-chevron-down-svg" src="https://cdn.readme.io/public/hub/web/core-icons-chevron-down-svg.b37ee8d002dd6fea2dba.js"></script>
+<script async="" data-chunk="core-icons-chevron-up-down-svg" src="https://cdn.readme.io/public/hub/web/core-icons-chevron-up-down-svg.2c9b648549c0893e8de2.js"></script>
+<script async="" data-chunk="index" src="https://cdn.readme.io/public/hub/web/13766.d772ba54efb1db56d529.js"></script>
+<script async="" data-chunk="index" src="https://cdn.readme.io/public/hub/web/11677.79f18607e907b3b022c4.js"></script>
+<script async="" data-chunk="index" src="https://cdn.readme.io/public/hub/web/26083.a54a38036001ccd939f9.js"></script>
+<script async="" data-chunk="index" src="https://cdn.readme.io/public/hub/web/index.a1e620561bb3efc36255.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/90441.7bad24d6a8cd0ef6f53c.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/6146.f99bcbc8d654cc36d7c8.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/88836.466db83f0dbc8536e6f1.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/27449.8f05501196c10ee6f862.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/23826.16d3df1c18c8d9c429fa.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/59954.c377359b7d539c3c7b47.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/93536.f9d0654db59ec5c65cb0.js"></script>
+<script async="" data-chunk="routes-Doc" src="https://cdn.readme.io/public/hub/web/routes-Doc.ddf29cc881d71c343077.js"></script>
+<script async="" data-chunk="core-icons-alert-circle-svg" src="https://cdn.readme.io/public/hub/web/core-icons-alert-circle-svg.7bb6c7f5586095317161.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/48424.bb37c5885520ec98c35d.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/59503.e28678b329fb8600e545.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/46123.46633d26b7849f653406.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/80921.29cd5bbded72b5912edc.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/25420.2a9bf013c9a9f3ab2a2f.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/11236.22427759ab4cca7af52e.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/53024.6f76d28f3fecb20c9f29.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/71391.dffa8295ba49e4ab05c6.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/10560.08360ede3e7fcd2084fa.js"></script>
+<script async="" data-chunk="RDMD" src="https://cdn.readme.io/public/hub/web/RDMD.400af4836157de1ca872.js"></script>
+<script async="" data-chunk="Footer" src="https://cdn.readme.io/public/hub/web/Footer.7d5e07b701850b1ba794.js"></script></div><script id="hub-me" type="application/json" data-json="{&quot;loggedIn&quot;:true,&quot;search&quot;:{&quot;app&quot;:&quot;T28YKFATPY&quot;,&quot;token&quot;:&quot;ZmFhZGE3NTZiMjI0MDA4NDkxNGRiOGY1ZGY1MmI3YjBjZjEwMDc4N2QzYTVlY2UzODI2NDM1NmNkY2FmYTljOXRhZ0ZpbHRlcnM9KHByb2plY3Q6NjA4YWY0ZTRlNzY1NzQwMGRhNWI5ZjZmKSwodmVyc2lvbjpub25lLHZlcnNpb246NjExNTNjMjliNjc5MzEwMDQwMzYwZjRiKSwoaGlkZGVuOm5vbmUsaGlkZGVuOmZhbHNlKSwoaW5kZXg6Q3VzdG9tUGFnZSxpbmRleDpQYWdlKQ==&quot;,&quot;filters&quot;:&quot;tagFilters=(project:608af4e4e7657400da5b9f6f),(version:none,version:61153c29b679310040360f4b),(hidden:none,hidden:false),(index:CustomPage,index:Page)&quot;,&quot;metaData&quot;:[{&quot;modules&quot;:{&quot;landing&quot;:false,&quot;docs&quot;:true,&quot;examples&quot;:true,&quot;reference&quot;:true,&quot;changelog&quot;:false,&quot;discuss&quot;:false,&quot;suggested_edits&quot;:false,&quot;logs&quot;:false,&quot;custompages&quot;:true,&quot;tutorials&quot;:false,&quot;graphql&quot;:false},&quot;id&quot;:&quot;608af4e4e7657400da5b9f6f&quot;,&quot;name&quot;:&quot;Payper&quot;,&quot;subdomain&quot;:&quot;payper&quot;,&quot;subpath&quot;:&quot;&quot;,&quot;nav_names&quot;:{&quot;docs&quot;:&quot;&quot;,&quot;reference&quot;:&quot;&quot;,&quot;changelog&quot;:&quot;&quot;,&quot;discuss&quot;:&quot;&quot;,&quot;tutorials&quot;:&quot;&quot;,&quot;recipes&quot;:&quot;&quot;}}]},&quot;isAdmin&quot;:false,&quot;user&quot;:{&quot;name&quot;:&quot;chad.arthur@payspace.ca&quot;,&quot;email&quot;:&quot;chad.arthur@payspace.ca&quot;,&quot;apiKey&quot;:&quot;test_123sldoih&quot;,&quot;iat&quot;:1751398166,&quot;exp&quot;:1751484566},&quot;_id&quot;:&quot;67f4a0f40584f900328261af&quot;}"></script><script id="readme-data-baseUrl" type="application/json" data-json="&quot;/&quot;"></script><div class="Toaster29sH7yT1IQRM" style="position: fixed; inset: 16px; pointer-events: none;"></div></body></html>

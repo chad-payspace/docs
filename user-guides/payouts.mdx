@@ -1,0 +1,359 @@
+---
+title: "Payout Processing"
+description: "Disburse funds instantly to customer bank accounts with PayPer's payout API"
+icon: "money-bill-transfer"
+---
+
+## Overview
+
+PayPer's payout API enables merchants to quickly and securely disburse funds directly to their customers' bank accounts. Perfect for marketplace payments, refunds, commissions, or any scenario where you need to send money to your users.
+
+<Note>
+**Instant Disbursement**: Send money directly to customer bank accounts with real-time processing and notification support.
+</Note>
+
+## Key Benefits
+
+<CardGroup cols={2}>
+  <Card title="Direct Bank Transfer" icon="university">
+    Send funds directly to customer bank accounts without intermediate steps
+  </Card>
+  <Card title="Real-time Processing" icon="zap">
+    Fast processing with immediate confirmation and status updates
+  </Card>
+  <Card title="Secure Transactions" icon="shield-halved">
+    Bank-grade security with encrypted transmission and fraud protection
+  </Card>
+  <Card title="Comprehensive Tracking" icon="chart-line">
+    Full audit trail with webhooks for real-time status monitoring
+  </Card>
+</CardGroup>
+
+## Common Use Cases
+
+- **Marketplace Payments**: Pay sellers and service providers
+- **Refund Processing**: Issue refunds directly to customer accounts
+- **Commission Payouts**: Distribute affiliate or partner commissions
+- **Employee Payments**: Process payroll or expense reimbursements
+- **Customer Rewards**: Send cashback or loyalty rewards
+
+## Quick Integration
+
+<Steps>
+  <Step title="Setup Authentication">
+    Configure your API credentials and bearer token authentication
+  </Step>
+  <Step title="Prepare Payout Request">
+    Gather recipient details and payout amount information
+  </Step>
+  <Step title="Submit Payout">
+    Send the payout request via our REST API
+  </Step>
+  <Step title="Monitor Status">
+    Track payout progress through webhooks and status updates
+  </Step>
+</Steps>
+
+## Payout Request
+
+Create a payout by providing recipient information and the amount to be disbursed.
+
+### Example Request
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl --location 'https://sandbox.pp.paybilt.com/api/v2/payout/' \
+    --header 'Authorization: Bearer YOUR_TOKEN' \
+    --header 'Content-Type: application/json' \
+    --data '{
+        "amount": 37,
+        "first_name": "Brandon",
+        "last_name": "Martin",
+        "email": "Brandon@Martin.com",
+        "phone": "+14034881071",
+        "address": "3291 Craven Place",
+        "city": "Medicine Hat",
+        "state": "Alberta",
+        "country": "CA",
+        "zip_code": "T1A 0N1",
+        "ip_address": "127.0.0.1",
+        "ntf_url": "https://notification.url/",
+        "udfs": ["123456"]
+    }'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const response = await fetch('https://sandbox.pp.paybilt.com/api/v2/payout/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer YOUR_TOKEN',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: 37,
+        first_name: "Brandon",
+        last_name: "Martin",
+        email: "Brandon@Martin.com",
+        phone: "+14034881071",
+        address: "3291 Craven Place",
+        city: "Medicine Hat",
+        state: "Alberta",
+        country: "CA",
+        zip_code: "T1A 0N1",
+        ip_address: "127.0.0.1",
+        ntf_url: "https://notification.url/",
+        udfs: ["123456"]
+      })
+    });
+    ```
+  </Tab>
+  <Tab title="Python">
+    ```python
+    import requests
+
+    response = requests.post(
+        'https://sandbox.pp.paybilt.com/api/v2/payout/',
+        headers={
+            'Authorization': 'Bearer YOUR_TOKEN',
+            'Content-Type': 'application/json'
+        },
+        json={
+            "amount": 37,
+            "first_name": "Brandon",
+            "last_name": "Martin",
+            "email": "Brandon@Martin.com",
+            "phone": "+14034881071",
+            "address": "3291 Craven Place",
+            "city": "Medicine Hat",
+            "state": "Alberta",
+            "country": "CA",
+            "zip_code": "T1A 0N1",
+            "ip_address": "127.0.0.1",
+            "ntf_url": "https://notification.url/",
+            "udfs": ["123456"]
+        }
+    )
+    ```
+  </Tab>
+</Tabs>
+
+### Required Parameters
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `amount` | number | Payout amount in CAD |
+| `email` | string | Recipient's email address |
+| `first_name` | string | Recipient's first name |
+| `ntf_url` | string | Webhook URL for status notifications |
+
+### Optional Parameters
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `last_name` | string | Recipient's last name |
+| `phone` | string | Recipient's phone number |
+| `address` | string | Recipient's street address |
+| `udfs` | array | Custom fields for internal tracking |
+
+<Tip>
+Include comprehensive recipient information to ensure smooth processing and reduce the likelihood of delays.
+</Tip>
+
+## API Response
+
+The payout API returns confirmation details and tracking information for the disbursement.
+
+### Example Response
+
+```json
+{
+    "amount": 1,
+    "descriptor": "MoneySend",
+    "message": "A payout request has been received and you will receive an email at cazanv+aug13@gmail.com with instructions on how to deposit once it has been processed.",
+    "status": "approved",
+    "tx_action": "request",
+    "txid": "30055317283286874987777889094",
+    "udfs": [
+        "udf1",
+        "udf2"
+    ]
+}
+```
+
+### Response Fields
+
+| Field | Description |
+|-------|-------------|
+| `txid` | Unique transaction ID for tracking this payout |
+| `status` | Payout status (`approved`, `pending`, `declined`) |
+| `descriptor` | Transaction type identifier |
+| `message` | User-friendly message about the payout |
+| `amount` | Confirmed payout amount |
+
+## Payout Status Flow
+
+Understanding the payout lifecycle helps you provide better customer experience:
+
+<Accordion title="1. Request Submitted">
+**Status**: `pending`
+
+Payout request has been received and is being validated.
+
+```json
+{
+  "txid": "30055317283286874987777889094",
+  "status": "pending",
+  "message": "Payout request is being processed"
+}
+```
+</Accordion>
+
+<Accordion title="2. Processing">
+**Status**: `approved`
+
+Payout has been approved and funds are being transferred.
+
+```json
+{
+  "txid": "30055317283286874987777889094",
+  "status": "approved",
+  "message": "Payout approved and processing"
+}
+```
+</Accordion>
+
+<Accordion title="3. Completed">
+**Status**: `completed`
+
+Funds have been successfully transferred to recipient's account.
+
+```json
+{
+  "txid": "30055317283286874987777889094",
+  "status": "completed",
+  "timestamp": "2024-01-15T10:30:00Z"
+}
+```
+</Accordion>
+
+## Webhook Notifications
+
+PayPer sends real-time updates to your `ntf_url` as the payout status changes.
+
+### Webhook Events
+
+<Tabs>
+  <Tab title="Payout Approved">
+    ```json
+    {
+      "event": "payout.approved",
+      "txid": "30055317283286874987777889094",
+      "status": "approved",
+      "amount": 37.00,
+      "recipient_email": "Brandon@Martin.com",
+      "timestamp": "2024-01-15T10:30:00Z"
+    }
+    ```
+  </Tab>
+  <Tab title="Payout Completed">
+    ```json
+    {
+      "event": "payout.completed",
+      "txid": "30055317283286874987777889094",
+      "status": "completed",
+      "amount": 37.00,
+      "completion_time": "2024-01-15T10:35:00Z",
+      "timestamp": "2024-01-15T10:35:00Z"
+    }
+    ```
+  </Tab>
+  <Tab title="Payout Failed">
+    ```json
+    {
+      "event": "payout.failed",
+      "txid": "30055317283286874987777889094",
+      "status": "failed",
+      "reason": "Invalid account information",
+      "timestamp": "2024-01-15T10:32:00Z"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Error Handling
+
+<Warning>
+Implement robust error handling to manage payout failures gracefully and provide clear feedback to recipients.
+</Warning>
+
+### Common Error Scenarios
+
+- **Insufficient Balance**: Ensure adequate funds in your merchant account
+- **Invalid Recipient Info**: Validate email addresses and contact details
+- **Network Issues**: Implement retry logic with exponential backoff
+- **Compliance Restrictions**: Some recipients may require additional verification
+
+### Error Response Example
+
+```json
+{
+  "errors": [
+    {
+      "code": "INVALID_EMAIL",
+      "message": "The provided email address is invalid",
+      "field": "email"
+    }
+  ],
+  "status": "error"
+}
+```
+
+## Testing & Validation
+
+### Sandbox Environment
+
+- **Base URL**: `https://sandbox.pp.paybilt.com/api/v2/`
+- **Test Mode**: All payouts are simulated
+- **Safe Testing**: No real money is transferred
+
+### Test Scenarios
+
+1. **Successful Payout**: Use valid test recipient information
+2. **Failed Payout**: Test with invalid email formats
+3. **Webhook Testing**: Verify your webhook endpoint handles all status updates
+
+## Security Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Data Protection" icon="lock">
+    - Encrypt sensitive recipient data
+    - Use HTTPS for all API calls
+    - Validate all input parameters
+    - Implement request signing
+  </Card>
+  <Card title="Operational Security" icon="shield-check">
+    - Monitor payout patterns
+    - Set transaction limits
+    - Implement approval workflows
+    - Maintain audit logs
+  </Card>
+</CardGroup>
+
+## Compliance & Regulations
+
+<Note>
+Ensure your payout implementation complies with relevant financial regulations and anti-money laundering (AML) requirements in your jurisdiction.
+</Note>
+
+- **Know Your Customer (KYC)**: Verify recipient identities for large amounts
+- **Record Keeping**: Maintain detailed transaction records
+- **Reporting**: Some jurisdictions require transaction reporting
+- **Limits**: Be aware of daily/monthly payout limits
+
+## Next Steps
+
+<Card title="Explore Payment Types" icon="arrow-right" href="/user-guides/refunds">
+  Learn about refund processing and other payment operations
+</Card> 
