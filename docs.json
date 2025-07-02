@@ -14,28 +14,61 @@
         "tab": "Introduction",
         "pages": [
           "api-reference/introduction",
-          "api-reference/authentication",
-          "api-reference/oneclick",
-          "api-reference/etransfer"
+          "api-reference/platform-overview",
+          "api-reference/use-cases",
+          "api-reference/faq"
         ]
-      },
-      {
-        "tab": "API Reference",
-        "openapi": "api-reference/openapi.json"
       },
       {
         "tab": "User Guides",
         "pages": [
-          "user-guides/redirect",
-          "user-guides/etransfer",
-          "user-guides/digital-cheque"
+          {
+            "group": "Overview",
+            "pages": [
+              "user-guides/getting-started",
+              "user-guides/authentication"
+            ]
+          },
+          {
+            "group": "Payment Types",
+            "pages": [
+              "user-guides/payments",
+              "user-guides/payouts",
+              "user-guides/refunds"
+            ]
+          },
+                  {
+          "group": "Payment Methods",
+          "pages": [
+            "user-guides/etransfer",
+            "user-guides/digital-cheque",
+            "user-guides/push-to-card"
+          ]
+        },
+        {
+          "group": "RSA Encryption",
+          "pages": [
+            "user-guides/generating-an-rsa-key",
+            "user-guides/encrypting-sensitive-data"
+          ]
+        },
+        {
+          "group": "Integration Examples",
+          "pages": [
+            "user-guides/realtime-transactions"
+          ]
+        }
         ]
+      },
+      {
+        "tab": "API Reference",
+        "openapi": "api-reference/openapi-postman.json"
       }
     ]
   },
   "logo": {
     "light": "/logo/payper-logo.svg",
-    "dark": "/logo/payper-logo.svg"
+    "dark": "/logo/payper-logo-dark.png"
   },
   "navbar": {
     "links": [

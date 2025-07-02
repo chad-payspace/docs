@@ -1,0 +1,17 @@
+{
+  "name": "docs-crawler",
+  "version": "1.0.0",
+  "description": "PayPer Documentation Crawler",
+  "main": "crawl-docs.js",
+  "scripts": {
+    "crawl": "node crawl-docs.js",
+    "install-browsers": "npx playwright install"
+  },
+  "dependencies": {
+    "playwright": "^1.40.0"
+  },
+  "devDependencies": {},
+  "keywords": ["documentation", "crawler", "playwright"],
+  "author": "Chad Arthur",
+  "license": "MIT"
+} 

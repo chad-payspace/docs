@@ -1,0 +1,515 @@
+---
+title: "Push to Card Payments"
+description: "Send instant payouts directly to payment cards using Visa Direct and MasterCard Send"
+icon: "credit-card"
+---
+
+## What is Push to Card?
+
+Push-to-card payouts operate through existing card networks (Visa Direct and MasterCard Send) to instantly transfer funds to a cardholder's payment cards. Unlike traditional purchases where funds flow from the cardholder to the merchant, push-to-card transactions reverse this flow, sending funds from your business directly to the recipient's card.
+
+With PayPer's integration with Visa Direct and MasterCard Send, funds are available in recipient accounts within **30 minutes** of issuer authorization.
+
+<Note>
+**What does "instant" mean?** An issuer that participates in Fast Funds must make funds available to the recipient in 30 minutes or less of approving the authorization message. The issuer increments the cardholder's open-to-buy or operating limit with the payment amount in 30 minutes or less.
+</Note>
+
+## Use Cases
+
+Push-to-card payments enable a wide range of business scenarios:
+
+<CardGroup cols={2}>
+  <Card title="Gig Economy Payouts" icon="car">
+    Pay drivers, shoppers, and delivery workers instant access to earned wages, tips, and benefits
+  </Card>
+  <Card title="Marketplace Settlements" icon="store">
+    Speed up settlement payments between vendors and platforms with instant payouts
+  </Card>
+  <Card title="Insurance Claims" icon="shield-halved">
+    Process insurance claim payouts directly to claimant cards for immediate access
+  </Card>
+  <Card title="Corporate Rebates" icon="money-bill-transfer">
+    Distribute manufacturing rebates, expense reimbursements, and contractor payments
+  </Card>
+  <Card title="Gaming Payouts" icon="gamepad">
+    Process online gambling winnings and lottery payouts instantly to player cards
+  </Card>
+  <Card title="Money Transfers" icon="arrow-right-arrow-left">
+    Enable P2P money transfers and digital wallet funding for consumers
+  </Card>
+</CardGroup>
+
+## Supported Card Types
+
+Various card types are eligible for push-to-card transactions:
+
+<Accordion title="Credit Cards">
+**Expected Behavior**: Payment to the account reduces the amount owed
+
+For a push-to-card amount of $100, the amount owed on the account reduces by $100
+
+**Use Cases**:
+- Money transfers and digital wallet funding
+- Merchant settlements and loyalty rewards  
+- Credit card bill payments
+</Accordion>
+
+<Accordion title="Debit Cards">
+**Expected Behavior**: Value added to the card balance
+
+For a push-to-card amount of $100, the balance on the account increases by $100
+
+**Use Cases**:
+- Money transfers and instant deposits
+- Funds disbursements and payouts
+</Accordion>
+
+<Accordion title="Prepaid Cards">
+**Expected Behavior**: Value added to the card balance
+
+For a push-to-card amount of $100, the balance increases by $100
+
+**Use Cases**:
+- Money transfers and wallet top-ups
+- Prepaid card reloading
+- Gift card distributions
+</Accordion>
+
+<Accordion title="Deferred Debit Cards">
+**Expected Behavior**: Payment to underlying bank account or card balance
+
+Funds can be added to either the associated bank account or the debit card balance
+
+**Use Cases**:
+- Money transfers to bank accounts
+- Instant deposit services
+</Accordion>
+
+## Push to Card Workflow
+
+<Steps>
+  <Step title="Initiate Payout Request">
+    Your application calls PayPer's Payout API with sender and recipient details, including the recipient's card information
+  </Step>
+  <Step title="Transaction Routing">
+    PayPer receives the request and routes it to the appropriate card network (Visa Direct or MasterCard Send) based on the card details
+  </Step>
+  <Step title="Network Processing">
+    The card network processes the transaction and sends it to the recipient's issuing bank for authorization
+  </Step>
+  <Step title="Issuer Authorization">
+    The issuing bank authorizes the transaction and makes funds available to the cardholder (typically within 30 minutes)
+  </Step>
+  <Step title="Confirmation Response">
+    PayPer receives confirmation from the network and responds to your application with transaction status and estimated posting date
+  </Step>
+  <Step title="Settlement & Reporting">
+    End-of-day settlement and transaction reports are generated and made available through the PayPer dashboard and API
+  </Step>
+</Steps>
+
+## API Integration
+
+### **Processing a Push-to-Card Payout**
+
+<Tabs>
+  <Tab title="cURL">
+    ```bash
+    curl -X POST "https://api.payper.ca/api/v2/payout/" \
+      -H "Authorization: Bearer YOUR_API_TOKEN" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "amount": 100.00,
+        "email": "recipient@example.com",
+        "first_name": "John",
+        "last_name": "Doe",
+        "card_number": "4111111111111111",
+        "exp_month": "12",
+        "exp_year": "2025",
+        "cvv": "123",
+        "purpose": "gig_economy_payout",
+        "ntf_url": "https://yoursite.com/webhooks/payout"
+      }'
+    ```
+  </Tab>
+  <Tab title="Node.js">
+    ```javascript
+    const response = await fetch('https://api.payper.ca/api/v2/payout/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        amount: 100.00,
+        email: 'recipient@example.com',
+        first_name: 'John',
+        last_name: 'Doe',
+        card_number: '4111111111111111',
+        exp_month: '12',
+        exp_year: '2025',
+        cvv: '123',
+        purpose: 'gig_economy_payout',
+        ntf_url: 'https://yoursite.com/webhooks/payout'
+      })
+    });
+
+    const result = await response.json();
+    console.log('Payout initiated:', result.txid);
+    ```
+  </Tab>
+  <Tab title="PHP">
+    ```php
+    <?php
+    $data = [
+        'amount' => 100.00,
+        'email' => 'recipient@example.com',
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'card_number' => '4111111111111111',
+        'exp_month' => '12',
+        'exp_year' => '2025',
+        'cvv' => '123',
+        'purpose' => 'gig_economy_payout',
+        'ntf_url' => 'https://yoursite.com/webhooks/payout'
+    ];
+
+    $ch = curl_init('https://api.payper.ca/api/v2/payout/');
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Authorization: Bearer ' . $apiToken,
+        'Content-Type: application/json'
+    ]);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+    $response = curl_exec($ch);
+    $result = json_decode($response, true);
+    echo 'Payout initiated: ' . $result['txid'];
+    ?>
+    ```
+  </Tab>
+</Tabs>
+
+### **API Response**
+
+```json
+{
+  "status": "success",
+  "txid": "TXN_12345678901234567890",
+  "amount": 100.00,
+  "currency": "CAD",
+  "network": "visa_direct",
+  "estimated_posting": "2024-01-15T10:30:00Z",
+  "recipient": {
+    "email": "recipient@example.com",
+    "masked_card": "****1111"
+  },
+  "fees": {
+    "processing_fee": 1.75,
+    "network_fee": 0.50
+  }
+}
+```
+
+## Card Eligibility Verification
+
+Before processing a payout, verify that the recipient's card is eligible for push-to-card transactions:
+
+<Tabs>
+  <Tab title="Card Verification API">
+    ```javascript
+    const verifyCard = await fetch('https://api.payper.ca/api/v2/verify-card/', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + apiToken,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        card_number: '4111111111111111',
+        exp_month: '12',
+        exp_year: '2025'
+      })
+    });
+
+    const cardInfo = await verifyCard.json();
+    console.log('Card eligible:', cardInfo.eligible);
+    console.log('Network:', cardInfo.network);
+    console.log('Card type:', cardInfo.card_type);
+    ```
+  </Tab>
+  <Tab title="Verification Response">
+    ```json
+    {
+      "eligible": true,
+      "network": "visa",
+      "card_type": "debit",
+      "issuer_country": "CA",
+      "fast_funds_enabled": true,
+      "estimated_delivery": "30_minutes",
+      "supported_purposes": [
+        "money_transfer",
+        "funds_disbursement",
+        "gig_economy_payout"
+      ]
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Webhook Integration
+
+Handle real-time payout status updates through webhooks:
+
+<Tabs>
+  <Tab title="Webhook Handler">
+    ```javascript
+    app.post('/webhooks/payout', (req, res) => {
+      const { txid, status, amount, network, error_details } = req.body;
+      
+      switch (status) {
+        case 'authorized':
+          // Payout authorized by issuer - funds will be available soon
+          updatePayoutStatus(txid, 'processing');
+          notifyRecipient(txid, 'Funds will be available within 30 minutes');
+          break;
+          
+        case 'completed':
+          // Payout successfully delivered to card
+          updatePayoutStatus(txid, 'completed');
+          notifyRecipient(txid, 'Funds are now available on your card');
+          break;
+          
+        case 'failed':
+          // Payout failed - handle retry or alternative method
+          updatePayoutStatus(txid, 'failed');
+          handlePayoutFailure(txid, error_details);
+          break;
+          
+        case 'returned':
+          // Payout returned by issuer - card may be inactive/closed
+          updatePayoutStatus(txid, 'returned');
+          requestAlternativePayoutMethod(txid);
+          break;
+      }
+      
+      res.status(200).send('OK');
+    });
+    ```
+  </Tab>
+  <Tab title="Webhook Payload">
+    ```json
+    {
+      "txid": "TXN_12345678901234567890",
+      "status": "completed",
+      "amount": 100.00,
+      "currency": "CAD",
+      "network": "visa_direct",
+      "recipient_email": "recipient@example.com",
+      "posting_date": "2024-01-15T10:25:00Z",
+      "fees": {
+        "processing_fee": 1.75,
+        "network_fee": 0.50
+      },
+      "network_reference": "VD123456789"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+## Error Handling & Best Practices
+
+### **Common Error Scenarios**
+
+<Accordion title="Card Not Eligible">
+**Error**: Card does not support push-to-card transactions
+
+**Solution**: 
+- Use card verification API before processing
+- Offer alternative payout methods (bank transfer, e-Transfer)
+- Provide clear messaging to recipient about card limitations
+</Accordion>
+
+<Accordion title="Insufficient Merchant Balance">
+**Error**: Not enough funds in merchant account to process payout
+
+**Solution**:
+- Check account balance before initiating payouts
+- Implement low-balance alerts and auto-funding
+- Queue payouts for processing when funds are available
+</Accordion>
+
+<Accordion title="Network Downtime">
+**Error**: Card network temporarily unavailable
+
+**Solution**:
+- Implement retry logic with exponential backoff
+- Monitor network status pages (Visa, MasterCard)
+- Provide status updates to recipients about delays
+</Accordion>
+
+<Accordion title="Card Declined by Issuer">
+**Error**: Issuing bank declined the payout transaction
+
+**Solution**:
+- Contact recipient to verify card status
+- Suggest alternative cards or payout methods
+- Retry after recipient confirms card is active
+</Accordion>
+
+### **Security Best Practices**
+
+<Warning>
+**Card Data Security**: Never store full card numbers in your systems. Use PayPer's tokenization service for repeat payouts.
+</Warning>
+
+<CardGroup cols={2}>
+  <Card title="Data Protection" icon="shield">
+    - Encrypt card data in transit and at rest
+    - Use HTTPS for all API communications  
+    - Implement proper access controls
+    - Regular security audits and monitoring
+  </Card>
+  <Card title="Fraud Prevention" icon="eye">
+    - Verify recipient identity before payouts
+    - Monitor for unusual payout patterns
+    - Implement velocity limits and controls
+    - Use device fingerprinting for web apps
+  </Card>
+</CardGroup>
+
+## Testing & Sandbox
+
+### **Test Card Numbers**
+
+Use these test cards in the PayPer sandbox environment:
+
+| Network | Card Number | Expected Behavior |
+|---------|------------|-------------------|
+| Visa | `4111111111111111` | Successful payout |
+| Visa | `4000000000000002` | Declined by issuer |
+| MasterCard | `5555555555554444` | Successful payout |
+| MasterCard | `5105105105105100` | Network error |
+
+### **Test Scenarios**
+
+<Tabs>
+  <Tab title="Successful Payout">
+    ```javascript
+    // Test successful payout flow
+    const testPayout = {
+      amount: 50.00,
+      email: 'test@example.com',
+      first_name: 'Test',
+      last_name: 'User',
+      card_number: '4111111111111111',
+      exp_month: '12',
+      exp_year: '2025',
+      cvv: '123'
+    };
+    
+    // Expected: Immediate authorization, completed within 30 minutes
+    ```
+  </Tab>
+  <Tab title="Declined Transaction">
+    ```javascript
+    // Test declined payout handling
+    const declinedPayout = {
+      amount: 100.00,
+      email: 'test@example.com',
+      first_name: 'Test',
+      last_name: 'User',
+      card_number: '4000000000000002', // Decline test card
+      exp_month: '12',
+      exp_year: '2025',
+      cvv: '123'
+    };
+    
+    // Expected: Immediate decline with error details
+    ```
+  </Tab>
+</Tabs>
+
+## Pricing & Limits
+
+### **Transaction Fees**
+
+- **Visa Direct**: 1.5% + $0.75 per transaction
+- **MasterCard Send**: 1.5% + $0.75 per transaction  
+- **International payouts**: Additional 1.0% currency conversion fee
+
+### **Transaction Limits**
+
+| Limit Type | Amount (CAD) |
+|------------|--------------|
+| Single transaction | $5,000 |
+| Daily per recipient | $10,000 |
+| Monthly per merchant | Based on risk profile |
+
+<Note>
+Higher limits may be available for established merchants with good processing history. Contact support to discuss custom limits.
+</Note>
+
+## Network-Specific Requirements
+
+### **Visa Direct Requirements**
+
+- **Sender data**: Full name and address required
+- **Purpose codes**: Must specify transaction purpose (money_transfer, funds_disbursement, etc.)
+- **Compliance**: Enhanced due diligence for money transfer transactions
+
+### **MasterCard Send Requirements**
+
+- **Recipient verification**: Name verification recommended
+- **Geographic restrictions**: Some countries require additional compliance
+- **Settlement timing**: Varies by issuer participation in MoneySend Fast
+
+## Go Live Checklist
+
+<Steps>
+  <Step title="Complete Integration Testing">
+    - Test all success and failure scenarios
+    - Verify webhook handling works correctly
+    - Validate error handling and retry logic
+  </Step>
+  <Step title="Security Review">
+    - Ensure card data is never stored
+    - Implement proper encryption and access controls
+    - Complete any required security assessments
+  </Step>
+  <Step title="Compliance Verification">
+    - Review transaction purposes and use cases
+    - Ensure proper sender/recipient data collection
+    - Confirm adherence to network requirements
+  </Step>
+  <Step title="Production Deployment">
+    - Switch to production API credentials
+    - Configure production webhook endpoints
+    - Monitor initial transactions closely
+  </Step>
+  <Step title="Ongoing Monitoring">
+    - Set up transaction monitoring and alerts
+    - Review settlement reports regularly
+    - Monitor for network updates and changes
+  </Step>
+</Steps>
+
+## Support & Resources
+
+Need help with push-to-card integration?
+
+<CardGroup cols={2}>
+  <Card title="Technical Documentation" icon="book" href="/api-reference/introduction">
+    Complete API reference and technical guides
+  </Card>
+  <Card title="Integration Support" icon="headset" href="mailto:technical@payper.ca">
+    Get help from our technical integration team
+  </Card>
+</CardGroup>
+
+<Card title="Network Documentation" icon="external-link">
+  **External Resources:**
+  - [Visa Direct Developer Center](https://developer.visa.com/capabilities/visa_direct)
+  - [MasterCard Send Documentation](https://developer.mastercard.com/product/moneysend)
+  - [TabaPay Push to Card Overview](https://developers.tabapay.com/docs/overview-of-push-to-card)
+</Card> 

@@ -1,0 +1,1620 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "PayPer API - Complete Specification",
+    "description": "Complete PayPer API specification generated from the official Postman collection\n\n## Authentication\nAll API calls require authentication using a Bearer token:\n\n```bash\ncurl -X POST \"https://staging.pp.payper.ca/api/v2/payment/eTransfer\" \\\n  -H \"Authorization: Bearer <your_bearer_token>\" \\\n  -H \"Content-Type: application/json\"\n```\n\n## Base URL\n- **Staging**: https://staging.pp.payper.ca/api/v2",
+    "version": "2.0.0",
+    "contact": {
+      "name": "PayPer Technical Support",
+      "email": "technical@payper.ca"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://staging.pp.payper.ca/api/v2",
+      "description": "Staging API server"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Bearer token for API authentication"
+      }
+    },
+    "parameters": {
+      "DevEnvironment": {
+        "name": "dev-env",
+        "in": "header",
+        "required": false,
+        "schema": {
+          "type": "string"
+        },
+        "description": "Development environment parameter"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "message": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string"
+                },
+                "code": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "request_ref_id": {
+            "type": "string"
+          }
+        }
+      },
+      "SuccessResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "txid": {
+            "type": "string",
+            "description": "Transaction ID"
+          },
+          "message": {
+            "type": "string"
+          },
+          "request_ref_id": {
+            "type": "string"
+          }
+        }
+      },
+      "BasePaymentRequest": {
+        "type": "object",
+        "required": [
+          "first_name",
+          "last_name", 
+          "email",
+          "phone",
+          "country",
+          "city",
+          "zip_code",
+          "state",
+          "address",
+          "ntf_url",
+          "ip_address"
+        ],
+        "properties": {
+          "first_name": {
+            "type": "string",
+            "example": "John"
+          },
+          "last_name": {
+            "type": "string", 
+            "example": "Doe"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "john.doe@example.com"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+1234567890"
+          },
+          "country": {
+            "type": "string",
+            "example": "CA"
+          },
+          "city": {
+            "type": "string",
+            "example": "Hamilton"
+          },
+          "zip_code": {
+            "type": "string",
+            "example": "L2K 8Z1"
+          },
+          "state": {
+            "type": "string",
+            "example": "ON"
+          },
+          "address": {
+            "type": "string",
+            "example": "king street east"
+          },
+          "ntf_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "http://15.222.44.139/ntf_url/postbacks/"
+          },
+          "ip_address": {
+            "type": "string",
+            "example": "192.168.45.32"
+          },
+          "udfs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "example": ["udf1", "udf2"]
+          }
+        }
+      },
+      "ItemsArray": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "quantity": {
+              "type": "integer",
+              "example": 1
+            },
+            "name": {
+              "type": "string",
+              "example": "LC1355"
+            },
+            "description": {
+              "type": "string",
+              "example": "item1"
+            },
+            "unit_price": {
+              "type": "number",
+              "format": "float",
+              "example": 1.02
+            }
+          }
+        }
+      }
+    }
+  },
+  "security": [
+    {
+      "BearerAuth": []
+    }
+  ],
+  "paths": {
+    "/one-click-checkout": {
+      "post": {
+        "summary": "One-Click Checkout",
+        "description": "Process one-click checkout payment",
+        "tags": ["Quick Start Solutions"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["items"],
+                    "properties": {
+                      "items": {"$ref": "#/components/schemas/ItemsArray"},
+                      "shipping_cost": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 0
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment request successful",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/Error"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/eTransfer": {
+      "post": {
+        "summary": "e-Transfer Payment",
+        "description": "Process eTransfer payment",
+        "tags": ["e-Transfer"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["items"],
+                    "properties": {
+                      "items": {"$ref": "#/components/schemas/ItemsArray"},
+                      "shipping_cost": {"type": "number", "format": "float", "example": 0},
+                      "bank_id": {"type": "integer", "nullable": true, "example": null}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment request successful",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/SandboxTools/OutOfBand/": {
+      "post": {
+        "summary": "Out of Band Transactions",
+        "description": "Create out-of-band transaction for testing",
+        "tags": ["e-Transfer"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "amount"],
+                "properties": {
+                  "name": {"type": "string", "example": "John Doe"},
+                  "email": {"type": "string", "format": "email", "example": "john.doe@example.com"},
+                  "amount": {"type": "number", "format": "float", "example": 25.50}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Out-of-band transaction created",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/eTransfer/": {
+      "post": {
+        "summary": "e-Transfer Payout",
+        "description": "Send money via eTransfer to a recipient",
+        "tags": ["e-Transfer"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["amount"],
+                    "properties": {
+                      "amount": {"type": "number", "format": "float", "example": 1.09}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payout request successful",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/eTransferBanks/": {
+      "get": {
+        "summary": "List Available Banks",
+        "description": "Retrieve list of supported banks for eTransfer",
+        "tags": ["e-Transfer"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Bank list retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {"type": "boolean"},
+                    "banks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {"type": "integer"},
+                          "bank_name": {"type": "string"},
+                          "institution_number": {"type": "string"},
+                          "enabled": {"type": "boolean"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/onlineBanking": {
+      "post": {
+        "summary": "Online Banking Transaction",
+        "description": "Process online banking payment",
+        "tags": ["Online Banking Plus"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["items"],
+                    "properties": {
+                      "items": {"$ref": "#/components/schemas/ItemsArray"},
+                      "shipping_cost": {"type": "number", "format": "float", "example": 0}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment request successful",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/DigitalCheque/": {
+      "post": {
+        "summary": "Digital Cheque Transaction",
+        "description": "Process digital cheque payment",
+        "tags": ["Other Payment Methods"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["items", "encrypted_account_number", "transit_number", "institute_number", "rsa_key_id"],
+                    "properties": {
+                      "items": {"$ref": "#/components/schemas/ItemsArray"},
+                      "encrypted_account_number": {"type": "string", "description": "RSA encrypted bank account number"},
+                      "transit_number": {"type": "string", "example": "00408"},
+                      "institute_number": {"type": "string", "example": "030"},
+                      "account_name": {"type": "string", "example": "saving account"},
+                      "rsa_key_id": {"type": "integer", "example": 123}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Payment request successful",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cancelTransaction": {
+      "post": {
+        "summary": "Cancel Transaction",
+        "description": "Cancel a pending transaction",
+        "tags": ["Cancel Transaction"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid", "reason"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"},
+                  "reason": {"type": "string", "example": "test"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction cancelled successfully",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refund": {
+      "post": {
+        "summary": "Processing a Refund",
+        "description": "Process refund for a completed transaction",
+        "tags": ["Refund API"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid", "amount"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"},
+                  "amount": {"type": "number", "format": "float", "example": 4.20}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Refund processed successfully",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/status/{txid}": {
+      "get": {
+        "summary": "Transaction Status Lookup",
+        "description": "Retrieve the current status of a transaction",
+        "tags": ["Transaction Lookup"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "txid",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"},
+            "example": "30425174231537624651519055372"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "txid": {"type": "string"},
+                    "status": {"type": "string", "enum": ["pending", "completed", "failed", "cancelled", "refunded"]},
+                    "amount": {"type": "number", "format": "float"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/balanceCheck": {
+      "get": {
+        "summary": "Balance Check",
+        "description": "Get current account balance information",
+        "tags": ["Accounting and Reconciliation"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Balance information retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "available_balance": {"type": "number", "format": "float"},
+                    "pending_balance": {"type": "number", "format": "float"},
+                    "currency": {"type": "string", "example": "CAD"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/report": {
+      "get": {
+        "summary": "Generate Report",
+        "description": "Retrieve transaction report for specified date range",
+        "tags": ["Accounting and Reconciliation"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["start_date", "end_date"],
+                "properties": {
+                  "start_date": {"type": "string", "format": "date", "example": "2021-11-01"},
+                  "end_date": {"type": "string", "format": "date", "example": "2022-12-02"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Report data retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {"type": "boolean"},
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "transaction_count": {"type": "integer"},
+                          "total_amount": {"type": "number", "format": "float"},
+                          "date": {"type": "string", "format": "date"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/GenerateRsaKey": {
+      "get": {
+        "summary": "Generate RSA Key",
+        "description": "Generate an RSA key pair for encryption",
+        "tags": ["RSA Key Generation"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "RSA key generated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "boolean", "example": true},
+                    "key_id": {"type": "integer", "example": 123},
+                    "public_key": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/visaDirect/create": {
+      "post": {
+        "summary": "Create Visa Direct Transaction",
+        "description": "Create a Visa Direct payout transaction",
+        "tags": ["Visa Direct Payout"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["amount", "card_number"],
+                    "properties": {
+                      "amount": {"type": "number", "format": "float", "example": 100.00},
+                      "card_number": {"type": "string", "example": "4111111111111111"},
+                      "expiry_month": {"type": "string", "example": "12"},
+                      "expiry_year": {"type": "string", "example": "25"}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Visa Direct transaction created",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/visaDirect/process": {
+      "post": {
+        "summary": "Process Visa Direct Transaction",
+        "description": "Process a Visa Direct payout transaction",
+        "tags": ["Visa Direct Payout"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Visa Direct transaction processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/visaDirect/eligibility": {
+      "post": {
+        "summary": "Card Eligibility",
+        "description": "Check Visa card eligibility for payouts",
+        "tags": ["Visa Direct Payout"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["card_number"],
+                "properties": {
+                  "card_number": {"type": "string", "example": "4111111111111111"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Card eligibility checked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "eligible": {"type": "boolean"},
+                    "card_type": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/mastercard/create": {
+      "post": {
+        "summary": "Create MasterCard Send Transaction",
+        "description": "Create a MasterCard Send payout transaction",
+        "tags": ["MasterCard Send Payout"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["amount", "card_number"],
+                    "properties": {
+                      "amount": {"type": "number", "format": "float", "example": 100.00},
+                      "card_number": {"type": "string", "example": "5555555555554444"},
+                      "expiry_month": {"type": "string", "example": "12"},
+                      "expiry_year": {"type": "string", "example": "25"}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "MasterCard Send transaction created",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/mastercard/process": {
+      "post": {
+        "summary": "Process MasterCard Send Transaction",
+        "description": "Process a MasterCard Send payout transaction",
+        "tags": ["MasterCard Send Payout"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "MasterCard Send transaction processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/mastercard/eligibility": {
+      "post": {
+        "summary": "Card Eligibility",
+        "description": "Check MasterCard eligibility for payouts",
+        "tags": ["MasterCard Send Payout"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["card_number"],
+                "properties": {
+                  "card_number": {"type": "string", "example": "5555555555554444"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Card eligibility checked",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "eligible": {"type": "boolean"},
+                    "card_type": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/directDeposit": {
+      "post": {
+        "summary": "Direct Deposit Payout",
+        "description": "Process direct deposit payout",
+        "tags": ["Other Payment Methods"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["amount", "account_number", "transit_number", "institute_number"],
+                    "properties": {
+                      "amount": {"type": "number", "format": "float", "example": 100.00},
+                      "account_number": {"type": "string", "example": "123456789"},
+                      "transit_number": {"type": "string", "example": "00408"},
+                      "institute_number": {"type": "string", "example": "030"}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Direct deposit processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payout/digitalCashCard": {
+      "post": {
+        "summary": "Digital Cash Card Payout",
+        "description": "Process digital cash card payout",
+        "tags": ["Other Payment Methods"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["amount"],
+                    "properties": {
+                      "amount": {"type": "number", "format": "float", "example": 100.00}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Digital cash card payout processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/eTransferStandard": {
+      "post": {
+        "summary": "e-Transfer Standard",
+        "description": "Process standard e-Transfer payment",
+        "tags": ["Other Payment Methods"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["items"],
+                    "properties": {
+                      "items": {"$ref": "#/components/schemas/ItemsArray"},
+                      "shipping_cost": {"type": "number", "format": "float", "example": 0}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "e-Transfer Standard processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transaction/lookup": {
+      "post": {
+        "summary": "Transaction Lookup",
+        "description": "Look up transaction details",
+        "tags": ["Transaction Lookup"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction details retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "txid": {"type": "string"},
+                    "status": {"type": "string"},
+                    "amount": {"type": "number", "format": "float"},
+                    "payment_method": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/transactions/unreported": {
+      "get": {
+        "summary": "Unreported Transactions",
+        "description": "Get unreported transactions",
+        "tags": ["Accounting and Reconciliation"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Unreported transactions retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {"type": "boolean"},
+                    "transactions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "txid": {"type": "string"},
+                          "amount": {"type": "number", "format": "float"},
+                          "status": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlement/request": {
+      "post": {
+        "summary": "Settlement Request",
+        "description": "Request settlement of funds",
+        "tags": ["Settlements"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["amount"],
+                "properties": {
+                  "amount": {"type": "number", "format": "float", "example": 1000.00}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Settlement requested",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlement/status/{settlement_id}": {
+      "get": {
+        "summary": "Settlement Status",
+        "description": "Get settlement status",
+        "tags": ["Settlements"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "settlement_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Settlement status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "settlement_id": {"type": "string"},
+                    "status": {"type": "string"},
+                    "amount": {"type": "number", "format": "float"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/settlement/cancel": {
+      "post": {
+        "summary": "Cancel Settlement",
+        "description": "Cancel a pending settlement",
+        "tags": ["Settlements"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["settlement_id"],
+                "properties": {
+                  "settlement_id": {"type": "string", "example": "settlement_123"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Settlement cancelled",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/limits/create": {
+      "post": {
+        "summary": "Create User Limits",
+        "description": "Create transaction limits for a user",
+        "tags": ["User Limits"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["user_id", "daily_limit", "monthly_limit"],
+                "properties": {
+                  "user_id": {"type": "string", "example": "user_123"},
+                  "daily_limit": {"type": "number", "format": "float", "example": 1000.00},
+                  "monthly_limit": {"type": "number", "format": "float", "example": 10000.00}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User limits created",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/limits/{user_id}": {
+      "get": {
+        "summary": "Retrieve User Limits",
+        "description": "Get transaction limits for a user",
+        "tags": ["User Limits"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User limits retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {"type": "string"},
+                    "daily_limit": {"type": "number", "format": "float"},
+                    "monthly_limit": {"type": "number", "format": "float"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blacklist/create": {
+      "post": {
+        "summary": "Create Blacklist Entry",
+        "description": "Add entry to blacklist",
+        "tags": ["Blacklist"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["email"],
+                "properties": {
+                  "email": {"type": "string", "format": "email", "example": "blocked@example.com"},
+                  "reason": {"type": "string", "example": "fraudulent activity"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Blacklist entry created",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/blacklist/{email}": {
+      "delete": {
+        "summary": "Remove Blacklist Entry",
+        "description": "Remove entry from blacklist",
+        "tags": ["Blacklist"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "email"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blacklist entry removed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Retrieve Blacklist Entry",
+        "description": "Check if email is blacklisted",
+        "tags": ["Blacklist"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "email",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string", "format": "email"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Blacklist status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "blacklisted": {"type": "boolean"},
+                    "reason": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kyc/upload": {
+      "post": {
+        "summary": "Upload KYC Documents",
+        "description": "Upload Know Your Customer documents",
+        "tags": ["Know Your Customer"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "required": ["user_id", "document_type", "file"],
+                "properties": {
+                  "user_id": {"type": "string"},
+                  "document_type": {"type": "string", "enum": ["passport", "drivers_license", "utility_bill"]},
+                  "file": {"type": "string", "format": "binary"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "KYC document uploaded",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/kyc/{user_id}": {
+      "get": {
+        "summary": "Retrieve KYC Documents",
+        "description": "Get KYC documents for a user",
+        "tags": ["Know Your Customer"],
+        "security": [{"BearerAuth": []}],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {"type": "string"}
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "KYC documents retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user_id": {"type": "string"},
+                    "documents": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "document_type": {"type": "string"},
+                          "status": {"type": "string"},
+                          "uploaded_date": {"type": "string", "format": "date-time"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creditCard/list": {
+      "get": {
+        "summary": "List Cards",
+        "description": "Get list of stored credit cards",
+        "tags": ["Credit Card"],
+        "security": [{"BearerAuth": []}],
+        "responses": {
+          "200": {
+            "description": "Credit cards retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "cards": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "card_id": {"type": "string"},
+                          "last_four": {"type": "string"},
+                          "card_type": {"type": "string"},
+                          "expiry_month": {"type": "string"},
+                          "expiry_year": {"type": "string"}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creditCard/purchase": {
+      "post": {
+        "summary": "Purchase",
+        "description": "Process credit card purchase",
+        "tags": ["Credit Card"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["items", "card_number", "expiry_month", "expiry_year", "cvv"],
+                    "properties": {
+                      "items": {"$ref": "#/components/schemas/ItemsArray"},
+                      "card_number": {"type": "string", "example": "4111111111111111"},
+                      "expiry_month": {"type": "string", "example": "12"},
+                      "expiry_year": {"type": "string", "example": "25"},
+                      "cvv": {"type": "string", "example": "123"}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Purchase processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creditCard/preauth": {
+      "post": {
+        "summary": "Pre-authorization",
+        "description": "Pre-authorize credit card transaction",
+        "tags": ["Credit Card"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {"$ref": "#/components/schemas/BasePaymentRequest"},
+                  {
+                    "type": "object",
+                    "required": ["amount", "card_number", "expiry_month", "expiry_year", "cvv"],
+                    "properties": {
+                      "amount": {"type": "number", "format": "float", "example": 100.00},
+                      "card_number": {"type": "string", "example": "4111111111111111"},
+                      "expiry_month": {"type": "string", "example": "12"},
+                      "expiry_year": {"type": "string", "example": "25"},
+                      "cvv": {"type": "string", "example": "123"}
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pre-authorization processed",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creditCard/capture": {
+      "post": {
+        "summary": "Capture",
+        "description": "Capture pre-authorized credit card transaction",
+        "tags": ["Credit Card"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid", "amount"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"},
+                  "amount": {"type": "number", "format": "float", "example": 100.00}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction captured",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/creditCard/void": {
+      "post": {
+        "summary": "Void",
+        "description": "Void credit card transaction",
+        "tags": ["Credit Card"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["txid"],
+                "properties": {
+                  "txid": {"type": "string", "example": "30500336832645240071578671722"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction voided",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sandbox/oob": {
+      "post": {
+        "summary": "Create OOB",
+        "description": "Create out-of-band transaction for sandbox testing",
+        "tags": ["Sandbox Tools"],
+        "security": [{"BearerAuth": []}],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["name", "email", "amount"],
+                "properties": {
+                  "name": {"type": "string", "example": "John Doe"},
+                  "email": {"type": "string", "format": "email", "example": "john.doe@example.com"},
+                  "amount": {"type": "number", "format": "float", "example": 25.50}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OOB transaction created",
+            "content": {
+              "application/json": {
+                "schema": {"$ref": "#/components/schemas/SuccessResponse"}
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+} 
