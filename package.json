@@ -1,17 +1,19 @@
 {
-  "name": "docs-crawler",
+  "name": "payper-docs",
   "version": "1.0.0",
-  "description": "PayPer Documentation Crawler",
-  "main": "crawl-docs.js",
+  "description": "PayPer API Documentation",
   "scripts": {
+    "dev": "mintlify dev",
+    "build": "mintlify build",
     "crawl": "node crawl-docs.js",
     "install-browsers": "npx playwright install"
   },
   "dependencies": {
+    "mintlify": "^4.0.0",
     "playwright": "^1.40.0"
   },
   "devDependencies": {},
-  "keywords": ["documentation", "crawler", "playwright"],
-  "author": "Chad Arthur",
+  "keywords": ["documentation", "api", "mintlify"],
+  "author": "PayPer",
   "license": "MIT"
 } 
